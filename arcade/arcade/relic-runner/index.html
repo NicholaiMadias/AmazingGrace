@@ -1,0 +1,685 @@
+---
+title: "Add Relic Runner to Nexus Arcade — Game, Dossier, Firebase Leaderboard & Achievements"
+labels: enhancement, arcade, firebase, new-content, high-priority
+assignees: ""
+---
+
+## Overview
+
+Adds **Relic Runner** — a two-page experience — plus a **shared Firebase leaderboard and achievement system** that becomes the backbone for every future Nexus Arcade game.
+
+### What Gets Built
+
+| Path | Purpose |
+|------|---------|
+| `arcade/relic-runner/index.html` | Playable 8-room dungeon crawler (Canvas, touch-ready) |
+| `arcade/relic-runner/dossier/index.html` | Interactive character dossier for Ella |
+| `arcade/shared/nexus-firebase.js` | **Shared** Firebase utility — leaderboards, achievements, player profiles |
+| `arcade/shared/nexus-achievements.js` | Achievement definitions + unlock logic for all games |
+| `arcade/index.html` | Add two new game cards to the lobby |
+
+### Architecture Decision
+
+The `arcade/shared/` directory establishes a **platform pattern**. Every arcade game imports the same Firebase utility module. This means:
+- One leaderboard system for all games
+- Cross-game achievements visible in the lobby
+- Player profiles that persist across games
+- Multiplayer-ready data layer via Firestore
+- Offline-first with sync — students in the Philippines play offline, scores sync when connected
+
+---
+
+## Prerequisites
+
+Before running this issue, commit the two attached HTML files to the repo:
+
+1. `arcade/relic-runner/index.html` ← `relic-runner-game.html`
+2. `arcade/relic-runner/dossier/index.html` ← `relic-runner-dossier.html`
+
+These files are attached to this issue / already committed.
+
+---
+
+## Task 1: Create directory structure
+
+```
+arcade/
+  shared/
+    nexus-firebase.js
+    nexus-achievements.js
+  relic-runner/
+    index.html              ← (already committed)
+    dossier/
+      index.html            ← (already committed)
+```
+
+---
+
+## Task 2: Create `arcade/shared/nexus-firebase.js`
+
+This is the shared Firebase utility for the entire Nexus Arcade. It talks to the existing Google Apps Script endpoint that proxies to Firebase/Firestore.
+
+Create the file `arcade/shared/nexus-firebase.js` with this exact content:
+
+```javascript
+/**
+ * NexusFirebase — Shared Firebase utility for the Nexus Arcade
+ * 
+ * All arcade games import this module to access leaderboards, achievements,
+ * and player profiles via the Google Apps Script → Firestore proxy.
+ * 
+ * Offline-first: queues writes when offline, syncs when reconnected.
+ * 
+ * Usage:
+ *   import { NexusFirebase } from '/arcade/shared/nexus-firebase.js';
+ *   await NexusFirebase.submitScore('relic-runner', 'Ella', 42, { rooms: 8, alerts: 0 });
+ *   const board = await NexusFirebase.getLeaderboard('relic-runner');
+ */
+
+const APPS_SCRIPT_URL = 'APPS_SCRIPT_DEPLOYMENT_URL'; // Replace with your deployed Apps Script URL
+
+// Offline queue — persists to localStorage
+const QUEUE_KEY = 'nexus-firebase-offline-queue';
+
+function getQueue() {
+  try { return JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function saveQueue(queue) {
+  localStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
+}
+
+async function flushQueue() {
+  const queue = getQueue();
+  if (queue.length === 0) return;
+  
+  const remaining = [];
+  for (const entry of queue) {
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(entry),
+        mode: 'cors'
+      });
+    } catch {
+      remaining.push(entry); // Keep for next sync
+    }
+  }
+  saveQueue(remaining);
+}
+
+// Sync when back online
+if (typeof window !== 'undefined') {
+  window.addEventListener('online', flushQueue);
+  // Try flushing on load
+  if (navigator.onLine) flushQueue();
+}
+
+export const NexusFirebase = {
+
+  /**
+   * Submit a score to the leaderboard
+   * @param {string} gameId - e.g., 'relic-runner', 'matrix-of-conscience', 'star-matrix'
+   * @param {string} playerName - Display name
+   * @param {number} score - Numeric score
+   * @param {Object} metadata - Game-specific data (rooms cleared, relics, time, etc.)
+   */
+  async submitScore(gameId, playerName, score, metadata = {}) {
+    const payload = {
+      action: 'submitScore',
+      collection: `arcade-leaderboards/${gameId}/scores`,
+      data: {
+        playerName,
+        score,
+        metadata,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent
+      }
+    };
+
+    if (!navigator.onLine) {
+      const queue = getQueue();
+      queue.push(payload);
+      saveQueue(queue);
+      return { queued: true, message: 'Score saved offline — will sync when connected.' };
+    }
+
+    try {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        mode: 'cors'
+      });
+      return await res.json();
+    } catch (err) {
+      // Queue for later
+      const queue = getQueue();
+      queue.push(payload);
+      saveQueue(queue);
+      return { queued: true, error: err.message };
+    }
+  },
+
+  /**
+   * Get the leaderboard for a game
+   * @param {string} gameId - e.g., 'relic-runner'
+   * @param {number} limit - Max entries (default 10)
+   * @param {string} mode - Leaderboard mode: 'score', 'speedrun', 'stealth'
+   */
+  async getLeaderboard(gameId, limit = 10, mode = 'score') {
+    try {
+      const params = new URLSearchParams({
+        action: 'getLeaderboard',
+        collection: `arcade-leaderboards/${gameId}/scores`,
+        limit: limit.toString(),
+        sortBy: mode === 'speedrun' ? 'metadata.time' : 'score',
+        sortDir: mode === 'speedrun' ? 'asc' : 'desc'
+      });
+      const res = await fetch(`${APPS_SCRIPT_URL}?${params}`, { mode: 'cors' });
+      return await res.json();
+    } catch {
+      return { entries: [], offline: true };
+    }
+  },
+
+  /**
+   * Unlock an achievement
+   * @param {string} gameId - e.g., 'relic-runner'
+   * @param {string} playerId - Player identifier
+   * @param {string} achievementId - Achievement key (e.g., 'ghost-run')
+   */
+  async unlockAchievement(gameId, playerId, achievementId) {
+    const payload = {
+      action: 'unlockAchievement',
+      collection: `arcade-achievements/${playerId}/unlocked`,
+      data: {
+        gameId,
+        achievementId,
+        unlockedAt: new Date().toISOString()
+      }
+    };
+
+    if (!navigator.onLine) {
+      const queue = getQueue();
+      queue.push(payload);
+      saveQueue(queue);
+      return { queued: true };
+    }
+
+    try {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        mode: 'cors'
+      });
+      return await res.json();
+    } catch (err) {
+      const queue = getQueue();
+      queue.push(payload);
+      saveQueue(queue);
+      return { queued: true, error: err.message };
+    }
+  },
+
+  /**
+   * Get player profile (achievements, high scores across all games)
+   * @param {string} playerId
+   */
+  async getPlayerProfile(playerId) {
+    try {
+      const params = new URLSearchParams({
+        action: 'getPlayerProfile',
+        playerId
+      });
+      const res = await fetch(`${APPS_SCRIPT_URL}?${params}`, { mode: 'cors' });
+      return await res.json();
+    } catch {
+      return { achievements: [], scores: {}, offline: true };
+    }
+  },
+
+  /**
+   * Save game state (for games with progression)
+   * @param {string} gameId
+   * @param {string} playerId
+   * @param {Object} state - Serializable game state
+   */
+  async saveGameState(gameId, playerId, state) {
+    const payload = {
+      action: 'saveState',
+      collection: `arcade-saves/${playerId}/${gameId}`,
+      data: { state, savedAt: new Date().toISOString() }
+    };
+
+    if (!navigator.onLine) {
+      // Save locally as fallback
+      localStorage.setItem(`nexus-save-${gameId}-${playerId}`, JSON.stringify(state));
+      const queue = getQueue();
+      queue.push(payload);
+      saveQueue(queue);
+      return { queued: true };
+    }
+
+    try {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        mode: 'cors'
+      });
+      // Also cache locally
+      localStorage.setItem(`nexus-save-${gameId}-${playerId}`, JSON.stringify(state));
+      return await res.json();
+    } catch {
+      localStorage.setItem(`nexus-save-${gameId}-${playerId}`, JSON.stringify(state));
+      return { queued: true };
+    }
+  },
+
+  /**
+   * Load game state
+   * @param {string} gameId
+   * @param {string} playerId
+   */
+  async loadGameState(gameId, playerId) {
+    try {
+      if (navigator.onLine) {
+        const params = new URLSearchParams({
+          action: 'loadState',
+          collection: `arcade-saves/${playerId}/${gameId}`
+        });
+        const res = await fetch(`${APPS_SCRIPT_URL}?${params}`, { mode: 'cors' });
+        const data = await res.json();
+        if (data.state) {
+          localStorage.setItem(`nexus-save-${gameId}-${playerId}`, JSON.stringify(data.state));
+          return data.state;
+        }
+      }
+    } catch { /* fall through to local */ }
+
+    // Fallback to local
+    try {
+      const local = localStorage.getItem(`nexus-save-${gameId}-${playerId}`);
+      return local ? JSON.parse(local) : null;
+    } catch { return null; }
+  }
+};
+```
+
+---
+
+## Task 3: Create `arcade/shared/nexus-achievements.js`
+
+This file defines achievements for all arcade games. New games add their achievements here.
+
+Create the file `arcade/shared/nexus-achievements.js` with this exact content:
+
+```javascript
+/**
+ * Nexus Arcade — Achievement Definitions
+ * 
+ * Each game registers its achievements here.
+ * Achievements are checked client-side and persisted via NexusFirebase.
+ * Cross-game achievements (e.g., "Play 3 different games") live under 'nexus-arcade'.
+ */
+
+export const ACHIEVEMENTS = {
+
+  'relic-runner': [
+    {
+      id: 'first-expedition',
+      name: 'First Expedition',
+      description: 'Complete your first run of Relic Runner.',
+      icon: '🏃‍♀️',
+      condition: (stats) => stats.roomsCleared > 0
+    },
+    {
+      id: 'full-sweep',
+      name: 'Full Sweep',
+      description: 'Complete all 8 rooms in a single expedition.',
+      icon: '🏆',
+      condition: (stats) => stats.roomsCleared >= 8
+    },
+    {
+      id: 'ghost-run',
+      name: 'Ghost Run',
+      description: 'Complete an expedition with zero alerts.',
+      icon: '👻',
+      condition: (stats) => stats.roomsCleared >= 8 && stats.alerts === 0
+    },
+    {
+      id: 'hoarder',
+      name: 'Sentimental Hoarder',
+      description: 'Collect 20+ relics in a single expedition.',
+      icon: '💎',
+      condition: (stats) => stats.relicsCollected >= 20
+    },
+    {
+      id: 'speed-historian',
+      name: 'Speed Historian',
+      description: 'Complete all 8 rooms in under 3 minutes.',
+      icon: '⚡',
+      condition: (stats) => stats.roomsCleared >= 8 && stats.timeSeconds < 180
+    },
+    {
+      id: 'silent-runner',
+      name: 'Silent Runner',
+      description: 'Use "Quiet the Rig" 10 times in one expedition.',
+      icon: '🤫',
+      condition: (stats) => stats.quietUses >= 10
+    },
+    {
+      id: 'flash-master',
+      name: 'Flash-Scan Master',
+      description: 'Reveal 10 hidden relics using Flash-Scan.',
+      icon: '📡',
+      condition: (stats) => stats.hiddenRelicsRevealed >= 10
+    }
+  ],
+
+  'matrix-of-conscience': [
+    {
+      id: 'first-dilemma',
+      name: 'First Dilemma',
+      description: 'Complete your first moral scenario.',
+      icon: '⚖️',
+      condition: (stats) => stats.scenariosCompleted > 0
+    },
+    {
+      id: 'moral-compass',
+      name: 'Moral Compass',
+      description: 'Complete all scenarios.',
+      icon: '🧭',
+      condition: (stats) => stats.allScenariosComplete
+    },
+    {
+      id: 'oracle-seeker',
+      name: 'Oracle Seeker',
+      description: 'Consult the Oracle 5 times.',
+      icon: '🔮',
+      condition: (stats) => stats.oracleConsults >= 5
+    }
+  ],
+
+  'star-matrix': [
+    {
+      id: 'star-gazer',
+      name: 'Star Gazer',
+      description: 'Complete your first Star Matrix puzzle.',
+      icon: '⭐',
+      condition: (stats) => stats.puzzlesCompleted > 0
+    }
+  ],
+
+  // Cross-game achievements
+  'nexus-arcade': [
+    {
+      id: 'arcade-explorer',
+      name: 'Arcade Explorer',
+      description: 'Play 3 different games in the Nexus Arcade.',
+      icon: '🕹️',
+      condition: (stats) => stats.uniqueGamesPlayed >= 3
+    },
+    {
+      id: 'completionist',
+      name: 'Completionist',
+      description: 'Earn at least one achievement in every game.',
+      icon: '🌟',
+      condition: (stats) => stats.gamesWithAchievements >= stats.totalGames
+    }
+  ]
+};
+
+/**
+ * Check and return newly unlocked achievements
+ * @param {string} gameId
+ * @param {Object} stats - Current game stats
+ * @param {string[]} alreadyUnlocked - IDs already earned
+ * @returns {Object[]} Newly unlocked achievements
+ */
+export function checkAchievements(gameId, stats, alreadyUnlocked = []) {
+  const defs = ACHIEVEMENTS[gameId] || [];
+  return defs.filter(a => !alreadyUnlocked.includes(a.id) && a.condition(stats));
+}
+```
+
+---
+
+## Task 4: Wire Firebase leaderboard into `arcade/relic-runner/index.html`
+
+Modify the existing game file to add leaderboard UI and Firebase integration.
+
+### 4a. Add the module import
+
+At the top of the `<script>` block in `arcade/relic-runner/index.html`, add:
+
+```javascript
+import { NexusFirebase } from '/arcade/shared/nexus-firebase.js';
+import { checkAchievements } from '/arcade/shared/nexus-achievements.js';
+```
+
+**Important:** Change the `<script>` tag to `<script type="module">` to enable ES module imports.
+
+### 4b. Add player name prompt
+
+After the `START EXPEDITION` button in the start overlay, add:
+
+```html
+<div style="margin-top:1rem">
+  <label for="player-name" style="color:var(--text-muted);font-size:0.75rem;display:block;margin-bottom:0.3rem">Your Name (for leaderboard)</label>
+  <input type="text" id="player-name" placeholder="Enter your name" maxlength="20"
+    style="background:var(--surface);border:1px solid var(--border);color:var(--text);padding:0.5rem 0.8rem;border-radius:6px;font-size:0.85rem;width:200px;text-align:center;font-family:Inter,sans-serif"
+    value="">
+</div>
+```
+
+### 4c. Add leaderboard panel to the end overlay
+
+After the `end-stats` div inside `#end-overlay`, add:
+
+```html
+<div id="leaderboard" style="margin-top:1rem;width:100%;max-width:360px">
+  <div style="font-family:Orbitron,sans-serif;font-size:0.7rem;color:var(--accent2);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem">🏆 Leaderboard</div>
+  <div id="leaderboard-entries" style="font-size:0.78rem;color:var(--text-muted);line-height:1.8"></div>
+</div>
+```
+
+### 4d. Add achievement toast CSS
+
+Inside the `<style>` block, add:
+
+```css
+.achievement-toast{position:fixed;top:1rem;right:1rem;background:rgba(30,41,59,0.95);border:1px solid var(--accent2);border-radius:10px;padding:0.75rem 1rem;z-index:300;display:flex;align-items:center;gap:0.6rem;animation:toastIn 0.4s ease,toastOut 0.4s ease 3.6s forwards;max-width:320px;backdrop-filter:blur(8px);box-shadow:0 8px 24px rgba(255,215,0,0.15)}
+.achievement-toast .icon{font-size:1.5rem}
+.achievement-toast .info{font-size:0.75rem}
+.achievement-toast .info .title{color:var(--accent2);font-weight:800;font-family:Orbitron,sans-serif;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em}
+.achievement-toast .info .desc{color:var(--text-muted);margin-top:0.15rem}
+@keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes toastOut{from{opacity:1}to{opacity:0;transform:translateY(-20px)}}
+```
+
+### 4e. Add Firebase logic to the game script
+
+Add these functions inside the `<script>` block:
+
+```javascript
+// Track game stats for achievements
+let gameStats = { relicsCollected: 0, roomsCleared: 0, alerts: 0, quietUses: 0, hiddenRelicsRevealed: 0, timeSeconds: 0 };
+let unlockedAchievements = JSON.parse(localStorage.getItem('rr-achievements') || '[]');
+
+// Show achievement toast
+function showAchievementToast(achievement) {
+  const toast = document.createElement('div');
+  toast.className = 'achievement-toast';
+  toast.innerHTML = `<span class="icon">${achievement.icon}</span><div class="info"><div class="title">Achievement Unlocked!</div><div class="desc">${achievement.name}</div></div>`;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 4200);
+}
+
+// Submit score and check achievements on game end
+async function submitResults() {
+  const playerName = document.getElementById('player-name')?.value.trim() || 'Anonymous';
+  const p = game.player;
+  
+  gameStats.relicsCollected = p.relics.length;
+  gameStats.roomsCleared = game.roomIdx + (game.won ? 1 : 0);
+  gameStats.alerts = p.alerts;
+  gameStats.timeSeconds = Math.floor(game.time / 60);
+
+  // Submit score
+  const score = p.relics.length * 100 + gameStats.roomsCleared * 500 - p.alerts * 50 + Math.round(p.morale);
+  await NexusFirebase.submitScore('relic-runner', playerName, score, {
+    relics: p.relics.length,
+    rooms: gameStats.roomsCleared,
+    alerts: p.alerts,
+    morale: Math.round(p.morale),
+    time: gameStats.timeSeconds,
+    won: game.won
+  });
+
+  // Check achievements
+  const newUnlocks = checkAchievements('relic-runner', gameStats, unlockedAchievements);
+  for (const a of newUnlocks) {
+    unlockedAchievements.push(a.id);
+    showAchievementToast(a);
+    await NexusFirebase.unlockAchievement('relic-runner', playerName, a.id);
+  }
+  localStorage.setItem('rr-achievements', JSON.stringify(unlockedAchievements));
+
+  // Load leaderboard
+  const board = await NexusFirebase.getLeaderboard('relic-runner', 10);
+  const el = document.getElementById('leaderboard-entries');
+  if (board.entries && board.entries.length > 0) {
+    el.innerHTML = board.entries.map((e, i) =>
+      `<div style="display:flex;justify-content:space-between;padding:0.2rem 0;${e.playerName===playerName?'color:var(--accent2);font-weight:700':''}">
+        <span>${i+1}. ${e.playerName}</span><span>${e.score}</span>
+      </div>`
+    ).join('');
+  } else {
+    el.innerHTML = '<div style="color:var(--text-muted)">No scores yet — you could be first!</div>';
+  }
+}
+```
+
+### 4f. Call `submitResults()` from the `endGame` function
+
+In the existing `endGame()` function, add `submitResults();` after the overlay is shown:
+
+```javascript
+function endGame(won) {
+  game.running = false;
+  game.won = won;
+  // ... existing overlay code ...
+  document.getElementById('end-overlay').classList.remove('hidden');
+  document.getElementById('hud').style.display = 'none';
+  submitResults(); // ← Add this line
+}
+```
+
+### 4g. Track quiet uses and hidden relic reveals
+
+In the existing game update logic:
+
+Where the "Quiet the Rig" key is handled, add: `gameStats.quietUses++;`
+
+Where hidden relics are revealed via Flash-Scan, add: `gameStats.hiddenRelicsRevealed++;`
+
+---
+
+## Task 5: Add game cards to the Arcade lobby
+
+In `arcade/index.html`, add these two game cards.
+
+### Relic Runner — Game Card (add to the "Games" grid section)
+
+```html
+<div class="game-card" tabindex="0" onclick="location.href='/arcade/relic-runner/'" role="link" aria-label="Play Relic Runner">
+  <div class="game-icon">🏃‍♀️</div>
+  <div class="game-info">
+    <div class="game-title">Relic Runner</div>
+    <div class="game-desc">Play as Ella, the High-Speed Historian. Explore ruins, collect relics, manage your Jingle Radius, and escape the sentries.</div>
+    <div class="game-meta">
+      <span class="game-tag">Action</span>
+      <span class="game-tag">Exploration</span>
+      <span class="game-tag">New ✨</span>
+    </div>
+  </div>
+</div>
+```
+
+### Ella's Dossier — Story Card (add to the "Story Experiences" grid section)
+
+```html
+<div class="game-card" tabindex="0" onclick="location.href='/arcade/relic-runner/dossier/'" role="link" aria-label="View Ella's Character Dossier">
+  <div class="game-icon">📋</div>
+  <div class="game-info">
+    <div class="game-title">Ella — Relic Runner Dossier</div>
+    <div class="game-desc">Interactive character file. Explore Ella's stats, mechanics, dialogue, sentimental inventory, and growth arc.</div>
+    <div class="game-meta">
+      <span class="game-tag">Lore</span>
+      <span class="game-tag">Interactive</span>
+      <span class="game-tag">New ✨</span>
+    </div>
+  </div>
+</div>
+```
+
+---
+
+## Task 6: Cross-link dossier and game
+
+### In `arcade/relic-runner/index.html`:
+The header already contains a link to the dossier. Verify it points to `/arcade/relic-runner/dossier/`.
+
+### In `arcade/relic-runner/dossier/index.html`:
+Add a "Play the Game" button in the hero section, after the quote block:
+
+```html
+<a href="/arcade/relic-runner/" class="back-btn" style="margin-top:1.5rem;display:inline-flex;border-color:var(--accent2);color:var(--accent2)">🎮 Play Relic Runner</a>
+```
+
+---
+
+## Firestore Collection Structure (Reference)
+
+The Apps Script endpoint should support these Firestore collections:
+
+```
+arcade-leaderboards/
+  {gameId}/
+    scores/
+      {autoId}: { playerName, score, metadata, timestamp }
+
+arcade-achievements/
+  {playerId}/
+    unlocked/
+      {autoId}: { gameId, achievementId, unlockedAt }
+
+arcade-saves/
+  {playerId}/
+    {gameId}/
+      {autoId}: { state, savedAt }
+```
+
+---
+
+## Acceptance Criteria
+
+- [ ] `/arcade/relic-runner/` loads the playable Relic Runner game
+- [ ] `/arcade/relic-runner/dossier/` loads the interactive character dossier
+- [ ] `arcade/shared/nexus-firebase.js` exists and exports `NexusFirebase`
+- [ ] `arcade/shared/nexus-achievements.js` exists and exports `ACHIEVEMENTS` and `checkAchievements`
+- [ ] Game end screen shows leaderboard entries from Firebase
+- [ ] Achievements display as toast notifications when unlocked
+- [ ] Achievements persist in `localStorage` between sessions
+- [ ] Scores queue in `localStorage` when offline and sync when back online
+- [ ] Arcade lobby shows both new game cards with "New ✨" tags
+- [ ] Dossier has "Play the Game" link; Game has "Dossier" link
+- [ ] All new files use the arcade design tokens (`--bg:#0f172a`, `--accent:#7effd8`, `--accent2:#ffd700`)
+- [ ] Game is playable on mobile with touch controls
+- [ ] No console errors on page load
+

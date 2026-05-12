@@ -1,0 +1,86 @@
+{
+  "electra": {
+    "id": "electra",
+    "sister": "Electra",
+    "virtue": "Vision",
+    "spectralType": "A",
+    "colorCoreVar": "--star-electra-core",
+    "colorGlowVar": "--star-electra-glow",
+    "svgFile": "star-electra.svg",
+    "summary": "Vision that sees beyond immediate gain, aligning choices with long arcs of consequence.",
+    "gameEffect": "Boosts pattern recognition and long-chain scoring windows.",
+    "unlockHint": "Complete a sequence of matches that spans all five gem types without breaking the chain."
+  },
+  "taygete": {
+    "id": "taygete",
+    "sister": "Taygete",
+    "virtue": "Courage",
+    "spectralType": "B",
+    "colorCoreVar": "--star-taygete-core",
+    "colorGlowVar": "--star-taygete-glow",
+    "svgFile": "star-taygete.svg",
+    "summary": "Courage to act when the pattern is unclear, accepting risk without recklessness.",
+    "gameEffect": "Increases reward for risky swaps that create multi-directional cascades.",
+    "unlockHint": "Trigger three or more cascades from a single non-obvious swap."
+  },
+  "alcyone": {
+    "id": "alcyone",
+    "sister": "Alcyone",
+    "virtue": "Serenity",
+    "spectralType": "F",
+    "colorCoreVar": "--star-alcyone-core",
+    "colorGlowVar": "--star-alcyone-glow",
+    "svgFile": "star-alcyone.svg",
+    "summary": "Serenity that holds steady under pressure, keeping the field readable and calm.",
+    "gameEffect": "Reduces penalty from near-miss swaps and softens randomness after long chains.",
+    "unlockHint": "Play a full level with minimal mis-swaps while still achieving high score."
+  },
+  "maia": {
+    "id": "maia",
+    "sister": "Maia",
+    "virtue": "Autonomy",
+    "spectralType": "O",
+    "colorCoreVar": "--star-maia-core",
+    "colorGlowVar": "--star-maia-glow",
+    "svgFile": "star-maia.svg",
+    "summary": "Autonomy to choose your own pattern, resisting external pressure to rush or conform.",
+    "gameEffect": "Unlocks alternative objectives and side routes in later levels.",
+    "unlockHint": "Complete a level while ignoring the suggested hint path entirely."
+  },
+  "celaeno": {
+    "id": "celaeno",
+    "sister": "Celaeno",
+    "virtue": "Sustenance",
+    "spectralType": "Neutral",
+    "colorCoreVar": "--star-celaeno-core",
+    "colorGlowVar": "--star-celaeno-glow",
+    "svgFile": "star-celaeno.svg",
+    "summary": "Sustenance that keeps the pattern alive, tending to what would otherwise wither.",
+    "gameEffect": "Adds small passive regeneration to conscience bars over time.",
+    "unlockHint": "Maintain a low but non-zero match rate over an extended session."
+  },
+  "sterope": {
+    "id": "sterope",
+    "sister": "Sterope",
+    "virtue": "Patience",
+    "spectralType": "G",
+    "colorCoreVar": "--star-sterope-core",
+    "colorGlowVar": "--star-sterope-glow",
+    "svgFile": "star-sterope.svg",
+    "summary": "Patience that waits for the right alignment instead of forcing the board.",
+    "gameEffect": "Increases reward for delayed matches and long setup plays.",
+    "unlockHint": "Hold a potential match in view for many moves before finally resolving it."
+  },
+  "merope": {
+    "id": "merope",
+    "sister": "Merope",
+    "virtue": "Humility",
+    "spectralType": "M",
+    "colorCoreVar": "--star-merope-core",
+    "colorGlowVar": "--star-merope-glow",
+    "svgFile": "star-merope.svg",
+    "summary": "Humility that accepts imperfection and learns from misaligned patterns.",
+    "gameEffect": "Converts certain failed swaps into small conscience gains instead of pure loss.",
+    "unlockHint": "Recover from a near-fail state and still complete the level."
+  }
+}

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="Amazing Grace Home Living">
+  <defs>
+    <linearGradient id="agGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="48" fill="url(#agGrad)" stroke="white" stroke-width="2"/>
+  <text x="50" y="63" font-family="Georgia, serif" font-size="46" font-weight="bold" fill="white" text-anchor="middle">AG</text>
+</svg>

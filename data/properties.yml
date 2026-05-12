@@ -1,0 +1,39 @@
+# Amazing Grace Home Living - Canonical Property Data
+#
+# This file is the single source of truth for all active listings.
+# Exactly three properties are defined; no more, no less.
+#
+# CI workflows, AI agents, and static-site generators MUST read from
+# this file.  Do NOT infer city or state from directory names or image
+# paths — always use the structured fields below.
+#
+# ⚠️  IMPORTANT: 926 E Poinsettia Ave is in TAMPA, not Largo.
+#     The two 7th St NW listings are both in LARGO.
+
+properties:
+  - id: "926-poinsettia"
+    address: "926 E Poinsettia Ave"
+    city: "Tampa"
+    state: "FL"
+    zip: "33612"
+    price_per_month: 850
+    currency: "USD"
+    gallery_slug: "926-poinsettia"
+
+  - id: "1142-7th-street"
+    address: "1142 7th St NW"
+    city: "Largo"
+    state: "FL"
+    zip: "33770"
+    price_per_month: 1000
+    currency: "USD"
+    gallery_slug: "1142-7th-street"
+
+  - id: "1144-7th-street"
+    address: "1144 7th St NW"
+    city: "Largo"
+    state: "FL"
+    zip: "33770"
+    price_per_month: 900
+    currency: "USD"
+    gallery_slug: "1144-7th-street"

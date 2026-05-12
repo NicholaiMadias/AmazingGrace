@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#B8D8F0"/>
+      <stop offset="100%" stop-color="#E8F4FD"/>
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7CB87A"/>
+      <stop offset="100%" stop-color="#5A9958"/>
+    </linearGradient>
+    <linearGradient id="concrete" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C8BFA0"/>
+      <stop offset="100%" stop-color="#B0A588"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="800" height="450" fill="url(#sky)"/>
+
+  <!-- Sun -->
+  <circle cx="680" cy="70" r="38" fill="rgba(255,220,80,0.25)"/>
+  <circle cx="680" cy="70" r="26" fill="rgba(255,220,80,0.30)"/>
+  <circle cx="680" cy="70" r="18" fill="#FFD700" opacity="0.75"/>
+
+  <!-- Clouds -->
+  <ellipse cx="130" cy="65" rx="60" ry="22" fill="white" opacity="0.82"/>
+  <ellipse cx="170" cy="52" rx="44" ry="18" fill="white" opacity="0.82"/>
+  <ellipse cx="95" cy="56" rx="38" ry="16" fill="white" opacity="0.78"/>
+  <ellipse cx="500" cy="85" rx="55" ry="18" fill="white" opacity="0.70"/>
+  <ellipse cx="545" cy="73" rx="40" ry="16" fill="white" opacity="0.70"/>
+
+  <!-- Ground / yard -->
+  <rect x="0" y="330" width="800" height="120" fill="url(#grass)"/>
+
+  <!-- Concrete patio / walkway -->
+  <polygon points="300,450 350,330 490,330 540,450" fill="url(#concrete)"/>
+  <line x1="420" y1="330" x2="420" y2="450" stroke="rgba(0,0,0,0.06)" stroke-width="1.5"/>
+
+  <!-- Chain-link fence -->
+  <rect x="0" y="298" width="800" height="8" fill="#9A9A9A" opacity="0.6"/>
+  <!-- Fence posts -->
+  <rect x="80" y="290" width="5" height="55" fill="#888" opacity="0.7"/>
+  <rect x="200" y="290" width="5" height="55" fill="#888" opacity="0.7"/>
+  <rect x="330" y="290" width="5" height="55" fill="#888" opacity="0.7"/>
+  <rect x="460" y="290" width="5" height="55" fill="#888" opacity="0.7"/>
+  <rect x="590" y="290" width="5" height="55" fill="#888" opacity="0.7"/>
+  <rect x="720" y="290" width="5" height="55" fill="#888" opacity="0.7"/>
+  <!-- Fence cross wire pattern -->
+  <line x1="0" y1="312" x2="800" y2="312" stroke="#999" stroke-width="1" opacity="0.45"/>
+  <line x1="0" y1="326" x2="800" y2="326" stroke="#999" stroke-width="1" opacity="0.45"/>
+
+  <!-- Palm tree trunk (right) -->
+  <path d="M640 330 Q648 295 638 245 Q635 215 645 195" stroke="#8B6914" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <!-- Palm fronds right -->
+  <path d="M645 195 Q600 155 558 168" stroke="#2D7A3A" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M645 195 Q615 148 620 118" stroke="#2D7A3A" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M645 195 Q655 145 670 128" stroke="#2D7A3A" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M645 195 Q680 155 702 165" stroke="#2D7A3A" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M645 195 Q680 175 710 188" stroke="#2D7A3A" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+  <!-- Shrubs / plants -->
+  <ellipse cx="180" cy="300" rx="40" ry="22" fill="#3A8840"/>
+  <ellipse cx="155" cy="296" rx="28" ry="18" fill="#4A9A50"/>
+  <ellipse cx="205" cy="294" rx="22" ry="16" fill="#42924A"/>
+  <ellipse cx="580" cy="300" rx="35" ry="20" fill="#3A8840"/>
+  <ellipse cx="605" cy="296" rx="24" ry="16" fill="#4A9A50"/>
+
+  <!-- House body — yellow/tan stucco matching the actual property -->
+  <rect x="120" y="185" width="480" height="165" fill="#D4B96A" rx="3"/>
+  <!-- Stucco texture overlay -->
+  <rect x="120" y="185" width="480" height="165" fill="rgba(200,170,80,0.15)" rx="3"/>
+
+  <!-- Roof — dark grey/charcoal shingles -->
+  <polygon points="95,185 360,90 625,185" fill="#4A4A4A"/>
+  <line x1="360" y1="90" x2="360" y2="185" stroke="rgba(0,0,0,0.25)" stroke-width="2"/>
+  <!-- Shingle lines -->
+  <line x1="127" y1="148" x2="596" y2="148" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+  <line x1="141" y1="167" x2="582" y2="167" stroke="rgba(255,255,255,0.10)" stroke-width="1.5"/>
+  <!-- Roof trim -->
+  <line x1="95" y1="185" x2="625" y2="185" stroke="#333" stroke-width="3"/>
+
+  <!-- Chimney -->
+  <rect x="455" y="108" width="28" height="77" fill="#5A5A5A"/>
+  <rect x="450" y="103" width="38" height="10" fill="#3A3A3A"/>
+
+  <!-- Front door -->
+  <rect x="325" y="265" width="70" height="85" fill="#8B3A2A" rx="3"/>
+  <rect x="332" y="272" width="22" height="30" fill="rgba(255,255,255,0.12)" rx="2"/>
+  <rect x="360" y="272" width="22" height="30" fill="rgba(255,255,255,0.12)" rx="2"/>
+  <circle cx="358" cy="307" r="4.5" fill="#C8860A"/>
+
+  <!-- Left window with blinds (matches photo — window with horizontal blinds) -->
+  <rect x="152" y="218" width="95" height="72" fill="#BFD9EE" rx="3"/>
+  <rect x="154" y="220" width="91" height="68" fill="#D8EAF5" rx="2"/>
+  <!-- Blinds horizontal lines -->
+  <line x1="154" y1="231" x2="245" y2="231" stroke="rgba(0,0,0,0.20)" stroke-width="2"/>
+  <line x1="154" y1="240" x2="245" y2="240" stroke="rgba(0,0,0,0.20)" stroke-width="2"/>
+  <line x1="154" y1="249" x2="245" y2="249" stroke="rgba(0,0,0,0.20)" stroke-width="2"/>
+  <line x1="154" y1="258" x2="245" y2="258" stroke="rgba(0,0,0,0.20)" stroke-width="2"/>
+  <line x1="154" y1="267" x2="245" y2="267" stroke="rgba(0,0,0,0.20)" stroke-width="2"/>
+  <line x1="154" y1="276" x2="245" y2="276" stroke="rgba(0,0,0,0.20)" stroke-width="2"/>
+  <!-- FOR RENT sign on window (matches the actual photo) -->
+  <rect x="162" y="234" width="72" height="24" fill="rgba(255,255,255,0.90)" rx="2"/>
+  <text x="198" y="250" font-family="Arial, sans-serif" font-size="11" font-weight="900" fill="#E63946" text-anchor="middle" letter-spacing="0.05em">FOR RENT</text>
+
+  <!-- Right window -->
+  <rect x="470" y="218" width="95" height="72" fill="#BFD9EE" rx="3"/>
+  <rect x="472" y="220" width="91" height="68" fill="#D8EAF5" rx="2"/>
+  <line x1="518" y1="220" x2="518" y2="288" stroke="rgba(0,0,0,0.15)" stroke-width="2"/>
+  <line x1="472" y1="254" x2="563" y2="254" stroke="rgba(0,0,0,0.15)" stroke-width="2"/>
+
+  <!-- Window boxes / trim -->
+  <rect x="150" y="288" width="99" height="8" fill="#C09040" rx="2"/>
+  <rect x="468" y="288" width="99" height="8" fill="#C09040" rx="2"/>
+
+  <!-- White window trim -->
+  <rect x="150" y="216" width="99" height="76" fill="none" stroke="white" stroke-width="3" rx="3"/>
+  <rect x="468" y="216" width="99" height="76" fill="none" stroke="white" stroke-width="3" rx="3"/>
+
+  <!-- Porch step -->
+  <rect x="300" y="348" width="120" height="12" fill="#C8A868" rx="2"/>
+  <rect x="290" y="358" width="140" height="12" fill="#B89858" rx="2"/>
+
+  <!-- Metal table (visible in photo) -->
+  <rect x="75" y="340" width="65" height="4" fill="#888" rx="2" opacity="0.8"/>
+  <rect x="85" y="344" width="4" height="30" fill="#888" opacity="0.7"/>
+  <rect x="126" y="344" width="4" height="30" fill="#888" opacity="0.7"/>
+
+  <!-- Label bar -->
+  <rect x="0" y="400" width="800" height="50" fill="rgba(26,82,118,0.92)"/>
+  <text x="400" y="425" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.04em">1142 7th St NW — Largo, FL</text>
+  <text x="400" y="443" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.75)" text-anchor="middle" letter-spacing="0.07em">ALL-INCLUSIVE · CABLE TV · LAUNDRY · PARKING</text>
+</svg>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nexus Match-Maker</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #04070f;
+        --panel: #0b1220;
+        --border: #20304f;
+        --text: #eff6ff;
+        --muted: #94a3b8;
+        --accent: #60a5fa;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-width: 320px;
+        min-height: 420px;
+        font-family: Inter, system-ui, sans-serif;
+        background: radial-gradient(circle at top, #13203a, var(--bg) 58%);
+        color: var(--text);
+      }
+      .shell {
+        padding: 16px;
+        display: grid;
+        gap: 16px;
+      }
+      .hero {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .hero img {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(96, 165, 250, 0.35);
+      }
+      .panel {
+        background: rgba(11, 18, 32, 0.92);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 14px;
+      }
+      h1, h2, p { margin: 0; }
+      h1 { font-size: 1rem; }
+      h2 { font-size: 0.85rem; color: var(--accent); margin-bottom: 8px; }
+      p, li { color: var(--muted); font-size: 0.85rem; line-height: 1.45; }
+      ul {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 6px;
+      }
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid #2563eb;
+        color: white;
+        text-decoration: none;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        font-weight: 600;
+      }
+      .atlas {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.03);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero panel">
+        <img src="assets/icon128.png" alt="Nexus Match-Maker icon" />
+        <div>
+          <h1>Nexus Match-Maker</h1>
+          <p>Seven-Star match logic with virtue fragments and gem atlas rendering.</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Status</h2>
+        <p id="status">Extension initialized and ready.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Atlas Preview</h2>
+        <img class="atlas" src="svg/gems-atlas.svg" alt="Gem atlas preview" />
+      </section>
+
+      <section class="panel">
+        <h2>Included Systems</h2>
+        <ul>
+          <li>Manifest V3 service worker bootstrapping</li>
+          <li>Web-accessible gem atlas resources</li>
+          <li>Storage permission for puzzle state persistence</li>
+        </ul>
+      </section>
+
+      <a class="cta" href="https://amazinggracehl.org/arcade/" target="_blank" rel="noreferrer">Open Arcade</a>
+    </main>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

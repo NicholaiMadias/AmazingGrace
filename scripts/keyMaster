@@ -1,0 +1,53 @@
+/**
+ * Syncs Key Master files to the Amazing-Grace repository.
+ */
+function syncToAmazingGrace() {
+  const repoOwner = "NicholaiMadias";
+  const repoName = "Amazing-Grace";
+  const branch = "main";
+  const keyMasterUrl = "https://script.google.com/macros/s/AKfycbzWEsHB_RfrnHr2z83vHlpaZrXbaCxhtYHb4b0Afbo01Wqwe0oXlWPatHwsRiQWLz0/exec";
+  
+  // 1. Get the PAT from your Version 5 Deployment
+  const secretResponse = UrlFetchApp.fetch(`${keyMasterUrl}?keyId=GH_PAT_NEXUS`);
+  const githubToken = secretResponse.getContentText().trim();
+
+  // 2. Prepare the files to push
+  const files = [
+    { name: "Code.gs", content: Scripts.getResource("Code").getContent() },
+    { name: "keyMaster.gs", content: Scripts.getResource("keyMaster").getContent() }
+  ];
+
+  files.forEach(file => {
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/scripts/${file.name}`;
+    
+    // We first check if the file exists to get its 'sha' (required for updates)
+    let sha = "";
+    try {
+      const checkRes = UrlFetchApp.fetch(url, {
+        "headers": { "Authorization": "token " + githubToken }
+      });
+      sha = JSON.parse(checkRes.getContentText()).sha;
+    } catch (e) { /* File doesn't exist yet, proceeding as new */ }
+
+    const payload = {
+      "message": "⚡ Automated Sync: Key Master v5 update",
+      "content": Utilities.base64Encode(file.content),
+      "branch": branch,
+      "sha": sha 
+    };
+
+    const options = {
+      "method": "put",
+      "contentType": "application/json",
+      "headers": { "Authorization": "token " + githubToken },
+      "payload": JSON.stringify(payload)
+    };
+
+    try {
+      UrlFetchApp.fetch(url, options);
+      Logger.log(`✅ Synced ${file.name} to Amazing-Grace/scripts/`);
+    } catch (e) {
+      Logger.log(`❌ Failed ${file.name}: ` + e.message);
+    }
+  });
+}

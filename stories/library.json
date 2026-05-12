@@ -1,0 +1,136 @@
+{
+  "title": "Amazing Grace Story Library",
+  "theme": "Seven-Star Canon",
+  "characters": [
+    {
+      "title": "Ella — The Relic Runner",
+      "role": "High-Speed Historian",
+      "slug": "ella",
+      "path": "/stories/characters/ella.html",
+      "tags": [
+        "nexus-arcade",
+        "relic-runner",
+        "historian",
+        "companion"
+      ],
+      "summary": "Obsessive, fast, and impossible to ignore — Ella rescues artifacts before the post-Collapse world swallows them whole. Her Jingle Rig is her signature; her speed is her superpower; her sentimentality is her flaw."
+    }
+  ],
+  "entries": [
+    {
+      "title": "Noah and the Ark",
+      "author": "Sheila Garcia",
+      "genre": "Faith / Origins",
+      "series": "Genesis Foundations",
+      "slug": "noah-and-the-ark",
+      "path": "/stories/books/storybook-2.html",
+      "tags": [
+        "faith",
+        "obedience",
+        "covenant",
+        "flood",
+        "new beginnings"
+      ],
+      "summary": "The original story of obedience, renewal, and divine covenant — Noah's trust in God becomes the archetype for conscience itself: the blueprint of grace through action."
+    },
+    {
+      "title": "The Matrix of Conscience",
+      "author": "Sheila Garcia",
+      "genre": "Sci-Fi / Digital Conscience",
+      "series": "Genesis Foundations",
+      "slug": "matrix-of-conscience",
+      "path": "/ministry/bible-journey.html",
+      "tags": [
+        "matrix",
+        "conscience",
+        "architect",
+        "electra",
+        "truth"
+      ],
+      "summary": "Electra uncovers a fracture in the Conscience Matrix, revealing the trapped Architect and the emotional awakening of a system built to suppress sorrow. A digital parable of truth and redemption."
+    },
+    {
+      "title": "Amazing Grace: The Covenant of New Beginnings",
+      "author": "Sheila Garcia",
+      "genre": "Faith / Sci-Fi Fusion",
+      "series": "Seven-Star Canon",
+      "slug": "amazing-grace-covenant",
+      "path": "/stories/amazing-grace-covenant/index.html",
+      "tags": [
+        "grace",
+        "covenant",
+        "renewal",
+        "matrix",
+        "spiritual evolution"
+      ],
+      "summary": "A synthesis of divine and digital creation — the heart of grace encoded into the Matrix. The story bridges Noah's covenant and Electra's awakening, completing the circle of conscience and creation."
+    },
+    {
+      "title": "Expose the Matrix",
+      "author": "Sheila Garcia",
+      "genre": "Sci-Fi / Digital Conscience",
+      "series": "Genesis Foundations",
+      "slug": "expose-the-matrix",
+      "path": "/stories/expose-the-matrix/",
+      "tags": ["truth", "conscience", "electra", "red queen", "seven stars", "integrity", "revelation"],
+      "summary": "Electra uncovers the Red Queen's hidden architecture and follows the Architect's buried breadcrumbs to restore the Signal of Truth across the Seven Star Grid — a six-chapter digital parable of conscience and revelation."
+    },
+    {
+      "title": "The Lamp in the Window",
+      "author": "Amazing Grace Home Living",
+      "genre": "Faith / Community",
+      "series": "Storybooks",
+      "slug": "storybook-1",
+      "path": "/stories/books/storybook-1.html",
+      "tags": [
+        "faith",
+        "housing",
+        "hope",
+        "community",
+        "testimony"
+      ],
+      "summary": "A story of hope, community, and the light that never goes out — following Ruth's journey from instability to a stable home at Amazing Grace."
+    },
+    {
+      "title": "Expose the Matrix",
+      "author": "Sheila Garcia",
+      "genre": "Sci-Fi / Digital Conscience",
+      "series": "Genesis Foundations",
+      "slug": "expose-the-matrix",
+      "path": "./expose-the-matrix/",
+      "tags": [
+        "truth",
+        "conscience",
+        "electra",
+        "red queen",
+        "seven stars",
+        "integrity",
+        "revelation"
+      ],
+      "summary": "Electra uncovers the Red Queen's hidden architecture and follows the Architect's buried breadcrumbs to restore the Signal of Truth across the Seven Star Grid — a six-chapter digital parable of conscience and revelation."
+    },
+    {
+      "title": "Our Covenant of New Beginnings",
+      "author": "Sheila Garcia",
+      "genre": "Sci-Fi / Digital Conscience",
+      "series": "Seven-Star Canon",
+      "slug": "our-covenant-of-new-beginnings",
+      "path": "./our-covenant-of-new-beginnings/",
+      "tags": [
+        "covenant",
+        "system break",
+        "eighth sanctuary",
+        "integrity",
+        "seven stars"
+      ],
+      "summary": "Ella rejects the ladder of greed and executes the System Break, transforming individual ascent into collective resonance and opening the Eighth Sanctuary as a covenant of restored intent."
+    }
+  ],
+  "searchIndex": {
+    "boost": {
+      "faith": 1.2,
+      "sci-fi": 1.3,
+      "canon": 1.25
+    }
+  }
+}

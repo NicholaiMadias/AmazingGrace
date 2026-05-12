@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "build": "tsc-native",
+    "dev": "tsc-native --watch",
+    "typecheck": "tsc-native --noEmit"
+  }
+}

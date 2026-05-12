@@ -1,0 +1,88 @@
+# ============================================================
+# listings.yml  Amazing Grace Home Living
+# CANONICAL LISTING DATA  Single Source of Truth
+# ============================================================
+#
+# WARNING: There are exactly THREE (3) listings. No more, no less.
+# 926 Poinsettia is in TAMPA (NOT Largo, NOT Holiday), ZIP 33612
+# All prices are active  do NOT zero them out or remove them
+#
+# Verified: 2026-05-06 | Owner: Nicholai Madias
+# ============================================================
+
+total_listings: 3
+
+contact:
+  phone: "(727) 420-2873"
+    email: "gulfnexus@gmail.com"
+      website: "amazinggracehl.org"
+
+      listings:
+
+        - id: "926-poinsettia"
+            address:
+                  street: "926 E Poinsettia Ave"
+                        city: "Tampa"
+                              state: "FL"
+                                    zip: "33612"
+                                          county: "Hillsborough"
+                                                full: "926 E Poinsettia Ave, Tampa, FL 33612"
+                                                    price:
+                                                          amount: 850
+                                                                currency: "USD"
+                                                                      period: "month"
+                                                                            display: "$850/month"
+                                                                                  type: "All-Inclusive"
+                                                                                      property:
+                                                                                            type: "All-Inclusive Professional Suite"
+                                                                                                  bedrooms: 3
+                                                                                                        bathrooms: 2
+                                                                                                              sqft: 1334
+                                                                                                                  common_errors:
+                                                                                                                        - wrong: "926 Poinsettia Drive"
+                                                                                                                                correct: "926 E Poinsettia Ave"
+                                                                                                                                      - wrong: "Largo, FL"
+                                                                                                                                              correct: "Tampa, FL"
+                                                                                                                                                    - wrong: "Holiday, FL"
+                                                                                                                                                            correct: "Tampa, FL"
+                                                                                                                                                                  - wrong: "33770"
+                                                                                                                                                                          correct: "33612"
+                                                                                                                                                                          
+                                                                                                                                                                            - id: "1144-7th-st"
+                                                                                                                                                                                address:
+                                                                                                                                                                                      street: "1144 7th St NW"
+                                                                                                                                                                                            city: "Largo"
+                                                                                                                                                                                                  state: "FL"
+                                                                                                                                                                                                        zip: "33770"
+                                                                                                                                                                                                              county: "Pinellas"
+                                                                                                                                                                                                                    full: "1144 7th St NW, Largo, FL 33770"
+                                                                                                                                                                                                                        price:
+                                                                                                                                                                                                                              amount: 1000
+                                                                                                                                                                                                                                    currency: "USD"
+                                                                                                                                                                                                                                          period: "month"
+                                                                                                                                                                                                                                                display: "$1,000/month"
+                                                                                                                                                                                                                                                      type: "All-Inclusive"
+                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                        - id: "1142-7th-st"
+                                                                                                                                                                                                                                                            address:
+                                                                                                                                                                                                                                                                  street: "1142 7th St NW"
+                                                                                                                                                                                                                                                                        city: "Largo"
+                                                                                                                                                                                                                                                                              state: "FL"
+                                                                                                                                                                                                                                                                                    zip: "33770"
+                                                                                                                                                                                                                                                                                          county: "Pinellas"
+                                                                                                                                                                                                                                                                                                full: "1142 7th St NW, Largo, FL 33770"
+                                                                                                                                                                                                                                                                                                    price:
+                                                                                                                                                                                                                                                                                                          amount: 1000
+                                                                                                                                                                                                                                                                                                                currency: "USD"
+                                                                                                                                                                                                                                                                                                                      period: "month"
+                                                                                                                                                                                                                                                                                                                            display: "$1,000/month"
+                                                                                                                                                                                                                                                                                                                                  type: "All-Inclusive"
+                                                                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                                                                  # ============================================================
+                                                                                                                                                                                                                                                                                                                                  # VALIDATION RULES
+                                                                                                                                                                                                                                                                                                                                  # 1. total_listings MUST equal 3
+                                                                                                                                                                                                                                                                                                                                  # 2. 926 Poinsettia city MUST be Tampa  never Largo or Holiday
+                                                                                                                                                                                                                                                                                                                                  # 3. 926 Poinsettia ZIP MUST be 33612  never 33770
+                                                                                                                                                                                                                                                                                                                                  # 4. Every price.amount MUST be > 0
+                                                                                                                                                                                                                                                                                                                                  # 5. No phantom 4th listing allowed
+                                                                                                                                                                                                                                                                                                                                  # ============================================================

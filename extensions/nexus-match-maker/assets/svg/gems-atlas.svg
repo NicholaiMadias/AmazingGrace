@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+  <symbol id="gem-heart" viewBox="0 0 32 32">
+    <path fill="#AAB7FF" d="M16 28 4.5 17.3A7 7 0 0 1 15 7.7l1 1 1-1a7 7 0 0 1 10.5 9.6z"/>
+    <path fill="#7C8BFF" d="M16 26 6 16.7a5.5 5.5 0 0 1 8.2-7.5L16 11l1.8-1.8A5.5 5.5 0 0 1 26 16.7z"/>
+  </symbol>
+  <symbol id="gem-star" viewBox="0 0 32 32">
+    <path fill="#F7E3A1" d="M16 3.5 19.7 12l9.3.8-7 6 2 9-8-4.8-8 4.8 2-9-7-6 9.3-.8z"/>
+    <path fill="#F1C761" d="m16 6 2.7 6.2 6.8.6-5.1 4.3 1.4 6.6-5.8-3.5-5.8 3.5 1.4-6.6-5.1-4.3 6.8-.6z"/>
+  </symbol>
+  <symbol id="gem-cross" viewBox="0 0 32 32">
+    <path fill="#86D7FF" d="M13 3h6v10h10v6H19v10h-6V19H3v-6h10z"/>
+    <path fill="#4FA9E2" d="M14.5 5h3v10h10v3h-10v10h-3V18h-10v-3h10z"/>
+  </symbol>
+</svg>

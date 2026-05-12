@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Matrix Act II — The Fracture. A fracture spreads through the Archive. Stabilize it before the Matrix falls.">
+    <meta name="theme-color" content="#0a0f1e">
+    <link rel="icon" type="image/png" href="/assets/logo.png">
+    <title>Matrix Act II — The Fracture</title>
+    <link rel="stylesheet" href="/assets/css/neon-theme.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@700;900&display=swap');
+
+        /* ── Act II Typography + Layout ── */
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .act2-container {
+            padding: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .act2-body,
+        .act2-body p {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            font-size: 1.05rem;
+            margin-bottom: 1rem;
+            max-width: 65ch;
+        }
+
+        .electra-line,
+        .electra-dialogue {
+            font-family: 'Inter', sans-serif;
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+        }
+
+        /* ── Electra Animation Timing ── */
+        @keyframes electraFade {
+            from { opacity: 0; transform: translateY(4px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .electra-line,
+        .electra-dialogue {
+            animation: electraFade 0.65s ease-out 0.15s both;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .electra-line,
+            .electra-dialogue { animation: none; }
+        }
+
+        /* ── Act II fade-in for narrative panels ── */
+        @keyframes act2Fade {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .act2-body { animation: act2Fade 0.6s ease-out both; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .act2-body { animation: none; }
+        }
+
+        /* ── Unified Arcade Button Styles ── */
+        .arcade-btn {
+            display: inline-block;
+            padding: 0.65rem 1.1rem;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            background: #0ff3ff20;
+            border: 1px solid #0ff3ff40;
+            color: #e8faff;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .arcade-btn:hover {
+            transform: translateY(-3px);
+            border-color: #0ff3ff80;
+        }
+
+        .arcade-btn:focus-visible {
+            outline: 2px solid #0ff3ff;
+            outline-offset: 3px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .arcade-btn { transition: none; }
+        }
+
+        /* ── Electra panel ── */
+        .electra-panel {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.25rem;
+            background: rgba(0, 255, 255, 0.04);
+            border: 1px solid rgba(0, 255, 255, 0.12);
+            border-radius: 12px;
+        }
+
+        .electra-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #0ff3ff40, #0a0f1e);
+            border: 1px solid #0ff3ff60;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+
+<body class="neon-body">
+    <main class="neon-main act2-container">
+
+        <h1>Matrix Act II — The Fracture</h1>
+
+        <!-- Electra Panel -->
+        <section class="electra-panel" aria-label="Electra speaks">
+            <div class="electra-avatar" aria-hidden="true"></div>
+            <p class="electra-line">
+                The Matrix trembles, Nicholai. A fracture spreads through the Archive.
+                Your choices in Act I awakened something ancient… and it is watching.
+            </p>
+        </section>
+
+        <!-- Narrative -->
+        <section class="act2-body">
+            <p>
+                The corridors of the Nexus shift as you step forward. Patterns repeat,
+                then break. Voices echo from timelines that never were.
+            </p>
+            <p>
+                To proceed, you must stabilize the Fracture and confront the first
+                distortion of your own conscience.
+            </p>
+        </section>
+
+        <!-- CTA -->
+        <a href="/arcade/matrix-of-conscience/" class="arcade-btn" aria-label="Enter the Matrix of Conscience">
+            Enter the Matrix of Conscience
+        </a>
+
+    </main>
+    <script src="../../sw-register.js" defer></script>
+</body>
+</html>

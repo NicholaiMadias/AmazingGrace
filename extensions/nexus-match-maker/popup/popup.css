@@ -1,0 +1,121 @@
+:root {
+  color-scheme: dark;
+  --mm-bg: #060a14;
+  --mm-panel: rgba(255, 255, 255, 0.06);
+  --mm-border: rgba(255, 255, 255, 0.12);
+  --mm-text: rgba(255, 255, 255, 0.92);
+  --mm-muted: rgba(255, 255, 255, 0.65);
+  --mm-accent: #7dd3fc;
+  --mm-danger: #fb7185;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(
+      120% 120% at 30% 0%,
+      rgba(125, 211, 252, 0.18),
+      transparent 55%
+    ),
+    radial-gradient(
+      140% 140% at 80% 40%,
+      rgba(167, 139, 250, 0.18),
+      transparent 60%
+    ),
+    var(--mm-bg);
+  color: var(--mm-text);
+  font: 13px/1.35 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  width: 320px;
+}
+
+.mm-header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 12px 10px;
+  border-bottom: 1px solid var(--mm-border);
+}
+
+.mm-mark {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--mm-border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  display: grid;
+  place-items: center;
+  color: var(--mm-accent);
+}
+
+.mm-title__name {
+  font-weight: 650;
+  letter-spacing: 0.2px;
+}
+
+.mm-title__sub {
+  color: var(--mm-muted);
+  font-size: 12px;
+}
+
+.mm-main {
+  padding: 12px;
+}
+
+.mm-panel {
+  background: var(--mm-panel);
+  border: 1px solid var(--mm-border);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.mm-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mm-label {
+  color: var(--mm-muted);
+}
+
+.mm-value {
+  font-variant-numeric: tabular-nums;
+  color: var(--mm-text);
+}
+
+.mm-actions {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.mm-btn {
+  appearance: none;
+  border: 1px solid var(--mm-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--mm-text);
+  border-radius: 12px;
+  padding: 9px 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mm-btn:hover {
+  border-color: rgba(125, 211, 252, 0.35);
+}
+
+.mm-btn:active {
+  transform: translateY(1px);
+}
+
+.mm-btn--danger:hover {
+  border-color: rgba(251, 113, 133, 0.5);
+}
+

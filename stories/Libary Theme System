@@ -1,0 +1,115 @@
+<script>
+  const LIBRARY_THEMES = {
+    "canon": {
+      color: "#1a2a6c",
+      gradient: "linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)",
+      symbol: "✦",
+      textColor: "white"
+    },
+    "ministry": {
+      color: "#3b5f3b",
+      gradient: "linear-gradient(135deg, #3b5f3b, #6bbf59)",
+      symbol: "✝",
+      textColor: "white"
+    },
+    "fiction": {
+      color: "#4b2e83",
+      gradient: "linear-gradient(135deg, #4b2e83, #9d4edd)",
+      symbol: "★",
+      textColor: "white"
+    },
+    "children": {
+      color: "#ffb703",
+      gradient: "linear-gradient(135deg, #ffb703, #fb8500)",
+      symbol: "🐦",
+      textColor: "black"
+    },
+    "devotional": {
+      color: "#6a4c93",
+      gradient: "linear-gradient(135deg, #6a4c93, #b56576)",
+      symbol: "✨",
+      textColor: "white"
+    },
+    "default": {
+      color: "#3a3a3a",
+      gradient: "linear-gradient(135deg, #3a3a3a, #6a6a6a)",
+      symbol: "",
+      textColor: "white"
+    }
+  };
+
+  async function loadStories() {
+    const container = document.getElementById("story-list");
+
+    const response = await fetch("/stories/books/");
+    const text = await response.text();
+
+    const parser = new DOMParser();
+    const html = parser.parseFromString(text, "text/html");
+
+    const folders = [...html.querySelectorAll("a")]
+      .filter(a => a.href.endsWith("/"));
+
+    for (const link of folders) {
+      const folder = link.getAttribute("href");
+
+      // Load meta.json if present
+      let meta = {};
+      try {
+        const metaRes = await fetch(folder + "meta.json");
+        if (metaRes.ok) meta = await metaRes.json();
+      } catch (e) {}
+
+      const title = meta.title || link.textContent.trim();
+      const genre = meta.genre || "default";
+      const theme = LIBRARY_THEMES[genre] || LIBRARY_THEMES.default;
+
+      // Check for real cover
+      const coverCandidates = ["cover.jpg", "cover.png", "cover.webp"];
+      let cover = null;
+
+      for (const file of coverCandidates) {
+        try {
+          const res = await fetch(folder + file, { method: "HEAD" });
+          if (res.ok) {
+            cover = folder + file;
+            break;
+          }
+        } catch (e) {}
+      }
+
+      const book = document.createElement("a");
+      book.href = folder + "index.html";
+      book.className = "book";
+
+      if (cover) {
+        book.innerHTML = `
+          <img src="${cover}" alt="${title} cover">
+          <div class="book-title">${title}</div>
+        `;
+      } else {
+        // Auto-generated cover
+        book.style.background = theme.gradient;
+        book.style.color = theme.textColor;
+        book.style.display = "flex";
+        book.style.flexDirection = "column";
+        book.style.justifyContent = "center";
+        book.style.alignItems = "center";
+        book.style.padding = "12px";
+        book.style.textAlign = "center";
+
+        book.innerHTML = `
+          <div style="font-size: 2rem; margin-bottom: 10px;">${theme.symbol}</div>
+          <div class="book-title" style="position: static; background: none;">
+            ${title}
+          </div>
+        `;
+      }
+
+      container.appendChild(book);
+    }
+  }
+
+  loadStories();
+</script>
+</script>

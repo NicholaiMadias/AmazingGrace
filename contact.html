@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact Amazing Grace Home Living — call, text, or email about available rooms in Largo &amp; Tampa, FL.">
+    <meta name="theme-color" content="#0a0a14">
+    <link rel="icon" type="image/png" href="/assets/logo.png">
+    <link rel="manifest" href="./manifest.json">
+    <title>Contact Us — Amazing Grace Home Living</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --night: #0a0a14;
+            --night-surface: #111122;
+            --night-card: #161628;
+            --gold: #ffd700;
+            --star-sapphire: #1e90ff;
+            --text: #e8e0f0;
+            --text-muted: #9090b0;
+            --radius: 14px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--night); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+        .site-header {
+            background: var(--night-surface);
+            border-bottom: 1px solid rgba(255,215,0,0.12);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text); font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700; }
+        .logo img { height: 36px; width: auto; border-radius: 4px; }
+        .nav-links { display: flex; gap: 1rem; }
+        .nav-btn { color: var(--star-sapphire); text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 0.4rem 0.8rem; border-radius: 6px; transition: background 0.2s; }
+        .nav-btn:hover { background: rgba(30,144,255,0.12); }
+
+        main { flex: 1; max-width: 700px; margin: 0 auto; padding: 3rem 1.5rem; width: 100%; }
+        h1 { font-family: 'Orbitron', sans-serif; color: var(--gold); font-size: clamp(1.4rem,4vw,2rem); margin-bottom: 0.5rem; }
+        .sub { color: var(--text-muted); margin-bottom: 2.5rem; }
+
+        .contact-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1rem; margin-bottom: 3rem; }
+        .contact-card { background: var(--night-card); border: 1px solid rgba(255,215,0,0.12); border-radius: var(--radius); padding: 1.5rem; text-decoration: none; color: var(--text); transition: border-color 0.2s, transform 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.5rem; }
+        .contact-card:hover { border-color: var(--star-sapphire); transform: translateY(-3px); }
+        .contact-icon { font-size: 2rem; }
+        .contact-label { font-size: 0.75rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em; }
+        .contact-value { font-size: 1.05rem; font-weight: 700; }
+
+        .apply-form { background: var(--night-card); border: 1px solid rgba(255,215,0,0.12); border-radius: var(--radius); padding: 2rem; }
+        .apply-form h2 { font-family: 'Orbitron', sans-serif; color: var(--gold); font-size: 1.2rem; margin-bottom: 1.5rem; }
+        .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+        .form-group label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+        .form-group input, .form-group select, .form-group textarea { background: var(--night-surface); border: 1px solid rgba(255,215,0,0.15); border-radius: 8px; color: var(--text); padding: 0.65rem 0.9rem; font-family: inherit; font-size: 0.95rem; width: 100%; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: 2px solid var(--star-sapphire); border-color: transparent; }
+        .form-group textarea { min-height: 100px; resize: vertical; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+        .btn-primary { background: var(--night-card); color: #fff; border: 1px solid rgba(255,255,255,0.22); border-radius: 8px; padding: 0.75rem 1.75rem; font-family: inherit; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
+        .btn-primary:hover { background: rgba(30,30,55,0.98); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        #contact-msg { margin-top: 1rem; font-weight: 600; display: none; }
+        #contact-msg.success { color: #50c878; }
+        #contact-msg.error   { color: #e0115f; }
+
+        .site-footer { background: var(--night-surface); border-top: 1px solid rgba(255,215,0,0.08); text-align: center; padding: 1.5rem; color: var(--text-muted); font-size: 0.875rem; margin-top: auto; }
+        .site-footer a { color: var(--star-sapphire); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <a href="/" class="logo" aria-label="Amazing Grace Home Living — Home">
+            <img src="/assets/logo.png" alt="Amazing Grace Home Living Logo">
+            <span>Amazing Grace</span>
+        </a>
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="/" class="nav-btn">🏠 Home</a>
+            <a href="/stories/" class="nav-btn">📚 Library</a>
+            <a href="/arcade/" class="nav-btn">🎮 Arcade</a>
+            <a href="/ministry/" class="nav-btn">🕊️ Ministry</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Contact Us</h1>
+        <p class="sub">Get in touch about available rooms in Largo &amp; Tampa, FL.</p>
+
+        <div class="contact-cards">
+            <a href="tel:7274202873" class="contact-card" aria-label="Call or text (727) 420-2873">
+                <div class="contact-icon">📞</div>
+                <div class="contact-label">Call / Text</div>
+                <div class="contact-value">(727) 420-2873</div>
+            </a>
+            <a href="mailto:admin@amazinggracehl.org" class="contact-card" aria-label="Email admin@amazinggracehl.org">
+                <div class="contact-icon">✉️</div>
+                <div class="contact-label">Email</div>
+                <div class="contact-value">admin@amazinggracehl.org</div>
+            </a>
+        </div>
+
+        <div class="apply-form">
+            <h2>Room Application</h2>
+            <form id="contact-form" novalidate aria-label="Room application form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="c-name">Full Name *</label>
+                        <input type="text" id="c-name" name="name" placeholder="Jane Smith" required autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="c-phone">Phone / Text *</label>
+                        <input type="tel" id="c-phone" name="phone" placeholder="(727) 000-0000" required autocomplete="tel">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="c-email">Email Address</label>
+                        <input type="email" id="c-email" name="email" placeholder="you@email.com" autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="c-property">Property of Interest</label>
+                        <select id="c-property" name="property">
+                            <option value="">— Select a property —</option>
+                            <option value="1144-largo">1144 7th St NW, Largo ($1,000/mo)</option>
+                            <option value="1142-largo">1142 7th St NW, Largo ($950/mo)</option>
+                            <option value="926-poinsettia">926 E Poinsettia Ave, Tampa ($850/mo)</option>
+                            <option value="any">Any available room</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="c-message">Message (optional)</label>
+                    <textarea id="c-message" name="message" placeholder="Move-in date, any questions…"></textarea>
+                </div>
+                <button type="submit" class="btn-primary" id="contact-btn">
+                    <img src="/assets/star_crystal_gold.svg" alt="" width="18" height="18">
+                    Send Message
+                </button>
+                <p id="contact-msg" role="status" aria-live="polite"></p>
+            </form>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="https://amazinggracehl.org">amazinggracehl.org</a> &mdash; Serving Largo &amp; Tampa, FL</p>
+    </footer>
+
+    <script>
+        (function () {
+            var form = document.getElementById('contact-form');
+            var btn  = document.getElementById('contact-btn');
+            var msg  = document.getElementById('contact-msg');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                var name     = form.querySelector('#c-name').value.trim();
+                var phone    = form.querySelector('#c-phone').value.trim();
+                var email    = form.querySelector('#c-email').value.trim();
+                var property = form.querySelector('#c-property').value;
+                var message  = form.querySelector('#c-message').value.trim();
+
+                if (!name || !phone) {
+                    msg.className = 'error';
+                    msg.textContent = 'Please fill in your name and phone number.';
+                    msg.style.display = 'block';
+                    return;
+                }
+
+                btn.disabled = true;
+                btn.textContent = 'Sending…';
+                msg.style.display = 'none';
+
+                fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name, phone: phone, email: email, property: property, message: message })
+                })
+                .then(function (r) {
+                    if (!r.ok) {
+                        return r.json().then(
+                            function (d) { throw new Error(d.error || 'Server error ' + r.status); },
+                            function () { throw new Error('Server error ' + r.status); }
+                        );
+                    }
+                    return r.json();
+                })
+                .then(function () {
+                    msg.className = 'success';
+                    msg.textContent = '✅ Message sent! We\'ll be in touch within 24 hours.';
+                    msg.style.display = 'block';
+                    form.reset();
+                })
+                .catch(function () {
+                    msg.className = 'error';
+                    msg.textContent = 'Unable to submit online. Please call or text (727) 420-2873 or email admin@amazinggracehl.org directly.';
+                    msg.style.display = 'block';
+                })
+                .finally(function () {
+                    btn.disabled = false;
+                    btn.innerHTML = '<img src="/assets/star_crystal_gold.svg" alt="" width="18" height="18"> Send Message';
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

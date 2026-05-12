@@ -1,0 +1,52 @@
+.match3-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 64px);
+  gap: 6px;
+  justify-content: center;
+}
+
+.selected {
+  outline: 3px solid #fff;
+  border-radius: 8px;
+}
+
+/* Special tiles */
+.special-row .star-tile-inner {
+  box-shadow: 0 0 12px rgba(255,255,255,0.9);
+}
+.special-col .star-tile-inner {
+  box-shadow: 0 0 12px rgba(255,255,255,0.9);
+}
+.special-nova .star-tile-inner {
+  animation: star-nova-pulse 1.2s infinite;
+}
+
+/* Particle FX container */
+.star-fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Simple virtue‑aligned FX */
+.star-fx-row::before,
+.star-fx-col::before,
+.star-fx-nova::before {
+  content: '';
+  position: absolute;
+  inset: 10%;
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,0.7);
+  animation: fx-pulse 900ms infinite;
+}
+
+@keyframes fx-pulse {
+  0%   { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1.2); opacity: 0; }
+}
+
+@keyframes star-nova-pulse {
+  0%   { transform: scale(1);   filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
+  50%  { transform: scale(1.2); filter: drop-shadow(0 0 18px rgba(255,255,255,0.9)); }
+  100% { transform: scale(1);   filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
+}

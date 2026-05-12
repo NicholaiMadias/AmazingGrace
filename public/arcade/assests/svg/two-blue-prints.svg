@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420">
+  <style>
+    .title { font: 700 20px system-ui, sans-serif; fill: #f5f5f5; }
+    .label { font: 600 14px system-ui, sans-serif; fill: #f5f5f5; }
+    .text  { font: 12px system-ui, sans-serif; fill: #d0d0d0; }
+    .node  { fill: #111827; stroke: #4b5563; stroke-width: 1.5; rx: 8; }
+    .node-accent-ladder { stroke: #f97373; }
+    .node-accent-break  { stroke: #34d399; }
+    .bg    { fill: #020617; }
+    .arrow { stroke: #9ca3af; stroke-width: 1.5; marker-end: url(#arrowhead); }
+  </style>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <polygon points="0 0, 6 3, 0 6" fill="#9ca3af" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="900" height="420" />
+
+  <text class="title" x="450" y="40" text-anchor="middle">
+    The Two Blueprints: Ladder vs. System Break
+  </text>
+
+  <!-- Architect -->
+  <rect class="node" x="380" y="70" width="140" height="40" />
+  <text class="label" x="450" y="95" text-anchor="middle">Architect</text>
+
+  <!-- Split arrows -->
+  <line class="arrow" x1="450" y1="110" x2="220" y2="150" />
+  <line class="arrow" x1="450" y1="110" x2="680" y2="150" />
+
+  <!-- Kael’s Ladder side -->
+  <rect class="node node-accent-ladder" x="150" y="150" width="180" height="40" />
+  <text class="label" x="240" y="175" text-anchor="middle">Kael’s Ladder</text>
+
+  <rect class="node" x="120" y="210" width="240" height="50" />
+  <text class="text" x="240" y="230" text-anchor="middle">
+    Hierarchy → Scarcity → Hate
+  </text>
+  <text class="text" x="240" y="246" text-anchor="middle">
+    High entropy, separation, hatred sub‑routines
+  </text>
+
+  <line class="arrow" x1="240" y1="260" x2="240" y2="290" />
+
+  <rect class="node" x="150" y="290" width="180" height="40" />
+  <text class="label" x="240" y="315" text-anchor="middle">The Loop</text>
+
+  <line class="arrow" x1="240" y1="330" x2="240" y2="360" />
+
+  <rect class="node" x="130" y="360" width="220" height="40" />
+  <text class="text" x="240" y="385" text-anchor="middle">
+    Red Queen’s corrupted domain
+  </text>
+
+  <!-- Ella’s System Break side -->
+  <rect class="node node-accent-break" x="570" y="150" width="220" height="40" />
+  <text class="label" x="680" y="175" text-anchor="middle">Ella’s System Break</text>
+
+  <rect class="node" x="560" y="210" width="240" height="50" />
+  <text class="text" x="680" y="230" text-anchor="middle">
+    Resonance → Coherence → Peace
+  </text>
+  <text class="text" x="680" y="246" text-anchor="middle">
+    Low entropy, molecular network, zero‑trust integrity
+  </text>
+
+  <line class="arrow" x1="680" y1="260" x2="680" y2="290" />
+
+  <rect class="node" x="600" y="290" width="160" height="40" />
+  <text class="label" x="680" y="315" text-anchor="middle">The Sanctuary</text>
+
+  <line class="arrow" x1="680" y1="330" x2="680" y2="360" />
+
+  <rect class="node" x="580" y="360" width="200" height="40" />
+  <text class="text" x="680" y="385" text-anchor="middle">
+    Eighth Star / Eighth Sanctuary (Peace)
+  </text>
+</svg>

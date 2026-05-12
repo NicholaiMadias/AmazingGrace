@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nexus Match-Maker</title>
+    <link rel="stylesheet" href="./popup.css" />
+  </head>
+  <body>
+    <header class="mm-header">
+      <div class="mm-mark" aria-hidden="true">
+        <svg viewBox="0 0 64 64" width="22" height="22">
+          <use href="../assets/svg/gem-atlas.svg#mm-gem-star" />
+        </svg>
+      </div>
+      <div class="mm-title">
+        <div class="mm-title__name">Nexus Match-Maker</div>
+        <div class="mm-title__sub">Extension Scaffold</div>
+      </div>
+    </header>
+
+    <main class="mm-main">
+      <section class="mm-panel">
+        <div class="mm-row">
+          <span class="mm-label">Session</span>
+          <span id="mm-session" class="mm-value">…</span>
+        </div>
+        <div class="mm-actions">
+          <button id="mm-refresh" class="mm-btn" type="button">Refresh</button>
+          <button id="mm-reset" class="mm-btn mm-btn--danger" type="button">
+            Reset
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./popup.js"></script>
+  </body>
+</html>
+

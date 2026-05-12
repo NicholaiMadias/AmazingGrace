@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#d09cf8"/>
+      <stop offset="100%" stop-color="#6a1a9a"/>
+    </radialGradient>
+  </defs>
+  <!-- burst star with more points -->
+  <polygon points="32,2 36,18 44,8 40,22 56,20 44,30 58,36 44,38 52,52 38,44 36,60 32,46 28,60 26,44 12,52 20,38 6,36 20,30 8,20 24,22 20,8 28,18" fill="url(#g)" stroke="#9b30d8" stroke-width="1.5"/>
+</svg>

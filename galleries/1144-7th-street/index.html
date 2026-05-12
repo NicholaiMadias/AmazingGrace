@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HKZ2G2VN78"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HKZ2G2VN78');
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="1144 7th St NW, Largo, FL 33770 — $900/mo all-inclusive private room. Minutes from Morton Plant Hospital and BayCare facilities. Utilities, WiFi, and laundry included. Amazing Grace Home Living.">
+    <meta name="theme-color" content="#1e3a8a">
+    <link rel="icon" type="image/png" href="../../assets/logo.png">
+    <title>Gallery — 1144 7th St NW, Largo, FL 33770 | Amazing Grace Home Living</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600;700&display=swap');
+        :root {
+            --deep-purple:#4a235a; --deep-purple-dark:#2e1038; --gold:#ffd700;
+            --text:#f0e6ff; --text-muted:#b89dc8; --surface:rgba(74,35,90,0.55);
+            --border:rgba(255,215,0,0.25); --radius:12px;
+        }
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{font-family:'Inter',sans-serif;background:#0d0115;color:var(--text);display:flex;flex-direction:column;min-height:100vh;}
+        body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(107,55,128,0.3) 0%,transparent 55%),radial-gradient(ellipse at 80% 70%,rgba(74,35,90,0.4) 0%,transparent 55%),#0d0115;z-index:-1;pointer-events:none;}
+        *:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+        .site-header{background:rgba(30,10,45,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0.85rem 2rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:200;}
+        .logo{display:flex;align-items:center;gap:0.65rem;font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;text-decoration:none;color:var(--gold);}
+        .logo img{height:34px;width:auto;border-radius:4px;}
+        .nav-links{display:flex;gap:0.5rem;}
+        .nav-btn{background:rgba(255,215,0,0.07);border:1px solid var(--border);padding:0.45rem 1rem;border-radius:6px;text-decoration:none;color:var(--text);font-weight:600;font-size:0.85rem;transition:background 0.2s,color 0.2s,border-color 0.2s;}
+        .nav-btn:hover{background:rgba(255,215,0,0.18);border-color:var(--gold);color:var(--gold);}
+        .menu-toggle{display:none;background:none;border:none;font-size:1.75rem;color:var(--gold);cursor:pointer;padding:0.25rem;}
+        @media(max-width:640px){
+            .nav-links{display:none;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(20,5,35,0.98);padding:1rem;z-index:200;border-bottom:1px solid var(--border);gap:0.5rem;}
+            .nav-links.show{display:flex;}
+            .menu-toggle{display:block;}
+            .nav-btn{width:100%;padding:0.75rem 1rem;}
+        }
+        .hero{background:linear-gradient(175deg,rgba(74,35,90,0.9) 0%,rgba(20,5,40,0.95) 100%);border-bottom:1px solid var(--border);text-align:center;padding:3rem 1.5rem 2rem;}
+        .hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(1.4rem,3.5vw,2rem);font-weight:900;color:#fff;margin-bottom:0.5rem;text-shadow:0 0 20px rgba(255,215,0,0.2);}
+        .hero h1 span{color:var(--gold);}
+        .hero p{color:var(--text-muted);font-size:0.95rem;}
+        .container{max-width:1000px;margin:2rem auto;padding:0 1.5rem;flex:1;}
+        .breadcrumb{font-size:0.825rem;color:var(--text-muted);margin-bottom:1.5rem;}
+        .breadcrumb a{color:var(--gold);text-decoration:none;}
+        .breadcrumb a:hover{text-decoration:underline;}
+        .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;}
+        .gallery-item{border-radius:var(--radius);overflow:hidden;background:rgba(30,10,45,0.85);border:1px solid var(--border);aspect-ratio:4/3;transition:border-color 0.2s,transform 0.2s;}
+        .gallery-item:hover{border-color:var(--gold);transform:translateY(-2px);}
+        .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.2s;}
+        .gallery-item img:hover{transform:scale(1.03);}
+        .gallery-empty{background:rgba(30,10,45,0.85);border:1px solid var(--border);border-radius:16px;padding:3rem;text-align:center;}
+        .gallery-empty-icon{font-size:3rem;margin-bottom:1rem;}
+        .gallery-empty p{color:var(--text-muted);font-size:1rem;}
+        #gallery-status{color:var(--text-muted);font-size:0.875rem;margin-bottom:1rem;}
+        main{flex:1;display:flex;flex-direction:column;}
+        .site-footer{background:rgba(10,0,20,0.9);border-top:1px solid var(--border);color:var(--text-muted);text-align:center;padding:1.5rem;font-size:0.875rem;margin-top:auto;}
+        .site-footer a{color:var(--gold);text-decoration:none;}
+        .site-footer a:hover{text-decoration:underline;}
+        /* ── Listing copy ── */
+        .listing-section{max-width:1000px;margin:0 auto 2.5rem;padding:0 1.5rem;}
+        .listing-section h2{font-family:'Orbitron',sans-serif;font-size:clamp(1.1rem,2.5vw,1.4rem);font-weight:700;color:var(--gold);margin-bottom:0.75rem;}
+        .listing-section p{color:var(--text-muted);line-height:1.7;margin-bottom:0.75rem;}
+        .advantage-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:1rem;}
+        .advantage-card{background:rgba(30,10,45,0.85);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1rem;text-align:center;transition:border-color 0.2s,transform 0.2s;}
+        .advantage-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+        .advantage-icon{font-size:1.75rem;margin-bottom:0.5rem;}
+        .advantage-card h3{font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:0.25rem;}
+        .advantage-card p{font-size:0.8rem;color:var(--text-muted);margin:0;}
+        /* ── CTA ── */
+        .cta-block{background:linear-gradient(135deg,rgba(74,35,90,0.7) 0%,rgba(30,10,45,0.9) 100%);border:1px solid var(--border);border-radius:16px;padding:2.5rem 2rem;text-align:center;margin:0 auto 2.5rem;max-width:1000px;}
+        .cta-block h2{font-family:'Orbitron',sans-serif;font-size:clamp(1.1rem,2.5vw,1.4rem);color:#fff;margin-bottom:0.5rem;}
+        .cta-block p{color:var(--text-muted);margin-bottom:1.5rem;line-height:1.6;}
+        .btn-apply{display:inline-block;background:var(--gold);color:#1a0028;font-weight:700;font-size:1rem;padding:0.85rem 2.5rem;border-radius:8px;text-decoration:none;transition:background 0.2s,transform 0.15s;}
+        .btn-apply:hover{background:#ffe74d;transform:translateY(-1px);}
+        .btn-apply:focus-visible{outline:3px solid var(--deep-purple-dark);outline-offset:2px;}
+        .site-footer-contact{margin-top:0.5rem;}
+        .text-gold{color:var(--gold);}
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <a href="/" class="logo" aria-label="Amazing Grace Home Living — Home">
+            <img src="../../assets/logo.png" alt="Amazing Grace Home Living Logo">
+            <span>Amazing Grace</span>
+        </a>
+        <nav id="main-nav" class="nav-links" aria-label="Main navigation">
+            <a href="/" class="nav-btn">🏠 Home</a>
+            <a href="/stories/" class="nav-btn">📚 Library</a>
+            <a href="/arcade" class="nav-btn">🎮 Arcade</a>
+            <a href="/ministry" class="nav-btn">🕊️ Ministry</a>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
+    </header>
+    <main>
+        <div class="hero">
+            <h1>🏠 <span>1144 7th St NW</span>, Largo, FL 33770</h1>
+            <p>Private rooms &mdash; <strong class="text-gold">$900/mo all-inclusive</strong> &mdash; Pinellas Medical Corridor</p>
+        </div>
+        <div class="container">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <a href="/">Home</a> › <a href="/#properties">Listings</a> › 1144 7th St NW
+            </nav>
+            <p id="gallery-status" role="status" aria-live="polite"></p>
+            <div id="gallery-grid" class="gallery-grid" data-gallery="1144" aria-label="Property photos"></div>
+            <div id="gallery-empty" class="gallery-empty" style="display:none">
+                <div class="gallery-empty-icon">🖼️</div>
+                <p>No images uploaded yet.</p>
+            </div>
+        </div>
+
+        <!-- Property description -->
+        <section class="listing-section" aria-labelledby="prop-desc-1144">
+            <h2 id="prop-desc-1144">Purpose-Built for Busy Professionals</h2>
+            <p>
+                1144 7th St NW, Largo, FL 33770 offers a fully furnished private room in a quiet, well-maintained home
+                directly adjacent to 1142 — giving teams and colleagues the option to house together in the same
+                neighborhood. Located in the heart of Pinellas County with quick access to Morton Plant Hospital,
+                BayCare Health System, and the Largo/Clearwater medical corridor.
+            </p>
+            <p>
+                At <strong class="text-gold">$900/mo all-inclusive</strong>, one flat rate covers every bill —
+                no utility accounts, no Wi-Fi setup, no surprises. Move in with your essentials and we handle the rest.
+            </p>
+        </section>
+
+        <!-- All-Inclusive Advantage -->
+        <section class="listing-section" aria-labelledby="advantage-1144">
+            <h2 id="advantage-1144">✦ The All-Inclusive Advantage</h2>
+            <p>One flat rate covers everything below — so you can focus on your patients, not your bills.</p>
+            <div class="advantage-grid">
+                <div class="advantage-card">
+                    <div class="advantage-icon">💡</div>
+                    <h3>Utilities</h3>
+                    <p>Electric, water, and gas included — zero overage charges.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-icon">📶</div>
+                    <h3>High-Speed WiFi</h3>
+                    <p>Reliable internet for telehealth, EMR access, and streaming.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-icon">🛋️</div>
+                    <h3>Furnished Room</h3>
+                    <p>Bed, desk, dresser, and storage — ready for day-one occupancy.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-icon">🧺</div>
+                    <h3>Laundry Access</h3>
+                    <p>On-site washer/dryer — no laundromat runs after a 12-hour shift.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-icon">🅿️</div>
+                    <h3>Parking</h3>
+                    <p>Dedicated off-street parking included with your room.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-icon">🤝</div>
+                    <h3>Supportive Community</h3>
+                    <p>Quiet, respectful housemates — a real home between long shifts.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="cta-block">
+            <h2>Ready to Secure Your Room?</h2>
+            <p>Rooms fill quickly. Submit a quick inquiry through our application portal and we'll follow up within 24 hours.</p>
+            <a href="https://amazinggracehl.org/#apply" class="btn-apply">Apply Now →</a>
+        </div>
+    </main>
+    <footer class="site-footer">
+        <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="/">amazinggracehl.org</a></p>
+        <p class="site-footer-contact">
+            📞 <a href="tel:7274202873">(727) 420-2873</a> &nbsp;|&nbsp;
+            ✉️ <a href="mailto:admin@amazinggracehl.org">admin@amazinggracehl.org</a>
+        </p>
+    </footer>
+    <script src="/js/galleries.js"></script>
+    <script>
+        (function () {
+            var toggle = document.querySelector('.menu-toggle');
+            var nav = document.getElementById('main-nav');
+            if (toggle && nav) {
+                toggle.addEventListener('click', function () {
+                    var isExpanded = nav.classList.toggle('show');
+                    toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+                });
+            }
+        })();
+    </script>
+    <div id="constellation-nav"></div>
+    <script type="module" src="../../constellation-nav.js"></script>
+</body>
+</html>

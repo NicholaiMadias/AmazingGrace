@@ -1,0 +1,8 @@
+# Cloudflare Pages configuration
+# Build command and Node version are resolved via package.json / .nvmrc.
+# Cloudflare Pages reads pages_build_output_dir to locate the built assets.
+
+name = "amazing-grace"
+compatibility_date = "2024-09-23"
+
+pages_build_output_dir = "dist"

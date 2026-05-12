@@ -1,0 +1,203 @@
+.sm-constellation-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(15, 23, 42, 0.55);
+  color: #e2e8f0;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.12s;
+}
+
+.sm-constellation-btn:hover {
+  border-color: rgba(0, 242, 255, 0.5);
+  background: rgba(0, 242, 255, 0.08);
+}
+
+.sm-constellation-btn:active {
+  transform: scale(0.98);
+}
+
+.sm-constellation-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 260;
+  background: rgba(2, 6, 23, 0.92);
+  backdrop-filter: blur(14px);
+  display: none;
+}
+
+.sm-constellation-overlay.open {
+  display: block;
+}
+
+.sm-constellation-shell {
+  max-width: 820px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 1rem;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 0.75rem;
+}
+
+.sm-constellation-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.sm-constellation-title {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.sm-constellation-close {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(15, 23, 42, 0.6);
+  color: #94a3b8;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.sm-constellation-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+@media (min-width: 720px) {
+  .sm-constellation-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+}
+
+.sm-constellation-canvas {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.35);
+  border-radius: 16px;
+  padding: 0.75rem;
+}
+
+.sm-constellation-panel {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.35);
+  border-radius: 16px;
+  padding: 0.9rem;
+  transform: translateY(6px);
+  opacity: 0.96;
+  transition: transform 180ms ease-out, opacity 180ms ease-out;
+}
+
+.sm-constellation-panel.is-empty {
+  opacity: 0.75;
+}
+
+.sm-constellation-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.sm-constellation-meta .name {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.sm-constellation-meta .virtue {
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.sm-constellation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.sm-constellation-action {
+  padding: 0.55rem 0.8rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(2, 6, 23, 0.4);
+  color: #e2e8f0;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.sm-constellation-action.primary {
+  border-color: rgba(188, 19, 254, 0.55);
+  background: rgba(188, 19, 254, 0.12);
+  color: #fff;
+}
+
+.sm-constellation-note {
+  margin-top: 0.75rem;
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.sm-trial-dialog {
+  margin-top: 0.8rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.75rem;
+  display: none;
+}
+
+.sm-trial-dialog.open {
+  display: block;
+}
+
+.sm-trial-prompt {
+  font-size: 0.8rem;
+  color: #e2e8f0;
+  margin-bottom: 0.5rem;
+}
+
+.sm-trial-input {
+  width: 100%;
+  border-radius: 12px;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(2, 6, 23, 0.4);
+  color: #fff;
+  outline: none;
+}
+
+.sm-trial-input:focus {
+  border-color: rgba(0, 242, 255, 0.6);
+}
+
+.sm-trial-result {
+  margin-top: 0.55rem;
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225" width="400" height="225">
+  <defs>
+    <linearGradient id="sky4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a1628"/>
+      <stop offset="100%" stop-color="#1a3050"/>
+    </linearGradient>
+    <linearGradient id="building4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a3a5a"/>
+      <stop offset="100%" stop-color="#1a2840"/>
+    </linearGradient>
+    <linearGradient id="ground4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a3a28"/>
+      <stop offset="100%" stop-color="#161e14"/>
+    </linearGradient>
+    <filter id="shadow4"><feDropShadow dx="2" dy="6" stdDeviation="4" flood-opacity="0.4"/></filter>
+    <filter id="glow4"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <!-- Sky -->
+  <rect width="400" height="225" fill="url(#sky4)"/>
+  <!-- City stars -->
+  <circle cx="40" cy="20" r="1.5" fill="rgba(255,255,255,0.7)"/>
+  <circle cx="95" cy="12" r="1" fill="rgba(255,255,255,0.5)"/>
+  <circle cx="200" cy="18" r="1.5" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="310" cy="8" r="1" fill="rgba(255,255,255,0.4)"/>
+  <circle cx="370" cy="22" r="1.5" fill="rgba(255,255,255,0.7)"/>
+  <!-- Background buildings (cityscape) -->
+  <rect x="0" y="90" width="60" height="75" fill="rgba(30,50,80,0.6)"/>
+  <rect x="10" y="70" width="35" height="20" fill="rgba(30,50,80,0.5)"/>
+  <rect x="330" y="80" width="70" height="85" fill="rgba(30,50,80,0.6)"/>
+  <rect x="345" y="60" width="40" height="22" fill="rgba(30,50,80,0.5)"/>
+  <!-- Ground -->
+  <rect x="0" y="165" width="400" height="60" fill="url(#ground4)"/>
+  <!-- Sidewalk -->
+  <rect x="60" y="165" width="280" height="12" fill="#3a3a4a" opacity="0.8"/>
+  <!-- Main modern building -->
+  <rect x="100" y="40" width="200" height="125" fill="url(#building4)" filter="url(#shadow4)"/>
+  <!-- Glass facade grid (windows) -->
+  <!-- Row 1 -->
+  <rect x="112" y="52" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.85" filter="url(#glow4)"/>
+  <rect x="146" y="52" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.7"/>
+  <rect x="180" y="52" width="28" height="18" rx="1" fill="#ffd700" opacity="0.5"/>
+  <rect x="214" y="52" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.8"/>
+  <rect x="248" y="52" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.6"/>
+  <!-- Row 2 -->
+  <rect x="112" y="76" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.5"/>
+  <rect x="146" y="76" width="28" height="18" rx="1" fill="#ffd700" opacity="0.6"/>
+  <rect x="180" y="76" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.85"/>
+  <rect x="214" y="76" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.5"/>
+  <rect x="248" y="76" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.7"/>
+  <!-- Row 3 -->
+  <rect x="112" y="100" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.7"/>
+  <rect x="146" y="100" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.6"/>
+  <rect x="180" y="100" width="28" height="18" rx="1" fill="#ffd700" opacity="0.4"/>
+  <rect x="214" y="100" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.9"/>
+  <rect x="248" y="100" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.5"/>
+  <!-- Row 4 -->
+  <rect x="112" y="124" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.6"/>
+  <rect x="146" y="124" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.8"/>
+  <rect x="180" y="124" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.5"/>
+  <rect x="214" y="124" width="28" height="18" rx="1" fill="#ffd700" opacity="0.5"/>
+  <rect x="248" y="124" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.7"/>
+  <!-- Building accent lines -->
+  <line x1="100" y1="40" x2="100" y2="165" stroke="rgba(74,159,212,0.3)" stroke-width="2"/>
+  <line x1="300" y1="40" x2="300" y2="165" stroke="rgba(74,159,212,0.3)" stroke-width="2"/>
+  <line x1="100" y1="40" x2="300" y2="40" stroke="rgba(74,159,212,0.4)" stroke-width="2"/>
+  <!-- Main entrance -->
+  <rect x="170" y="140" width="60" height="25" rx="2" fill="#1a2840"/>
+  <rect x="175" y="143" width="24" height="22" rx="1" fill="rgba(74,159,212,0.5)"/>
+  <rect x="201" y="143" width="24" height="22" rx="1" fill="rgba(74,159,212,0.5)"/>
+  <!-- Ground reflection -->
+  <rect x="90" y="165" width="220" height="8" fill="rgba(74,159,212,0.1)"/>
+  <!-- Address bar -->
+  <rect x="0" y="195" width="400" height="30" fill="rgba(0,0,0,0.45)"/>
+  <text x="200" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#4a9fd4" letter-spacing="1">Tampa Property · Tampa, FL</text>
+</svg>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Toolbox</title>
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #020b02;
+      color: #b0c8b0;
+      font-family: Arial, sans-serif;
+      padding: 1.5rem;
+    }
+    .admin-redirect-card {
+      width: min(720px, 100%);
+      background: rgba(0, 20, 0, 0.72);
+      border: 1px solid #1a3a1a;
+      border-radius: 12px;
+      box-shadow: 0 0 24px rgba(0, 255, 65, 0.08);
+      padding: 1.5rem;
+    }
+    h1 {
+      margin: 0 0 0.5rem;
+      color: #00ff41;
+      font-size: 1.5rem;
+    }
+    .intro {
+      margin: 0 0 1.25rem;
+      color: #7fa27f;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+    .nav-list {
+      display: grid;
+      gap: 0.85rem;
+    }
+    .nav-item {
+      display: block;
+      padding: 0.9rem 1rem;
+      border: 1px solid #1a3a1a;
+      border-radius: 8px;
+      text-decoration: none;
+      color: inherit;
+      background: rgba(0, 30, 0, 0.45);
+      transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    }
+    .nav-item:hover {
+      border-color: #00ff41;
+      background: rgba(0, 40, 0, 0.58);
+      transform: translateY(-1px);
+    }
+    .nav-title {
+      display: block;
+      color: #00ff41;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .nav-desc {
+      display: block;
+      color: #86a786;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+    .helper {
+      margin-top: 1.25rem;
+      font-size: 0.82rem;
+      color: #6f8b6f;
+    }
+  </style>
+</head>
+<body>
+  <main class="admin-redirect-card">
+    <h1>Admin Navigation</h1>
+    <p class="intro">Use these shortcuts to move through the admin area. Each link includes a short description so new users can quickly understand what each section does.</p>
+
+    <div class="nav-list">
+      <a class="nav-item" href="/admin/toolbox.html">
+        <span class="nav-title">Tools Page</span>
+        <span class="nav-desc">Open the main admin toolbox with Google DNS, Google Workspace diagnostics, analytics links, infrastructure links, and the PowerShell Toolkit shortcut.</span>
+      </a>
+
+      <a class="nav-item" href="/admin/index.html">
+        <span class="nav-title">Dashboard</span>
+        <span class="nav-desc">Start here for the main Sovereign Matrix admin hub and high-level access to system operations.</span>
+      </a>
+
+      <a class="nav-item" href="/admin/users.html">
+        <span class="nav-title">Users</span>
+        <span class="nav-desc">Review registered users, roles, badges, donations, and assigned tools.</span>
+      </a>
+
+      <a class="nav-item" href="/admin/keys.html">
+        <span class="nav-title">Keys</span>
+        <span class="nav-desc">Manage protected access credentials and key-related admin controls.</span>
+      </a>
+
+      <a class="nav-item" href="/admin/diagnostics.html">
+        <span class="nav-title">Diagnostics</span>
+        <span class="nav-desc">Run diagnostic checks and review system health tools for troubleshooting.</span>
+      </a>
+
+      <a class="nav-item" href="/admin/network-defense.html">
+        <span class="nav-title">Network Defense</span>
+        <span class="nav-desc">Assign tool access and manage security-related operational controls for users.</span>
+      </a>
+
+      <a class="nav-item" href="/admin/logs.html">
+        <span class="nav-title">Logs</span>
+        <span class="nav-desc">Inspect admin and system logs to trace changes, events, and operational activity.</span>
+      </a>
+
+      <a class="nav-item" href="https://github.com/NicholaiMadias/Amazing-Grace/tree/copilot%2Fadd-powershell-toolkit" target="_blank" rel="noopener noreferrer">
+        <span class="nav-title">PowerShell Toolkit</span>
+        <span class="nav-desc">Open the PowerShell toolkit branch in GitHub to review automation work and related admin tooling.</span>
+      </a>
+    </div>
+
+    <p class="helper">If JavaScript redirects are disabled or you are new to the admin area, this page acts as a clear landing page instead of immediately forwarding you away.</p>
+  </main>
+</body>
+</html>

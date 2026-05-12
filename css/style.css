@@ -1,0 +1,11 @@
+/* Add this to your main stylesheet */
+img:not([src]), 
+img[src=""], 
+img:invalid {
+    display: none !important;
+}
+
+/* This specifically targets images that fail to load */
+img:onerror {
+    display: none;
+}

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Nexus master atlas icon">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#19315c"/>
+      <stop offset="100%" stop-color="#050816"/>
+    </radialGradient>
+    <radialGradient id="gem" cx="38%" cy="28%" r="68%">
+      <stop offset="0%" stop-color="#F2F9FF"/>
+      <stop offset="45%" stop-color="#5EB4FF"/>
+      <stop offset="100%" stop-color="#0855C8"/>
+    </radialGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <circle cx="64" cy="64" r="46" fill="none" stroke="#2c4d86" stroke-width="4" opacity="0.75"/>
+  <polygon points="64,18 90,29 110,50 114,64 110,78 90,99 64,110 38,99 18,78 14,64 18,50 38,29" fill="url(#gem)" stroke="#dbeafe" stroke-width="3" filter="url(#glow)"/>
+  <polygon points="64,34 79,40 91,53 94,64 91,75 79,88 64,94 49,88 37,75 34,64 37,53 49,40" fill="#d8eeff" opacity="0.6"/>
+  <path d="M28 100 L100 28" stroke="#ffffff" stroke-width="4" opacity="0.15"/>
+</svg>

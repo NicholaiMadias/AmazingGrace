@@ -1,0 +1,63 @@
+Concise takeaway:  
+A multi‑page, PC‑first folder structure gives Relic Runner the power of a standalone game while still plugging cleanly into the Matrix of Conscience platform. Below is a complete, production‑ready structure—modular, scalable, and optimized for keyboard/mouse gameplay, multiplayer, events, and future puzzle expansions.
+
+---
+
+🗂️ Full Folder Structure for Relic Runner
+(PC‑first, multi‑page architecture with shared modules)
+
+Every bullet begins with a Guided Link so you can instantly dive deeper into any subsystem.
+
+---
+
+🎮 Root Structure
+
+`
+/relic-runner/
+    index.html
+    runner.css
+    runner.js
+    /engine/
+    /systems/
+    /ui/
+    /assets/
+    /modes/
+    /multiplayer/
+    /data/
+    /shared/
+`
+
+---
+
+⚙️ Engine Layer (Match Maker–powered)
+
+- engine/ — Core game logic  
+  `
+  /engine/
+      board.js
+      tiles.js
+      match-logic.js
+      cascades.js
+      powerups.js
+      rng.js
+      seed-generator.js
+      scoring.js
+      state-machine.js
+  `
+
+This is the heart of the game. It stays independent so you can reuse it in future puzzle modules.
+
+---
+
+🧠 Systems Layer (Game-wide services)
+
+- systems/ — Non-visual systems  
+  `
+  /systems/
+      input.js            # keyboard + mouse
+      audio.js            # SFX + music
+      renderer.js         # canvas/WebGL renderer
+      animations.js       # tweening, transitions
+      physics.js          # optional for special modes
+      timers.js
+      save-state

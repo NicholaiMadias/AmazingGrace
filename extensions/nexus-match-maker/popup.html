@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nexus Match-Maker</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="popup">
+      <header class="popup__header">
+        <h1>Nexus Match-Maker</h1>
+        <p>Seven-Star puzzle scaffold initialized.</p>
+      </header>
+      <section class="popup__atlas" aria-label="Atlas preview">
+        <svg viewBox="0 0 96 32" role="img" aria-label="Gem atlas placeholder symbols">
+          <use href="./assets/svg/gems-atlas.svg#gem-heart" x="0" y="0"></use>
+          <use href="./assets/svg/gems-atlas.svg#gem-star" x="32" y="0"></use>
+          <use href="./assets/svg/gems-atlas.svg#gem-cross" x="64" y="0"></use>
+        </svg>
+      </section>
+      <button id="start" type="button">Open Engine</button>
+    </main>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+node_modules/
+dist/
+*.local
+desktop.ini
+
+# ── Exported story-engine bundles ────────────────────────────────────────────
+# These browser-saved static exports may embed Google API keys, Firebase
+# credentials, or other service tokens and must never be committed.
+public/assets/Matrix of Conscience Story Engine.html
+public/assets/Matrix of Conscience Story Engine_files/
+
+# Generic patterns to catch future exported bundles placed under public/assets/
+# that contain Google/Firebase auth shim files or minified downloaded scripts.
+public/assets/**/*.download
+public/assets/**/shim.html
+public/assets/**/harpa.html
+
+# ── Environment / secret files ───────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+secrets.txt
+repair.patch

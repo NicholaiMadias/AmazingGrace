@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="mmG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7dd3fc" stop-opacity="0.95" />
+      <stop offset="0.55" stop-color="#a78bfa" stop-opacity="0.92" />
+      <stop offset="1" stop-color="#fb7185" stop-opacity="0.9" />
+    </linearGradient>
+    <filter id="mmGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b" />
+      <feMerge>
+        <feMergeNode in="b" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <symbol id="mm-gem-star" viewBox="0 0 64 64">
+    <path
+      d="M32 6l6.9 16 17.1 1.5-13 11.3L47 52 32 42.6 17 52l4-17.2-13-11.3L25.1 22 32 6z"
+      fill="url(#mmG)"
+      filter="url(#mmGlow)"
+      stroke="rgba(255,255,255,0.55)"
+      stroke-width="1.2"
+      stroke-linejoin="round"
+    />
+  </symbol>
+
+  <symbol id="mm-gem-heart" viewBox="0 0 64 64">
+    <path
+      d="M32 56C19 46 10 38 10 26c0-7 5.6-12 12.4-12 4.2 0 8.1 2.1 9.6 5.3C33.5 16.1 37.4 14 41.6 14 48.4 14 54 19 54 26c0 12-9 20-22 30z"
+      fill="url(#mmG)"
+      filter="url(#mmGlow)"
+      stroke="rgba(255,255,255,0.55)"
+      stroke-width="1.2"
+      stroke-linejoin="round"
+    />
+  </symbol>
+
+  <symbol id="mm-gem-cross" viewBox="0 0 64 64">
+    <path
+      d="M28 8h8v16h14v8H36v24h-8V32H14v-8h14V8z"
+      fill="url(#mmG)"
+      filter="url(#mmGlow)"
+      stroke="rgba(255,255,255,0.55)"
+      stroke-width="1.2"
+      stroke-linejoin="round"
+    />
+  </symbol>
+
+  <symbol id="mm-gem-flame" viewBox="0 0 64 64">
+    <path
+      d="M34 8c3 12-6 14-2 24 2.2 5.4 10.5 4.3 9.9 14.1C41.2 54.2 35.4 58 28.9 58 20 58 14 51.8 14 43.4c0-10 8.5-14.4 13.7-21.5C31 17 31 12.5 34 8z"
+      fill="url(#mmG)"
+      filter="url(#mmGlow)"
+      stroke="rgba(255,255,255,0.55)"
+      stroke-width="1.2"
+      stroke-linejoin="round"
+    />
+  </symbol>
+
+  <symbol id="mm-gem-drop" viewBox="0 0 64 64">
+    <path
+      d="M32 6c8 12 18 22.7 18 34.2C50 50 42.2 58 32 58S14 50 14 40.2C14 28.7 24 18 32 6z"
+      fill="url(#mmG)"
+      filter="url(#mmGlow)"
+      stroke="rgba(255,255,255,0.55)"
+      stroke-width="1.2"
+      stroke-linejoin="round"
+    />
+  </symbol>
+</svg>
+

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus — Matrix of Conscience | Amazing Grace</title>
+<meta name="description" content="Matrix of Conscience — Align the Seven Stars through Match-3 gameplay. Amazing Grace Home Living.">
+<style>
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0e17;--surface:#1a1930;--card:#232248;--border:#2e2d5a;
+  --text:#e8e6f0;--muted:#9f9dba;--accent:#c084fc;--gold:#fbbf24;
+  --r:.5em;
+  --col:8;
+}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg);color:var(--text);min-height:100dvh;
+  -webkit-font-smoothing:antialiased;line-height:1.5;overscroll-behavior:none}
+
+/* ── Layout ── */
+.app{display:flex;flex-direction:column;max-width:560px;margin:0 auto;padding:.5em;min-height:100dvh}
+
+/* ── Header ── */
+.hdr{display:flex;align-items:center;justify-content:space-between;
+  padding:.6em .8em;background:var(--surface);border-radius:var(--r);
+  margin-bottom:.5em;border:1px solid var(--border)}
+.hdr__title{font-size:1.05em;font-weight:700;
+  background:linear-gradient(135deg,#c084fc,#818cf8);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hdr__credits{display:flex;align-items:center;gap:.3em;font-weight:600;
+  color:var(--gold);font-size:.9em;font-variant-numeric:tabular-nums}
+.hdr__home{background:none;border:none;color:var(--muted);cursor:pointer;
+  font-size:1.1em;padding:.3em;border-radius:.3em;text-decoration:none;
+  transition:color .15s,background .15s}
+.hdr__home:hover{color:var(--text);background:rgba(255,255,255,.08)}
+
+/* ── Pillars ── */
+.pillars{display:flex;gap:.25em;padding:.4em;margin-bottom:.5em;
+  overflow-x:auto;scrollbar-width:none;background:var(--surface);
+  border-radius:var(--r);border:1px solid var(--border)}
+.pillars::-webkit-scrollbar{display:none}
+.pillar{display:flex;flex-direction:column;align-items:center;flex:1;min-width:56px;
+  padding:.35em .2em;border-radius:.35em;border:1px solid transparent;
+  transition:border-color .3s,box-shadow .3s}
+.pillar.on{border-color:var(--pc,var(--accent));
+  box-shadow:0 0 8px color-mix(in srgb,var(--pc,var(--accent)) 30%,transparent)}
+.pillar__star{font-size:1.3em;line-height:1;margin-bottom:.1em;
+  filter:grayscale(1) opacity(.35);transition:filter .4s}
+.pillar.on .pillar__star{filter:none}
+.pillar__name{font-size:.5em;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--muted);text-align:center;white-space:nowrap}
+.pillar.on .pillar__name{color:var(--text)}
+.pillar__bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-top:.2em;overflow:hidden}
+.pillar__fill{height:100%;background:var(--pc,var(--accent));border-radius:2px;transition:width .4s}
+
+/* ── HUD ── */
+.hud{display:flex;justify-content:space-around;padding:.4em;
+  background:var(--surface);border-radius:var(--r);margin-bottom:.5em;
+  border:1px solid var(--border)}
+.hud__item{display:flex;align-items:center;gap:.35em;padding:.15em .3em;
+  font-variant-numeric:tabular-nums}
+.hud__emoji{font-size:1em;line-height:1}
+.hud__val{font-weight:700;font-size:.95em;min-width:3ch;text-align:right}
+.hud__val.flash{animation:hflash .35s ease}
+@keyframes hflash{0%{transform:scale(1)}40%{transform:scale(1.3);color:var(--gold)}100%{transform:scale(1)}}
+
+/* ── Board ── */
+#board{display:grid;grid-template-columns:repeat(var(--col),1fr);gap:2px;
+  padding:.4em;background:var(--surface);border-radius:var(--r);
+  border:1px solid var(--border);touch-action:none;user-select:none;flex:1;align-content:start}
+
+/* ── Tiles ── */
+.tile{position:relative;display:inline-flex;align-items:center;justify-content:center;
+  aspect-ratio:1;border:none;background:transparent;cursor:pointer;
+  padding:.05em;border-radius:.3em;font-size:clamp(1.4em,5vw,2em);line-height:1;
+  transition:transform .12s,box-shadow .12s;-webkit-tap-highlight-color:transparent}
+.tile:focus-visible{outline:2px solid #93c5fd;outline-offset:1px}
+.tile:hover{transform:scale(1.1)}
+.tile:active{transform:scale(.92)}
+.tile.sel{box-shadow:0 0 0 2px #fff,0 0 12px rgba(255,255,255,.4);transform:scale(1.12);z-index:2}
+.tile.bad{animation:shake .3s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}60%{transform:translateX(4px)}}
+.tile.pop{animation:tpop .35s ease forwards;pointer-events:none}
+@keyframes tpop{0%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.9}100%{transform:scale(0);opacity:0}}
+.tile.drop{animation:tdrop .3s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes tdrop{0%{transform:scale(.5) translateY(-8px);opacity:0}100%{transform:scale(1) translateY(0);opacity:1}}
+
+/* ── Ley badge ── */
+.tile .ley{position:absolute;top:-.1em;left:-.1em;font-size:.35em;line-height:1;
+  animation:twinkle 2s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* ── Special badge ── */
+.tile .sp{position:absolute;bottom:-.1em;right:-.1em;font-size:.35em;line-height:1;opacity:.8}
+
+/* ── Actions ── */
+.actions{display:flex;gap:.5em;justify-content:center;padding:.5em 0}
+.btn{display:inline-flex;align-items:center;gap:.35em;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);padding:.5em 1em;border-radius:var(--r);
+  cursor:pointer;font-size:.85em;font-weight:500;
+  transition:background .15s,transform .15s,border-color .15s}
+.btn:hover{background:rgba(255,255,255,.08);border-color:var(--accent);transform:scale(1.03)}
+.btn:active{transform:scale(.96)}
+
+/* ── Conscience deltas ── */
+.deltas{display:grid;grid-template-columns:repeat(4,1fr);gap:.3em;
+  padding:.4em;background:var(--surface);border-radius:var(--r);
+  border:1px solid var(--border);margin-top:.4em}
+.delta{text-align:center;font-size:.7em}
+.delta__label{color:var(--muted);font-size:.8em;text-transform:uppercase;letter-spacing:.06em}
+.delta__val{font-weight:700;font-variant-numeric:tabular-nums}
+
+/* ── Toast ── */
+.toast{position:fixed;top:1em;left:50%;transform:translateX(-50%) translateY(-130%);
+  background:var(--card);border:1px solid var(--accent);border-radius:var(--r);
+  padding:.8em 1.4em;font-weight:600;text-align:center;z-index:99;
+  box-shadow:0 4px 24px rgba(0,0,0,.6);transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;max-width:90vw}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast__stars{font-size:1.4em;display:block;margin-bottom:.2em}
+.toast__msg{font-size:.8em;color:var(--muted)}
+
+/* ── Loading ── */
+.loading{display:flex;align-items:center;justify-content:center;
+  min-height:100dvh;font-size:1.1em;opacity:.5;flex-direction:column;gap:.5em}
+.loading__spin{font-size:2em;animation:spin 1.2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(min-width:500px){.app{padding:1em}}
+@media(prefers-reduced-motion:reduce){
+  .tile,.toast,.pillar__fill,.hud__val{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<div id="loading" class="loading">
+  <span class="loading__spin">✦</span>
+  <span>Loading Matrix of Conscience…</span>
+</div>
+
+<div id="app" class="app" style="display:none">
+
+  <header class="hdr">
+    <a href="../index.html" class="hdr__home" aria-label="Back to Amazing Grace">⌂</a>
+    <h1 class="hdr__title">Matrix of Conscience</h1>
+    <div class="hdr__credits" aria-live="polite">🪙 <span id="cr-display">0</span></div>
+  </header>
+
+  <nav class="pillars" id="pillars" aria-label="Seven Pillars progress"></nav>
+
+  <div class="hud" id="hud" aria-label="Game stats">
+    <div class="hud__item"><span class="hud__emoji">🏆</span><span class="hud__val" id="h-score">0</span></div>
+    <div class="hud__item"><span class="hud__emoji">📶</span><span class="hud__val" id="h-level">1</span></div>
+    <div class="hud__item"><span class="hud__emoji">👣</span><span class="hud__val" id="h-moves">0</span></div>
+    <div class="hud__item"><span class="hud__emoji">⛓</span><span class="hud__val" id="h-chain">0</span></div>
+  </div>
+
+  <div id="board" role="grid" aria-label="Match-3 game board"></div>
+
+  <div class="actions">
+    <button class="btn" id="btn-restart">↺ Restart</button>
+    <button class="btn" id="btn-hint">✦ Hint</button>
+  </div>
+
+  <div class="deltas" id="deltas" aria-label="Conscience deltas">
+    <div class="delta"><div class="delta__label">Karma</div><div class="delta__val" id="d-karma">0</div></div>
+    <div class="delta"><div class="delta__label">Integrity</div><div class="delta__val" id="d-integrity">0</div></div>
+    <div class="delta"><div class="delta__label">Wisdom</div><div class="delta__val" id="d-wisdom">0</div></div>
+    <div class="delta"><div class="delta__label">Community</div><div class="delta__val" id="d-community">0</div></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">
+  <span class="toast__stars" id="t-stars"></span>
+  <span class="toast__msg" id="t-msg"></span>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   NEXUS — Matrix of Conscience (self-contained)
+   Repository: NicholaiMadias/Amazing-Grace
+   Path: nexus/index.html
+   GitHub Pages — No Jekyll — All JS + CSS inlined
+   ══════════════════════════════════════════════════════════ */
+
+/* ─── Elements & Emoji ─── */
+const EL = ['aether','forge','tide','verdant','umbra','radiant'];
+const EMOJI = {
+  aether:'💠', forge:'🔥', tide:'🌊', verdant:'🌿', umbra:'🌑', radiant:'⭐'
+};
+const EL_DELTA = {
+  aether:'integrity', forge:'karma', tide:'wisdom', verdant:'community',
+  umbra:'community', radiant:'karma'
+};
+
+/* ─── Seven Pillars ─── */
+const PILLARS = [
+  {id:'ephesus', name:'Ephesus',  subtitle:'First Love',         star:'⭐', color:'#fbbf24', el:'radiant',  threshold:50},
+  {id:'agency',  name:'Agency',   subtitle:'Power of Choice',    star:'💠', color:'#c084fc', el:'aether',   threshold:120},
+  {id:'prog',    name:'Growth',   subtitle:'Shedding Old Forms',  star:'🌿', color:'#34d399', el:'verdant',  threshold:200},
+  {id:'feed',    name:'Feedback', subtitle:'The Golden Ripple',   star:'🌊', color:'#22d3ee', el:'tide',     threshold:300},
+  {id:'chall',   name:'Challenge',subtitle:'The Crucible',        star:'🔥', color:'#fb923c', el:'forge',    threshold:420},
+  {id:'social',  name:'Social',   subtitle:'The Radiant Dove',   star:'🌑', color:'#818cf8', el:'umbra',    threshold:560},
+  {id:'reward',  name:'Reward',   subtitle:'Mission Accomplished',star:'✨', color:'#e9d5ff', el:'aether',   threshold:777},
+];
+
+/* ══════════════════════════
+   CREDIT MANAGER
+   ══════════════════════════ */
+const Credits = (() => {
+  const KEY = 'nexus_credits';
+  let data = {balance:0, totalEarned:0, totalSpent:0};
+  try { const r = localStorage.getItem(KEY); if(r) data = JSON.parse(r); } catch{}
+  const _save = () => { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch{} };
+  const _cbs = [];
+  const _emit = (e,d) => _cbs.forEach(f => { try{f(e,d)}catch{} });
+  return {
+    get balance(){ return data.balance; },
+    earn(pts, src='match'){
+      const cr = Math.max(0, Math.floor(pts));
+      if(!cr) return 0;
+      data.balance += cr; data.totalEarned += cr;
+      _save(); _emit('earn',{cr, src, balance:data.balance}); return cr;
+    },
+    onChange(fn){ _cbs.push(fn); },
+  };
+})();
+
+/* ══════════════════════════
+   CONSCIENCE ENGINE
+   ══════════════════════════ */
+const Conscience = (() => {
+  const KEY = 'nexus_conscience';
+  let state = {deltas:{karma:0,integrity:0,wisdom:0,community:0}, totalCleared:0, unlockedStars:0};
+  try { const r = localStorage.getItem(KEY); if(r) state = JSON.parse(r); } catch{}
+  const _save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch{} };
+  const _cbs = [];
+  const _emit = (e,d) => _cbs.forEach(f => { try{f(e,d)}catch{} });
+
+  return {
+    get state(){ return state; },
+    process(clearedEls, chain){
+      let cyc = 0;
+      for(const [el, ct] of Object.entries(clearedEls)){
+        cyc += ct;
+        const dk = EL_DELTA[el];
+        if(dk) state.deltas[dk] += ct;
+      }
+      if(chain >= 3){ state.deltas.karma += Math.floor(chain/2); state.deltas.wisdom += 1; }
+      state.totalCleared += cyc;
+
+      // Check unlocks
+      let unlocked = null;
+      const prev = state.unlockedStars;
+      const newCount = PILLARS.filter(p => state.totalCleared >= p.threshold).length;
+      if(newCount > prev){
+        state.unlockedStars = newCount;
+        unlocked = PILLARS[newCount - 1];
+      }
+      _save();
+      _emit('update', state);
+      return unlocked;
+    },
+    pillarStatus(){
+      return PILLARS.map(p => ({
+        ...p,
+        unlocked: state.totalCleared >= p.threshold,
+        pct: Math.min(100, Math.round(state.totalCleared / p.threshold * 100)),
+      }));
+    },
+    onUpdate(fn){ _cbs.push(fn); },
+  };
+})();
+
+/* ══════════════════════════
+   MATCH-3 ENGINE
+   ══════════════════════════ */
+const ROWS = 8, COLS = 8;
+
+function rndEl(){ return EL[Math.floor(Math.random() * EL.length)]; }
+
+function makeCell(el, opts={}){
+  return { el: el || rndEl(), ley: !!opts.ley, special: opts.special || null };
+}
+
+function createGrid(){
+  const g = [];
+  for(let r=0;r<ROWS;r++){
+    g[r]=[];
+    for(let c=0;c<COLS;c++){
+      let cell;
+      do { cell = makeCell(); } while(
+        (c>=2 && g[r][c-1].el===cell.el && g[r][c-2].el===cell.el) ||
+        (r>=2 && g[r-1][c].el===cell.el && g[r-2][c].el===cell.el)
+      );
+      g[r][c] = cell;
+    }
+  }
+  // ~8% ley tiles
+  const leyN = Math.floor(ROWS*COLS*0.08);
+  for(let i=0;i<leyN;i++){
+    const lr=Math.floor(Math.random()*ROWS), lc=Math.floor(Math.random()*COLS);
+    g[lr][lc].ley = true;
+  }
+  return g;
+}
+
+function findMatches(g){
+  const m = new Set();
+  for(let r=0;r<ROWS;r++){
+    let run=1;
+    for(let c=1;c<=COLS;c++){
+      if(c<COLS && g[r][c].el===g[r][c-1].el){ run++; }
+      else{ if(run>=3) for(let k=c-run;k<c;k++) m.add(`${r},${k}`); run=1; }
+    }
+  }
+  for(let c=0;c<COLS;c++){
+    let run=1;
+    for(let r=1;r<=ROWS;r++){
+      if(r<ROWS && g[r][c].el===g[r-1][c].el){ run++; }
+      else{ if(run>=3) for(let k=r-run;k<r;k++) m.add(`${k},${c}`); run=1; }
+    }
+  }
+  return [...m].map(k=>{ const [r,c]=k.split(',').map(Number); return {r,c}; });
+}
+
+function resolveSpecialType(g, matches){
+  const byR={}, byC={};
+  for(const m of matches){
+    (byR[m.r]=byR[m.r]||[]).push(m.c);
+    (byC[m.c]=byC[m.c]||[]).push(m.r);
+  }
+  const specs=[];
+  const runs = sorted => {
+    const runs=[]; let cur=[sorted[0]];
+    for(let i=1;i<sorted.length;i++){
+      if(sorted[i]===sorted[i-1]+1) cur.push(sorted[i]);
+      else{ runs.push(cur); cur=[sorted[i]]; }
+    }
+    runs.push(cur); return runs;
+  };
+  for(const [r,cols] of Object.entries(byR)){
+    for(const run of runs(cols.sort((a,b)=>a-b))){
+      if(run.length>=5) specs.push({r:+r, c:run[2], type:'nova'});
+      else if(run.length===4) specs.push({r:+r, c:run[1], type:'line'});
+    }
+  }
+  for(const [c,rows] of Object.entries(byC)){
+    for(const run of runs(rows.sort((a,b)=>a-b))){
+      if(run.length>=5) specs.push({r:run[2], c:+c, type:'nova'});
+      else if(run.length===4) specs.push({r:run[1], c:+c, type:'line'});
+    }
+  }
+  // L/T cross
+  for(const m of matches){
+    if((byR[m.r]||[]).length>=3 && (byC[m.c]||[]).length>=3)
+      specs.push({r:m.r, c:m.c, type:'cross'});
+  }
+  return specs;
+}
+
+function activateSpecial(g, r, c){
+  const cell=g[r][c]; if(!cell?.special) return [];
+  const extra=[];
+  if(cell.special==='line') for(let i=0;i<COLS;i++) extra.push({r,c:i});
+  if(cell.special==='cross'){
+    for(let i=0;i<COLS;i++) extra.push({r,c:i});
+    for(let i=0;i<ROWS;i++) extra.push({r:i,c});
+  }
+  if(cell.special==='nova') for(let dr=-2;dr<=2;dr++) for(let dc=-2;dc<=2;dc++){
+    const nr=r+dr, nc=c+dc;
+    if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS) extra.push({r:nr,c:nc});
+  }
+  return extra;
+}
+
+function applyGravity(g){
+  for(let c=0;c<COLS;c++){
+    let w=ROWS-1;
+    for(let r=ROWS-1;r>=0;r--){
+      if(g[r][c]!==null){ g[w][c]=g[r][c]; if(w!==r) g[r][c]=null; w--; }
+    }
+    for(let r=w;r>=0;r--) g[r][c]=makeCell();
+  }
+}
+
+/* ══════════════════════════
+   GAME STATE
+   ══════════════════════════ */
+let grid=[], score=0, moves=0, level=1, chain=0;
+let selection=null, busy=false;
+
+function init(){
+  grid=createGrid(); score=0; moves=0; level=1; chain=0; selection=null;
+  render(); updateHUD(); renderPillars();
+}
+
+function trySwap(a, b){
+  const dr=Math.abs(a.r-b.r), dc=Math.abs(a.c-b.c);
+  if(dr+dc!==1) return false;
+  const t=grid[a.r][a.c]; grid[a.r][a.c]=grid[b.r][b.c]; grid[b.r][b.c]=t;
+  if(findMatches(grid).length===0){
+    const t2=grid[a.r][a.c]; grid[a.r][a.c]=grid[b.r][b.c]; grid[b.r][b.c]=t2;
+    return false;
+  }
+  moves++; chain=0;
+  processMatches(findMatches(grid));
+  return true;
+}
+
+async function processMatches(matches){
+  busy=true;
+  let currentMatches=matches;
+  while(currentMatches.length>0){
+    chain++;
+    const specials=resolveSpecialType(grid, currentMatches);
+    const clearedEls={};
+    let leyBonus=0;
+    const toRemove=new Set(currentMatches.map(m=>`${m.r},${m.c}`));
+
+    // activate specials in match zone
+    for(const m of currentMatches){
+      const cell=grid[m.r][m.c];
+      if(cell?.special){
+        for(const e of activateSpecial(grid,m.r,m.c)){
+          toRemove.add(`${e.r},${e.c}`);
+        }
+      }
+    }
+
+    for(const key of toRemove){
+      const [r,c]=key.split(',').map(Number);
+      const cell=grid[r][c];
+      if(!cell) continue;
+      clearedEls[cell.el]=(clearedEls[cell.el]||0)+1;
+      if(cell.ley) leyBonus+=50;
+      grid[r][c]=null;
+    }
+
+    // Place specials
+    for(const sp of specials){
+      if(grid[sp.r][sp.c]===null){
+        const srcEl=currentMatches[0] ? grid[currentMatches[0].r]?.[currentMatches[0].c]?.el||'aether' : 'aether';
+        grid[sp.r][sp.c]=makeCell(srcEl,{special:sp.type});
+      }
+    }
+
+    const cleared=Object.values(clearedEls).reduce((a,b)=>a+b,0);
+    const base=cleared*10, chainMult=Math.min(chain,10), spBonus=specials.length*25;
+    const delta=base*chainMult+spBonus+leyBonus;
+    score+=delta;
+
+    // Credit earn
+    Credits.earn(delta,'match3');
+    updateCreditDisplay();
+
+    // Conscience
+    const unlock=Conscience.process(clearedEls, chain);
+    renderPillars(); updateDeltas();
+    if(unlock) showToast(unlock.star.repeat(Math.min(unlock.star==='⭐'?3:1,3)),
+      `Star ${PILLARS.indexOf(unlock)+1} — ${unlock.name}: ${unlock.subtitle}`);
+
+    applyGravity(grid);
+    render(); updateHUD();
+    await sleep(180);
+    currentMatches=findMatches(grid);
+  }
+  chain=0; busy=false;
+}
+
+/* ══════════════════════════
+   RENDER
+   ══════════════════════════ */
+function render(){
+  const board=document.getElementById('board');
+  board.innerHTML='';
+  board.style.setProperty('--col',COLS);
+  const frag=document.createDocumentFragment();
+  for(let r=0;r<ROWS;r++){
+    for(let c=0;c<COLS;c++){
+      const cell=grid[r][c];
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.className='tile';
+      btn.dataset.r=r; btn.dataset.c=c;
+      btn.setAttribute('role','gridcell');
+      btn.textContent=EMOJI[cell.el]||'✦';
+      if(cell.ley){
+        const ley=document.createElement('span');
+        ley.className='ley'; ley.textContent='✦'; btn.appendChild(ley);
+      }
+      if(cell.special){
+        const sp=document.createElement('span');
+        sp.className='sp';
+        sp.textContent=cell.special==='line'?'➡':cell.special==='cross'?'✚':'💥';
+        btn.appendChild(sp);
+      }
+      btn.setAttribute('aria-label',
+        `${cell.el}${cell.ley?' ley':''}${cell.special?' '+cell.special:''} row ${r+1} col ${c+1}`);
+      btn.addEventListener('pointerdown', onTileDown);
+      btn.addEventListener('pointerenter', onTileEnter);
+      btn.addEventListener('pointerup', onTileUp);
+      frag.appendChild(btn);
+    }
+  }
+  board.appendChild(frag);
+}
+
+function tileAt(r,c){ return document.querySelector(`#board .tile[data-r="${r}"][data-c="${c}"]`); }
+
+/* ── Input ── */
+let dragging=false;
+
+function onTileDown(e){
+  if(busy) return;
+  const r=+e.currentTarget.dataset.r, c=+e.currentTarget.dataset.c;
+  if(selection){
+    const a=selection; const b={r,c};
+    clearSel();
+    if(Math.abs(a.r-b.r)+Math.abs(a.c-b.c)===1){
+      _doSwap(a,b);
+    } else {
+      selection={r,c};
+      const t=tileAt(r,c); if(t) t.classList.add('sel');
+    }
+  } else {
+    selection={r,c}; dragging=true;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    e.currentTarget.classList.add('sel');
+  }
+}
+
+function onTileEnter(e){
+  if(!dragging||!selection||busy) return;
+  const r=+e.currentTarget.dataset.r, c=+e.currentTarget.dataset.c;
+  if(Math.abs(selection.r-r)+Math.abs(selection.c-c)===1){
+    const a={...selection}; clearSel(); dragging=false;
+    _doSwap(a,{r,c});
+  }
+}
+
+function onTileUp(){ dragging=false; }
+
+document.addEventListener('pointerup',()=>{ dragging=false; });
+
+function clearSel(){
+  document.querySelectorAll('#board .tile.sel').forEach(t=>t.classList.remove('sel'));
+  selection=null;
+}
+
+function _doSwap(a,b){
+  const ok=trySwap(a,b);
+  if(!ok){
+    const ta=tileAt(a.r,a.c), tb=tileAt(b.r,b.c);
+    if(ta){ta.classList.add('bad'); setTimeout(()=>ta.classList.remove('bad'),350);}
+    if(tb){tb.classList.add('bad'); setTimeout(()=>tb.classList.remove('bad'),350);}
+  }
+}
+
+/* ══════════════════════════
+   HUD & DISPLAYS
+   ══════════════════════════ */
+function updateHUD(){
+  const flash=id=>{
+    const el=document.getElementById(id);
+    el.classList.remove('flash');
+    void el.offsetWidth;
+    el.classList.add('flash');
+    el.addEventListener('animationend',()=>el.classList.remove('flash'),{once:true});
+  };
+  document.getElementById('h-score').textContent=score.toLocaleString(); flash('h-score');
+  document.getElementById('h-level').textContent=level;
+  document.getElementById('h-moves').textContent=moves;
+  document.getElementById('h-chain').textContent=chain;
+}
+
+function updateCreditDisplay(){
+  document.getElementById('cr-display').textContent=Credits.balance.toLocaleString();
+}
+
+function updateDeltas(){
+  const d=Conscience.state.deltas;
+  document.getElementById('d-karma').textContent=d.karma;
+  document.getElementById('d-integrity').textContent=d.integrity;
+  document.getElementById('d-wisdom').textContent=d.wisdom;
+  document.getElementById('d-community').textContent=d.community;
+}
+
+function renderPillars(){
+  const nav=document.getElementById('pillars');
+  nav.innerHTML='';
+  const status=Conscience.pillarStatus();
+  for(const p of status){
+    const div=document.createElement('div');
+    div.className='pillar'+(p.unlocked?' on':'');
+    div.style.setProperty('--pc',p.color);
+    div.title=`${p.name}: ${p.subtitle}`;
+    div.innerHTML=`<span class="pillar__star">${p.star}</span>
+      <span class="pillar__name">${p.name}</span>
+      <div class="pillar__bar"><div class="pillar__fill" style="width:${p.pct}%"></div></div>`;
+    nav.appendChild(div);
+  }
+}
+
+/* ── Toast ── */
+function showToast(stars, msg){
+  const t=document.getElementById('toast');
+  document.getElementById('t-stars').textContent=stars;
+  document.getElementById('t-msg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3800);
+}
+
+/* ── Helpers ── */
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+/* ── Hint: briefly highlight a valid move ── */
+function showHint(){
+  if(busy) return;
+  for(let r=0;r<ROWS;r++){
+    for(let c=0;c<COLS;c++){
+      if(c+1<COLS){
+        const t=grid[r][c]; grid[r][c]=grid[r][c+1]; grid[r][c+1]=t;
+        const ok=findMatches(grid).length>0;
+        grid[r][c+1]=grid[r][c]; grid[r][c]=t;
+        if(ok){
+          const ta=tileAt(r,c), tb=tileAt(r,c+1);
+          if(ta){ta.classList.add('sel'); setTimeout(()=>ta.classList.remove('sel'),900);}
+          if(tb){tb.classList.add('sel'); setTimeout(()=>tb.classList.remove('sel'),900);}
+          return;
+        }
+      }
+      if(r+1<ROWS){
+        const t=grid[r][c]; grid[r][c]=grid[r+1][c]; grid[r+1][c]=t;
+        const ok=findMatches(grid).length>0;
+        grid[r+1][c]=grid[r][c]; grid[r][c]=t;
+        if(ok){
+          const ta=tileAt(r,c), tb=tileAt(r+1,c);
+          if(ta){ta.classList.add('sel'); setTimeout(()=>ta.classList.remove('sel'),900);}
+          if(tb){tb.classList.add('sel'); setTimeout(()=>tb.classList.remove('sel'),900);}
+          return;
+        }
+      }
+    }
+  }
+  // No valid moves — restart
+  showToast('🔄','No valid moves — restarting board');
+  setTimeout(()=>init(),1400);
+}
+
+/* ── Wire buttons ── */
+document.getElementById('btn-restart').addEventListener('click',()=>{if(!busy) init();});
+document.getElementById('btn-hint').addEventListener('click',showHint);
+Credits.onChange(updateCreditDisplay);
+Conscience.onUpdate(()=>{ renderPillars(); updateDeltas(); });
+
+/* ── Boot ── */
+document.getElementById('loading').style.display='none';
+document.getElementById('app').style.display='';
+init();
+updateCreditDisplay();
+updateDeltas();
+console.log('[Nexus] Matrix of Conscience booted — Amazing-Grace nexus/');
+</script>
+</body>
+</html>

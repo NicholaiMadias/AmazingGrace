@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nexus Match-Maker</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07111e;
+      --panel: rgba(11, 18, 32, 0.96);
+      --border: rgba(126, 255, 216, 0.22);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #7effd8;
+      --gold: #ffd700;
+      --violet: #b388ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      width: 360px;
+      min-height: 420px;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(126, 255, 216, 0.18), transparent 34%),
+        radial-gradient(circle at 80% 18%, rgba(179, 136, 255, 0.16), transparent 28%),
+        var(--bg);
+    }
+
+    .shell {
+      min-height: 100%;
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 22px 44px rgba(0, 0, 0, 0.35);
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .icon {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(126,255,216,0.08);
+      border: 1px solid rgba(126,255,216,0.2);
+    }
+
+    .icon svg {
+      width: 34px;
+      height: 34px;
+      color: var(--gold);
+      fill: currentColor;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.2;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.9rem;
+    }
+
+    .atlas-strip {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 18px 0 14px;
+    }
+
+    .atlas-chip {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 10px 8px;
+      border-radius: 16px;
+      background: rgba(15,23,42,0.86);
+      border: 1px solid rgba(148,163,184,0.16);
+    }
+
+    .atlas-chip svg {
+      width: 34px;
+      height: 34px;
+      display: block;
+    }
+
+    .atlas-chip small {
+      margin-top: 8px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.62rem;
+    }
+
+    .stats {
+      display: grid;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 12px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(148,163,184,0.12);
+      font-size: 0.84rem;
+    }
+
+    .stat span:first-child {
+      color: var(--muted);
+    }
+
+    .stat strong {
+      color: var(--accent);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button {
+      flex: 1;
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 14px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary {
+      color: #06211f;
+      background: linear-gradient(135deg, #7effd8, #59c9ff);
+    }
+
+    .ghost {
+      color: var(--text);
+      background: rgba(15,23,42,0.72);
+      border: 1px solid rgba(148,163,184,0.16);
+    }
+
+    .footnote {
+      margin-top: 12px;
+      font-size: 0.78rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="panel">
+      <div class="title-row">
+        <div class="icon" aria-hidden="true">
+          <svg viewBox="0 0 128 128">
+            <use href="./svg/master-atlas.svg#icon-seven-stars"></use>
+          </svg>
+        </div>
+        <div>
+          <h1>Nexus Match-Maker</h1>
+          <p>Manifest V3 scaffold for Seven-Star gem logic, atlas assets, and future puzzle sessions.</p>
+        </div>
+      </div>
+
+      <div class="atlas-strip" aria-label="Seven-Star atlas preview">
+        <div class="atlas-chip">
+          <svg viewBox="0 0 50 50" aria-hidden="true"><use href="./svg/gems-atlas.svg#gem-electra"></use></svg>
+          <small>Electra</small>
+        </div>
+        <div class="atlas-chip">
+          <svg viewBox="0 0 50 50" aria-hidden="true"><use href="./svg/gems-atlas.svg#gem-maia"></use></svg>
+          <small>Maia</small>
+        </div>
+        <div class="atlas-chip">
+          <svg viewBox="0 0 50 50" aria-hidden="true"><use href="./svg/gems-atlas.svg#gem-taygete"></use></svg>
+          <small>Taygete</small>
+        </div>
+      </div>
+
+      <div class="stats" aria-live="polite">
+        <div class="stat"><span>Popup launches</span><strong id="launch-count">0</strong></div>
+        <div class="stat"><span>Preferred atlas</span><strong id="atlas-name">Electra</strong></div>
+        <div class="stat"><span>Last opened</span><strong id="last-opened">Not yet saved</strong></div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="primary" data-cycle-atlas>Cycle atlas</button>
+        <button type="button" class="ghost" data-reset-session>Reset state</button>
+      </div>
+
+      <p class="footnote" id="storage-note">Using chrome.storage when available.</p>
+    </section>
+  </div>
+
+  <script type="module" src="./popup.js"></script>
+</body>
+</html>
