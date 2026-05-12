@@ -94,7 +94,7 @@ jobs:
       # ── Site DOWN: write alert payload and open/update a GitHub Issue ────────
       - name: Alert — open or update "Site Down" issue
         if: steps.probe.outputs.status == 'down'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           HTTP_CODE: ${{ steps.probe.outputs.http_code }}
           DOMAIN: ${{ steps.probe.outputs.domain }}
@@ -167,7 +167,7 @@ jobs:
       # ── Site UP: close any open "Site Down" issue ─────────────────────────────
       - name: Recovery — close "Site Down" issue if open
         if: steps.probe.outputs.status == 'up'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           DOMAIN: ${{ steps.probe.outputs.domain }}
         with:
