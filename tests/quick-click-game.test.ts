@@ -11,10 +11,11 @@ describe('Quick Click game integration', () => {
     expect(source).toContain('Quick Click');
     expect(source).toContain('setQuickClickScore');
     expect(source).toContain('prev + 10');
+    expect(source).toContain('QUICK_CLICK_ROUND_SECONDS');
+    expect(source).toContain('QUICK_CLICK_RESPAWN_CHANCE');
     expect(source).toContain("'game_stats', 'quick_click'");
     expect(source).toContain("'public', 'data', 'leaderboard'");
     expect(source).toContain('signInAnonymously(auth)');
-    expect(source).toContain('const [quickClickTimeLeft, setQuickClickTimeLeft] = useState(20);');
   });
 
   it('keeps the public asset copy in sync with the source module', () => {

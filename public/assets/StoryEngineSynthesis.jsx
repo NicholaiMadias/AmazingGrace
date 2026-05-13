@@ -17,6 +17,8 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'matrix-act-1';
 const apiKey = ""; 
+const QUICK_CLICK_ROUND_SECONDS = 20;
+const QUICK_CLICK_RESPAWN_CHANCE = 0.65;
 
 // --- THEME CONSTANTS ---
 const NIGHT_CARD = "#161628";
@@ -47,7 +49,7 @@ export default function App() {
   const [chatInput, setChatInput] = useState("");
   const [quickClickState, setQuickClickState] = useState('idle');
   const [quickClickScore, setQuickClickScore] = useState(0);
-  const [quickClickTimeLeft, setQuickClickTimeLeft] = useState(20);
+  const [quickClickTimeLeft, setQuickClickTimeLeft] = useState(QUICK_CLICK_ROUND_SECONDS);
   const [quickClickTarget, setQuickClickTarget] = useState({ x: 50, y: 50, visible: false });
   const [quickClickSaving, setQuickClickSaving] = useState(false);
   const [quickClickSyncMessage, setQuickClickSyncMessage] = useState('');
@@ -179,7 +181,7 @@ export default function App() {
 
     placeTarget();
     const targetInterval = setInterval(() => {
-      if (Math.random() > 0.35) {
+      if (Math.random() < QUICK_CLICK_RESPAWN_CHANCE) {
         placeTarget();
       }
     }, 450);
@@ -195,7 +197,7 @@ export default function App() {
   const startQuickClick = () => {
     setQuickClickSyncMessage('');
     setQuickClickScore(0);
-    setQuickClickTimeLeft(20);
+    setQuickClickTimeLeft(QUICK_CLICK_ROUND_SECONDS);
     setQuickClickState('running');
   };
 
