@@ -326,7 +326,7 @@ export default function App() {
                     {leaderboardRows.length ? (
                       <ol className="mt-2 space-y-1 text-xs text-white/80">
                         {leaderboardRows.map((row, index) => (
-                          <li key={row.entryId || row.userId || `${row.name || 'anonymous'}-${row.score}`} className="flex justify-between rounded-lg border border-white/10 px-3 py-2">
+                          <li key={row.entryId || row.userId || `${row.name || 'anonymous'}-${row.score}-${index}`} className="flex justify-between rounded-lg border border-white/10 px-3 py-2">
                             <span>#{index + 1} {row.name || row.userId || 'Anonymous'}</span>
                             <strong className="text-cyan-200">{row.score}</strong>
                           </li>
