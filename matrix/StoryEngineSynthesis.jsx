@@ -128,7 +128,8 @@ export default function App() {
 
       const statsRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'game_stats', 'quick_click');
       const existing = await getDoc(statsRef);
-      const bestScore = Math.max(existing.data()?.bestScore || 0, score);
+      const existingBest = existing.exists() ? (existing.data()?.bestScore || 0) : 0;
+      const bestScore = Math.max(existingBest, score);
 
       await setDoc(
         statsRef,
@@ -178,8 +179,10 @@ export default function App() {
     }
 
     let timeoutId;
+    let cancelled = false;
     const scheduleTarget = () => {
       timeoutId = setTimeout(() => {
+        if (cancelled) return;
         placeTarget();
         scheduleTarget();
       }, 300 + Math.floor(Math.random() * 700));
@@ -188,7 +191,10 @@ export default function App() {
     placeTarget();
     scheduleTarget();
 
-    return () => clearTimeout(timeoutId);
+    return () => {
+      cancelled = true;
+      clearTimeout(timeoutId);
+    };
   }, [quickClickState, placeTarget]);
 
   useEffect(() => {

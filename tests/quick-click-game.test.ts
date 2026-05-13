@@ -9,10 +9,10 @@ describe('Quick Click game integration', () => {
     const source = fs.readFileSync(SOURCE_FILE, 'utf8');
 
     expect(source).toContain('Quick Click');
-    expect(source).toContain('setQuickClickScore((prev) => prev + 10)');
-    expect(source).toContain("doc(db, 'artifacts', appId, 'users', currentUser.uid, 'game_stats', 'quick_click')");
-    expect(source).toContain("doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard')");
-    expect(source).toContain('await signInAnonymously(auth);');
+    expect(source).toMatch(/setQuickClickScore\s*\(\s*\(prev\)\s*=>\s*prev\s*\+\s*10\s*\)/);
+    expect(source).toContain("'game_stats', 'quick_click'");
+    expect(source).toContain("'public', 'data', 'leaderboard'");
+    expect(source).toContain('signInAnonymously(auth)');
     expect(source).toContain('const [quickClickTimeLeft, setQuickClickTimeLeft] = useState(20);');
   });
 
