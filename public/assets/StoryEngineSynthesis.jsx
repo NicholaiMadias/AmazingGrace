@@ -161,7 +161,6 @@ export default function App() {
     const timerId = setInterval(() => {
       setQuickClickTimeLeft((prev) => {
         if (prev <= 1) {
-          clearInterval(timerId);
           setQuickClickState('finished');
           return 0;
         }
@@ -178,23 +177,14 @@ export default function App() {
       return;
     }
 
-    let timeoutId;
-    let cancelled = false;
-    const scheduleTarget = () => {
-      timeoutId = setTimeout(() => {
-        if (cancelled) return;
-        placeTarget();
-        scheduleTarget();
-      }, 300 + Math.floor(Math.random() * 700));
-    };
-
     placeTarget();
-    scheduleTarget();
+    const targetInterval = setInterval(() => {
+      if (Math.random() > 0.35) {
+        placeTarget();
+      }
+    }, 450);
 
-    return () => {
-      cancelled = true;
-      clearTimeout(timeoutId);
-    };
+    return () => clearInterval(targetInterval);
   }, [quickClickState, placeTarget]);
 
   useEffect(() => {
@@ -336,7 +326,7 @@ export default function App() {
                     {leaderboardRows.length ? (
                       <ol className="mt-2 space-y-1 text-xs text-white/80">
                         {leaderboardRows.map((row, index) => (
-                          <li key={`${row.userId || 'player'}-${index}`} className="flex justify-between rounded-lg border border-white/10 px-3 py-2">
+                          <li key={row.entryId || row.userId || `${row.name || 'anonymous'}-${row.score}`} className="flex justify-between rounded-lg border border-white/10 px-3 py-2">
                             <span>#{index + 1} {row.name || row.userId || 'Anonymous'}</span>
                             <strong className="text-cyan-200">{row.score}</strong>
                           </li>

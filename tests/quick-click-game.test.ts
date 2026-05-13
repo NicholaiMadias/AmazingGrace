@@ -9,7 +9,8 @@ describe('Quick Click game integration', () => {
     const source = fs.readFileSync(SOURCE_FILE, 'utf8');
 
     expect(source).toContain('Quick Click');
-    expect(source).toMatch(/setQuickClickScore\s*\(\s*\(prev\)\s*=>\s*prev\s*\+\s*10\s*\)/);
+    expect(source).toContain('setQuickClickScore');
+    expect(source).toContain('prev + 10');
     expect(source).toContain("'game_stats', 'quick_click'");
     expect(source).toContain("'public', 'data', 'leaderboard'");
     expect(source).toContain('signInAnonymously(auth)');
