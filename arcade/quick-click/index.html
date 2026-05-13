@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Quick Click — a fast reflex game in the Amazing Grace Nexus Arcade."
+    />
+    <meta name="theme-color" content="#0f172a" />
+
+    <link rel="icon" type="image/png" href="/assets/logo.png" />
+    <title>Quick Click | Nexus Arcade</title>
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+      :root {
+        --bg: #0f172a;
+        --surface: rgba(30, 41, 59, 0.7);
+        --border: rgba(148, 163, 184, 0.25);
+        --accent: #7effd8;
+        --gold: #ffd700;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --danger: #fb7185;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        background: radial-gradient(circle at 20% 15%, rgba(126, 255, 216, 0.12), transparent 50%),
+          radial-gradient(circle at 75% 75%, rgba(255, 215, 0, 0.1), transparent 55%),
+          var(--bg);
+        color: var(--text);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--border);
+        backdrop-filter: blur(10px);
+        background: rgba(15, 23, 42, 0.7);
+        position: sticky;
+        top: 0;
+        z-index: 20;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .brand img {
+        width: 34px;
+        height: 34px;
+        border-radius: 7px;
+      }
+
+      .crumbs {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      .crumbs a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      .crumbs a:hover {
+        text-decoration: underline;
+      }
+
+      #root {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 1.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar" aria-label="Quick Click top navigation">
+      <a class="brand" href="/arcade/" aria-label="Back to Nexus Arcade">
+        <img src="/assets/logo.png" alt="Amazing Grace Home Living" />
+        <span>Quick Click</span>
+      </a>
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true"> · </span>
+        <a href="/arcade/">Arcade</a>
+        <span aria-hidden="true"> · </span>
+        <span>Quick Click</span>
+      </nav>
+    </header>
+
+    <main id="root"></main>
+
+    <script type="module" src="../../src/arcade/quick-click/main.tsx"></script>
+  </body>
+</html>
+
