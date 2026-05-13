@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lore — Two Blueprints | Arcade</title>
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0a0c11;
+      --surface:     #101420;
+      --surface-2:   #181d2e;
+      --border:      #252d44;
+      --ladder:      #4fd1c5;   /* teal — structured ascent */
+      --ladder-dim:  #1a4a47;
+      --break:       #f56565;   /* red-orange — rupture */
+      --break-dim:   #4a1a1a;
+      --gold:        #ecc94b;
+      --muted:       #6b7a9e;
+      --text:        #c9d3f0;
+      --text-bright: #e8eeff;
+      --font-body:   'Georgia', 'Times New Roman', serif;
+      --font-ui:     'Courier New', 'Lucida Console', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Ambient Background Grid ──────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(79,209,197,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(79,209,197,.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Utility ──────────────────────────────────────────────── */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ── Navigation Breadcrumb ────────────────────────────────── */
+    .breadcrumb {
+      padding: 1.2rem 0 0;
+      font-family: var(--font-ui);
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .breadcrumb a { color: var(--muted); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--ladder); }
+    .breadcrumb span { margin: 0 .4em; }
+
+    /* ── Header Hero ──────────────────────────────────────────── */
+    .hero {
+      padding: 4.5rem 0 3rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-bright);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title .word-ladder { color: var(--ladder); }
+    .hero-title .word-break  { color: var(--break); }
+    .hero-title .amp         { color: var(--muted); font-weight: 300; }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      font-style: italic;
+    }
+
+    /* Divider rune */
+    .rune-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2rem 0;
+      justify-content: center;
+    }
+    .rune-divider::before,
+    .rune-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      max-width: 200px;
+    }
+    .rune-glyph {
+      font-family: var(--font-ui);
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+    }
+
+    /* ── Two-Column Blueprint Cards ───────────────────────────── */
+    .blueprint-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 3rem 0;
+    }
+
+    @media (max-width: 620px) {
+      .blueprint-grid { grid-template-columns: 1fr; }
+    }
+
+    .blueprint-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem 1.8rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .blueprint-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .blueprint-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .blueprint-card.ladder::before { background: linear-gradient(90deg, var(--ladder), #81e6d9); }
+    .blueprint-card.break::before  { background: linear-gradient(90deg, var(--break),  #feb2b2); }
+
+    .blueprint-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      pointer-events: none;
+    }
+    .blueprint-card.ladder::after {
+      background: radial-gradient(circle at top left, var(--ladder), transparent 70%);
+    }
+    .blueprint-card.break::after {
+      background: radial-gradient(circle at bottom right, var(--break), transparent 70%);
+    }
+
+    .card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .card-label {
+      font-family: var(--font-ui);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .ladder .card-label { color: var(--ladder); }
+    .break  .card-label { color: var(--break); }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 0.8rem;
+    }
+    .ladder .card-title { text-shadow: 0 0 20px rgba(79,209,197,.25); }
+    .break  .card-title { text-shadow: 0 0 20px rgba(245,101,101,.25); }
+
+    .card-body {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    /* ── Lore Section ─────────────────────────────────────────── */
+    .lore-section {
+      margin: 3.5rem 0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-marker {
+      font-family: var(--font-ui);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.25em 0.7em;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .section-marker.ladder { background: var(--ladder-dim); color: var(--ladder); }
+    .section-marker.break  { background: var(--break-dim);  color: var(--break); }
+    .section-marker.neutral { background: var(--surface-2); color: var(--muted); }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      letter-spacing: -0.01em;
+    }
+
+    .lore-text {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+    }
+
+    /* ── Pull-Quote / Artifact ────────────────────────────────── */
+    .artifact-quote {
+      background: var(--surface-2);
+      border-left: 3px solid;
+      border-radius: 0 6px 6px 0;
+      padding: 1.4rem 1.8rem;
+      margin: 2rem 0;
+      font-style: italic;
+      position: relative;
+    }
+    .artifact-quote.ladder { border-color: var(--ladder); }
+    .artifact-quote.break  { border-color: var(--break); }
+
+    .artifact-quote p { color: var(--text-bright); font-size: 1.02rem; line-height: 1.7; }
+    .artifact-quote cite {
+      display: block;
+      margin-top: 0.8rem;
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      font-style: normal;
+    }
+    .artifact-quote.ladder cite { color: var(--ladder); }
+    .artifact-quote.break  cite { color: var(--break); }
+
+    /* ── Comparison Table ─────────────────────────────────────── */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 2rem 0;
+      font-size: 0.9rem;
+    }
+    .compare-table th,
+    .compare-table td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-table thead th {
+      font-family: var(--font-ui);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--surface-2);
+    }
+    .compare-table thead th:nth-child(2) { color: var(--ladder); }
+    .compare-table thead th:nth-child(3) { color: var(--break); }
+    .compare-table tbody tr { transition: background 0.15s; }
+    .compare-table tbody tr:hover { background: var(--surface-2); }
+    .compare-table td:first-child {
+      font-family: var(--font-ui);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+    .compare-table td:nth-child(2) { color: var(--ladder); }
+    .compare-table td:nth-child(3) { color: var(--break); }
+
+    /* ── Doctrine Tiles ───────────────────────────────────────── */
+    .doctrine-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .doctrine-tile {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem;
+    }
+    .doctrine-tile .dt-num {
+      font-family: var(--font-ui);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      margin-bottom: 0.5rem;
+    }
+    .doctrine-tile .dt-rule {
+      font-size: 0.85rem;
+      color: var(--text-bright);
+      line-height: 1.5;
+      font-weight: 600;
+    }
+    .doctrine-tile .dt-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.4rem;
+      line-height: 1.5;
+    }
+    .doctrine-tile.ladder .dt-num { color: var(--ladder); }
+    .doctrine-tile.break  .dt-num { color: var(--break); }
+
+    /* ── Verdict / Lore Appendix Callout ──────────────────────── */
+    .verdict-block {
+      background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2.2rem 2rem;
+      margin: 3rem 0;
+      text-align: center;
+    }
+    .verdict-block .v-label {
+      font-family: var(--font-ui);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+    }
+    .verdict-block .v-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 1rem;
+    }
+    .verdict-block .v-body {
+      font-size: 0.95rem;
+      color: var(--text);
+      max-width: 560px;
+      margin: 0 auto 1.4rem;
+      line-height: 1.75;
+    }
+    .verdict-block .v-tags {
+      display: flex;
+      gap: 0.6rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .v-tag {
+      font-family: var(--font-ui);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      padding: 0.3em 0.8em;
+      border-radius: 20px;
+      border: 1px solid;
+    }
+    .v-tag.ladder { border-color: var(--ladder); color: var(--ladder); }
+    .v-tag.break  { border-color: var(--break);  color: var(--break); }
+    .v-tag.gold   { border-color: var(--gold);   color: var(--gold); }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    .lore-footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 0 3rem;
+      margin-top: 4rem;
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+    .lore-footer a { color: var(--muted); text-decoration: none; }
+    .lore-footer a:hover { color: var(--text); }
+
+    /* ── Scroll-reveal animation ──────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb" aria-label="breadcrumb">
+    <a href="/arcade">Arcade</a>
+    <span>›</span>
+    <a href="/arcade/lore">Lore</a>
+    <span>›</span>
+    Two Blueprints
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <p class="hero-eyebrow">Lore Codex · Appendix II</p>
+    <h1 class="hero-title">
+      <span class="word-ladder">The Ladder</span>
+      <span class="amp"> &amp; </span>
+      <span class="word-break">The Break</span>
+    </h1>
+    <p class="hero-subtitle">
+      Two philosophies. One arena. Every match is a declaration.
+    </p>
+
+    <div class="rune-divider">
+      <span class="rune-glyph">◈ TWO-BLUEPRINTS ◈</span>
+    </div>
+  </header>
+
+  <!-- Blueprint Cards -->
+  <div class="blueprint-grid reveal">
+    <div class="blueprint-card ladder">
+      <span class="card-icon">🜃</span>
+      <p class="card-label">Blueprint I</p>
+      <h2 class="card-title">The Ladder</h2>
+      <p class="card-body">
+        A structured cosmology of earned ascent. Every rung is a covenant: 
+        you earn your rank, you defend it, you climb. The Ladder does not 
+        lie — it measures precisely what you have proven, nothing more.
+      </p>
+    </div>
+    <div class="blueprint-card break">
+      <span class="card-icon">⚡</span>
+      <p class="card-label">Blueprint II</p>
+      <h2 class="card-title">The System Break</h2>
+      <p class="card-body">
+        A doctrine of rupture. The Break rejects orderly ascent in favor of 
+        cataclysm — a single unhinged moment that rewrites the standings. 
+        Glorious or ruinous. The Break does not negotiate.
+      </p>
+    </div>
+  </div>
+
+  <!-- ── SECTION: Origin ── -->
+  <section class="lore-section reveal">
+    <div class="section-header">
+      <span class="section-marker neutral">Origin</span>
+      <h2 class="section-title">Before the First Match Was Played</h2>
+    </div>
+
+    <p class="lore-text">
+      When the Arcade was first constructed — its circuits soldered from contested memory and 
+      competitive desire — the Architects debated how competition should function at a 
+      metaphysical level. They did not argue over rules. Rules were trivial. They argued over 
+      <em>meaning</em>: what should a match <em>mean</em> to the one who wins, and to the one who falls?
+    </p>
+    <p class="lore-text">
+      From this debate emerged two irreconcilable blueprints — not game modes, not 
+      configurations, but <strong>philosophies of play</strong> that have since shaped every 
+      tournament, every rivalry, every moment of transcendence in the Arcade's history.
+    </p>
+
+    <div class="artifact-quote ladder">
+      <p>
+        "Let every victory be a brick. Let every loss be a lesson. The Ladder is not 
+        punishment — it is memory made structural. You do not fall from it. You learn 
+        where your foundation cracked."
+      </p>
+      <cite>— Architect Serevyn, founding treatise, §1</cite>
+    </div>
+
+    <div class="artifact-quote break">
+      <p>
+        "The Ladder assumes time is on your side. I say: one perfect storm, 
+        correctly aimed, undoes ten thousand careful rungs. Why climb 
+        what can be shattered?"
+      </p>
+      <cite>— The Unnamed Dissident, marginal annotation, §1 (contested)</cite>
+    </div>
+  </section>
+
+  <!-- ── SECTION: Ladder Doctrine ── -->
+  <section class="lore-section reveal">
+    <div class="section-header">
+      <span class="section-marker ladder">Blueprint I</span>
+      <h2 class="section-title">Doctrine of the Ladder</h2>
+    </div>
+
+    <p class="lore-text">
+      The Ladder operates on the principle of <strong>weighted permanence</strong>. Every result is 
+      recorded and folded into a cumulative rank score. Volatility is dampened by history; 
+      a single catastrophic loss cannot erase a season of consistent performance. 
+      The system rewards patience and sustained excellence above all else.
+    </p>
+    <p class="lore-text">
+      Ladder players are known as <em>Climbers</em>. Their culture prizes 
+      composure, long-game thinking, and incremental mastery. A Climber who achieves 
+      Apex rank has done something almost impossible: maintained near-perfect performance 
+      across hundreds of matches spanning multiple seasons. No luck can carry them there.
+    </p>
+
+    <div class="doctrine-grid">
+      <div class="doctrine-tile ladder">
+        <p class="dt-num">Doctrine I</p>
+        <p class="dt-rule">Earned, Not Granted</p>
+        <p class="dt-desc">Rank is a proof of work. No shortcut supersedes it.</p>
+      </div>
+      <div class="doctrine-tile ladder">
+        <p class="dt-num">Doctrine II</p>
+        <p class="dt-rule">The Rung Remembers</p>
+        <p class="dt-desc">Historical performance weights future outcomes. The past is not past.</p>
+      </div>
+      <div class="doctrine-tile ladder">
+        <p class="dt-num">Doctrine III</p>
+        <p class="dt-rule">Symmetry of Opposition</p>
+        <p class="dt-desc">You face only those whose proof matches yours. No ambushes by disparity.</p>
+      </div>
+      <div class="doctrine-tile ladder">
+        <p class="dt-num">Doctrine IV</p>
+        <p class="dt-rule">Decay is a Mirror</p>
+        <p class="dt-desc">Inactivity degrades rank, honestly reflecting absence of proof.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION: Break Doctrine ── -->
+  <section class="lore-section reveal">
+    <div class="section-header">
+      <span class="section-marker break">Blueprint II</span>
+      <h2 class="section-title">Doctrine of the System Break</h2>
+    </div>
+
+    <p class="lore-text">
+      The System Break was never ratified by the Architects. It emerged — 
+      as ruptures do — from the accumulated pressure of players who found the 
+      Ladder's patience too costly, its increments too small. The Break is not a 
+      rebellion against skill. It is a rebellion against <em>time</em>.
+    </p>
+    <p class="lore-text">
+      In a Break match, standard ranking coefficients are suspended. The outcome 
+      carries a multiplied stake — a decisive win can vault a player several tiers; 
+      a decisive loss can crater their standing to a floor they may not recover from 
+      this season. Break players, called <em>Shatterers</em>, are volatile by philosophy. 
+      They train not for consistency but for <strong>singular overwhelming force</strong>.
+    </p>
+
+    <div class="doctrine-grid">
+      <div class="doctrine-tile break">
+        <p class="dt-num">Doctrine I</p>
+        <p class="dt-rule">One Moment Outweighs All Moments</p>
+        <p class="dt-desc">A perfect storm, correctly timed, erases a thousand careful rungs.</p>
+      </div>
+      <div class="doctrine-tile break">
+        <p class="dt-num">Doctrine II</p>
+        <p class="dt-rule">The Stakes Define the Player</p>
+        <p class="dt-desc">Without real risk, performance is rehearsal — and rehearsal is nothing.</p>
+      </div>
+      <div class="doctrine-tile break">
+        <p class="dt-num">Doctrine III</p>
+        <p class="dt-rule">Asymmetry is the Point</p>
+        <p class="dt-desc">Mismatched stakes force adaptation. Chaos is a teacher the Ladder never hired.</p>
+      </div>
+      <div class="doctrine-tile break">
+        <p class="dt-num">Doctrine IV</p>
+        <p class="dt-rule">The Break Cannot Be Partial</p>
+        <p class="dt-desc">You either Break or you don't. A cautious Break is a contradiction — and a loss.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION: Comparison ── -->
+  <section class="lore-section reveal">
+    <div class="section-header">
+      <span class="section-marker neutral">Analysis</span>
+      <h2 class="section-title">The Two Blueprints Compared</h2>
+    </div>
+
+    <table class="compare-table" aria-label="Ladder vs System Break comparison">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>🜃 The Ladder</th>
+          <th>⚡ The Break</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>TIME HORIZON</td>
+          <td>Seasons-long accumulation</td>
+          <td>Single decisive match</td>
+        </tr>
+        <tr>
+          <td>RISK PROFILE</td>
+          <td>Dampened variance</td>
+          <td>Amplified stakes (±multiplier)</td>
+        </tr>
+        <tr>
+          <td>MATCHMAKING</td>
+          <td>Rank-symmetric pairings</td>
+          <td>Tier-flexible, pressure-seeking</td>
+        </tr>
+        <tr>
+          <td>IDENTITY</td>
+          <td>Climbers</td>
+          <td>Shatterers</td>
+        </tr>
+        <tr>
+          <td>DECAY MECHANIC</td>
+          <td>Gradual, activity-gated</td>
+          <td>Floor-locked after Break loss</td>
+        </tr>
+        <tr>
+          <td>HISTORY WEIGHT</td>
+          <td>High (Elo-adjacent, seasonal)</td>
+          <td>Minimal (single-event stakes)</td>
+        </tr>
+        <tr>
+          <td>IDEAL PLAYER</td>
+          <td>Consistent; long-game strategist</td>
+          <td>Volatile; peak-performance specialist</td>
+        </tr>
+        <tr>
+          <td>FAILURE MODE</td>
+          <td>Slow stagnation at ceiling</td>
+          <td>Catastrophic crater; season-ending</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── SECTION: The Conflict ── -->
+  <section class="lore-section reveal">
+    <div class="section-header">
+      <span class="section-marker neutral">Conflict</span>
+      <h2 class="section-title">When the Blueprints Collide</h2>
+    </div>
+
+    <p class="lore-text">
+      The Arcade's most contested regulatory debate is what happens when a Climber 
+      and a Shatterer are paired. The engine — as of Season 7 — resolves this 
+      through the <strong>Hybrid Stakes Protocol</strong>: the match is played under 
+      Ladder scoring, but both parties may declare a Break before the final round, 
+      converting the outcome to Break multipliers retroactively. The declaration 
+      is simultaneous, sealed, and irrevocable.
+    </p>
+    <p class="lore-text">
+      Purists on both sides hate this. Pragmatists call it the only honest solution 
+      to an architecturally unsolvable problem. The debate, predictably, goes on.
+    </p>
+
+    <div class="artifact-quote neutral" style="border-left-color: var(--gold);">
+      <p>
+        "We did not design the Hybrid Protocol because we respected both philosophies. 
+        We designed it because neither side would back down, and the Arcade needed 
+        matches to continue. Sometimes engineering is just diplomacy with better tooling."
+      </p>
+      <cite style="color: var(--gold);">— Engine Lead, internal debrief, Season 6 post-mortem</cite>
+    </div>
+  </section>
+
+  <!-- ── Verdict Block ── -->
+  <div class="verdict-block reveal">
+    <p class="v-label">Lore Appendix · Codex Entry</p>
+    <h2 class="v-title">Two Blueprints — Official Standing</h2>
+    <p class="v-body">
+      The Two Blueprints are not rivals to be resolved. They are complementary 
+      proofs of a deeper truth: competition has no single correct shape. 
+      The Arcade contains both because players contain both — the desire 
+      to build carefully and the desire to burn brightly. 
+      Every match is a vote for one philosophy or the other.
+      Cast yours accordingly.
+    </p>
+    <div class="v-tags">
+      <span class="v-tag ladder">🜃 Ladder</span>
+      <span class="v-tag break">⚡ System Break</span>
+      <span class="v-tag gold">◈ Hybrid Protocol</span>
+      <span class="v-tag gold">Lore Appendix II</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="lore-footer">
+    <span>ARCADE · LORE CODEX · /arcade/lore/two-blueprints</span>
+    <span>
+      <a href="/arcade/lore">← All Lore</a>
+      &nbsp;·&nbsp;
+      <a href="/arcade/lore/appendix">Appendix Index</a>
+    </span>
+  </footer>
+
+</div><!-- /container -->
+
+<script>
+  // Scroll-reveal observer
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(
+    (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.08 }
+  );
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
