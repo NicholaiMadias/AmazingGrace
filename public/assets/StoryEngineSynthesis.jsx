@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
   Sparkles, Shield, BookOpen, Settings, ArrowRight, Trophy, Brain,
   ChevronRight, Volume2, Lock, Ghost, Star, Activity, MessageSquare,
@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 // --- FIREBASE INITIALIZATION ---
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, setDoc, updateDoc, onSnapshot } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 
 const firebaseConfig = JSON.parse(__firebase_config);
 const app = initializeApp(firebaseConfig);
@@ -17,6 +17,8 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'matrix-act-1';
 const apiKey = ""; 
+const QUICK_CLICK_ROUND_SECONDS = 20;
+const QUICK_CLICK_RESPAWN_CHANCE = 0.65;
 
 // --- THEME CONSTANTS ---
 const NIGHT_CARD = "#161628";
@@ -45,9 +47,25 @@ export default function App() {
   const [loadingVisual, setLoadingVisual] = useState(false);
   const [chatLog, setChatLog] = useState([]);
   const [chatInput, setChatInput] = useState("");
+  const [quickClickState, setQuickClickState] = useState('idle');
+  const [quickClickScore, setQuickClickScore] = useState(0);
+  const [quickClickTimeLeft, setQuickClickTimeLeft] = useState(QUICK_CLICK_ROUND_SECONDS);
+  const [quickClickTarget, setQuickClickTarget] = useState({ x: 50, y: 50, visible: false });
+  const [quickClickSaving, setQuickClickSaving] = useState(false);
+  const [quickClickSyncMessage, setQuickClickSyncMessage] = useState('');
+  const [leaderboardRows, setLeaderboardRows] = useState([]);
+  const scoreRef = useRef(0);
 
   const chapter = CHAPTERS[currentChapter];
   const IconComponent = chapter.icon;
+
+  const placeTarget = useCallback(() => {
+    setQuickClickTarget({
+      x: 8 + Math.random() * 84,
+      y: 10 + Math.random() * 80,
+      visible: true
+    });
+  }, []);
 
   useEffect(() => {
     const initAuth = async () => {
@@ -66,6 +84,128 @@ export default function App() {
       else setDoc(profileRef, { role: 'user', stars: 0, createdAt: new Date().toISOString() });
     });
   }, [user]);
+
+  useEffect(() => {
+    scoreRef.current = quickClickScore;
+  }, [quickClickScore]);
+
+  const ensureAuthenticatedUser = useCallback(async () => {
+    if (auth.currentUser) return auth.currentUser;
+    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+      await signInWithCustomToken(auth, __initial_auth_token);
+    } else {
+      await signInAnonymously(auth);
+    }
+    return auth.currentUser;
+  }, []);
+
+  const fetchGlobalLeaderboard = useCallback(async () => {
+    try {
+      const leaderboardRef = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
+      const snap = await getDoc(leaderboardRef);
+      if (!snap.exists()) {
+        setLeaderboardRows([]);
+        return;
+      }
+      const data = snap.data();
+      const quickClickBoard = Array.isArray(data?.quick_click) ? data.quick_click : [];
+      setLeaderboardRows(
+        quickClickBoard
+          .filter((row) => row && typeof row.score === 'number')
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 10)
+      );
+    } catch (error) {
+      console.error('Unable to load Quick Click leaderboard:', error);
+      setLeaderboardRows([]);
+    }
+  }, []);
+
+  const saveQuickClickScore = useCallback(async (score) => {
+    setQuickClickSaving(true);
+    setQuickClickSyncMessage('');
+    try {
+      const currentUser = await ensureAuthenticatedUser();
+      if (!currentUser) throw new Error('Anonymous sign-in did not complete.');
+
+      const statsRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'game_stats', 'quick_click');
+      const existing = await getDoc(statsRef);
+      const existingBest = existing.exists() ? (existing.data()?.bestScore || 0) : 0;
+      const bestScore = Math.max(existingBest, score);
+
+      await setDoc(
+        statsRef,
+        {
+          lastScore: score,
+          bestScore,
+          updatedAt: new Date().toISOString()
+        },
+        { merge: true }
+      );
+
+      setQuickClickSyncMessage('Score saved to your private game stats.');
+      await fetchGlobalLeaderboard();
+    } catch (error) {
+      console.error('Quick Click score sync failed:', error);
+      setQuickClickSyncMessage('Unable to sync score right now. Please try again.');
+    } finally {
+      setQuickClickSaving(false);
+    }
+  }, [ensureAuthenticatedUser, fetchGlobalLeaderboard]);
+
+  useEffect(() => {
+    fetchGlobalLeaderboard();
+  }, [fetchGlobalLeaderboard]);
+
+  useEffect(() => {
+    if (quickClickState !== 'running') return;
+
+    const timerId = setInterval(() => {
+      setQuickClickTimeLeft((prev) => {
+        if (prev <= 1) {
+          setQuickClickState('finished');
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timerId);
+  }, [quickClickState]);
+
+  useEffect(() => {
+    if (quickClickState !== 'running') {
+      setQuickClickTarget((prev) => ({ ...prev, visible: false }));
+      return;
+    }
+
+    placeTarget();
+    const targetInterval = setInterval(() => {
+      if (Math.random() < QUICK_CLICK_RESPAWN_CHANCE) {
+        placeTarget();
+      }
+    }, 450);
+
+    return () => clearInterval(targetInterval);
+  }, [quickClickState, placeTarget]);
+
+  useEffect(() => {
+    if (quickClickState !== 'finished') return;
+    saveQuickClickScore(scoreRef.current);
+  }, [quickClickState, saveQuickClickScore]);
+
+  const startQuickClick = () => {
+    setQuickClickSyncMessage('');
+    setQuickClickScore(0);
+    setQuickClickTimeLeft(QUICK_CLICK_ROUND_SECONDS);
+    setQuickClickState('running');
+  };
+
+  const handleQuickClickTarget = () => {
+    if (quickClickState !== 'running') return;
+    setQuickClickScore((prev) => prev + 10);
+    placeTarget();
+  };
 
   const consultElla = async () => {
     setLoadingAi(true);
@@ -141,6 +281,65 @@ export default function App() {
                   )}
                 </div>
               </div>
+
+              {chapter.hasGame ? (
+                <div className="mt-10 rounded-3xl border border-white/10 bg-black/25 p-6">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <h3 className="text-xl font-bold text-white">Quick Click</h3>
+                      <p className="text-xs text-white/60">Tap each target for +10 points before the timer expires.</p>
+                    </div>
+                    <button
+                      onClick={startQuickClick}
+                      className="rounded-xl border border-cyan-300/50 px-4 py-2 text-xs font-bold uppercase tracking-wider text-cyan-200 hover:bg-cyan-300/10"
+                    >
+                      {quickClickState === 'running' ? 'Restart' : 'Start'}
+                    </button>
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap gap-4 text-sm">
+                    <span>Score: <strong className="text-cyan-200">{quickClickScore}</strong></span>
+                    <span>Time: <strong className="text-amber-200">{quickClickTimeLeft}s</strong></span>
+                  </div>
+
+                  <div className="mt-4 relative w-full rounded-2xl border border-white/10 bg-neutral-900/70" style={{ minHeight: '240px' }}>
+                    {quickClickState === 'idle' ? (
+                      <div className="absolute inset-0 flex items-center justify-center text-sm text-white/60">Press Start to begin.</div>
+                    ) : null}
+                    {quickClickTarget.visible ? (
+                      <button
+                        type="button"
+                        onClick={handleQuickClickTarget}
+                        aria-label="Quick Click target"
+                        className="absolute h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-200 bg-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.7)]"
+                        style={{ left: `${quickClickTarget.x}%`, top: `${quickClickTarget.y}%` }}
+                      />
+                    ) : null}
+                    {quickClickState === 'finished' ? (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 text-center">
+                        <p className="text-lg font-bold text-white">Final Score: {quickClickScore}</p>
+                        <p className="mt-1 text-xs text-white/70">{quickClickSaving ? 'Saving score…' : quickClickSyncMessage}</p>
+                      </div>
+                    ) : null}
+                  </div>
+
+                  <div className="mt-5">
+                    <h4 className="text-sm font-bold uppercase tracking-wider text-purple-200">Global Leaderboard</h4>
+                    {leaderboardRows.length ? (
+                      <ol className="mt-2 space-y-1 text-xs text-white/80">
+                        {leaderboardRows.map((row, index) => (
+                          <li key={row.entryId || row.userId || `${row.name || 'anonymous'}-${row.score}-${index}`} className="flex justify-between rounded-lg border border-white/10 px-3 py-2">
+                            <span>#{index + 1} {row.name || row.userId || 'Anonymous'}</span>
+                            <strong className="text-cyan-200">{row.score}</strong>
+                          </li>
+                        ))}
+                      </ol>
+                    ) : (
+                      <p className="mt-2 text-xs text-white/50">No public scores yet.</p>
+                    )}
+                  </div>
+                </div>
+              ) : null}
 
               <div className="mt-12 flex justify-between items-center border-t border-white/10 pt-8">
                 <div className="flex gap-2">
