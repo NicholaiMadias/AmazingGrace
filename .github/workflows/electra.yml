@@ -1,0 +1,61 @@
+name: Electra — Auto Merge Guard
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && !github.event.pull_request.draft
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Guard + attempt auto-merge
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const pull_number = context.payload.pull_request.number;
+
+            const { data: fresh } = await github.rest.pulls.get({ owner, repo, pull_number });
+
+            if (fresh.draft) {
+              core.info('Skipping auto-merge for PR (draft).');
+              return;
+            }
+
+            if (fresh.state !== "open" || fresh.merged) {
+              core.info('Skipping auto-merge for PR (not open or already merged).');
+              return;
+            }
+
+            if (fresh.mergeable !== true) {
+              core.info('Skipping auto-merge for PR (mergeable is not true).');
+              return;
+            }
+
+            try {
+              await github.request('PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge', {
+                owner,
+                repo,
+                pull_number,
+                merge_method: 'squash',
+              });
+              core.info('Auto-merge requested.');
+            } catch (error) {
+              const status = error?.status ?? 0;
+              const message = String(error?.message || '');
+              if ([403, 405, 409, 422].includes(status) || /draft|mergeable|conflict|not open|closed/i.test(message)) {
+                core.info(`Skipping auto-merge for PR: ${status} ${message}`);
+                return;
+              }
+              throw error;
+            }

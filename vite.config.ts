@@ -23,6 +23,7 @@ export default defineConfig({
         arcadeMatrixClassic: resolve(__dirname, "arcade/matrix-classic.html"),
         arcadeMatrixLegacy:  resolve(__dirname, "arcade/matrix-legacy/index.html"),
         arcadeMatrixDebug:   resolve(__dirname, "arcade/matrix-debug.html"),
+        arcadeQuickClick:    resolve(__dirname, "arcade/quick-click/index.html"),
         ministry:          resolve(__dirname, "ministry/index.html"),
         ministryBibleJourney: resolve(__dirname, "ministry/bible-journey.html"),
         ministries:             resolve(__dirname, "ministries/index.html"),
