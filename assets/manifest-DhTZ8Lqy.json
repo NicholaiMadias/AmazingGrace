@@ -1,0 +1,16 @@
+{
+  "name": "Amazing Grace Home Living",
+  "short_name": "Amazing Grace",
+  "description": "Amazing Grace Home Living, Voice of Jesus Ministry, and The Seven Stars Arcade.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#00ff41",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1164/1164382.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

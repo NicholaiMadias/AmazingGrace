@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Noah and the Ark — the original story of obedience, renewal, and divine covenant. Genesis Foundations series from Amazing Grace Home Living.">
+    <meta name="theme-color" content="#0a0a14">
+    <link rel="icon" type="image/png" href="../../assets/logo.png">
+    <title>Noah and the Ark | Amazing Grace Story Library</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+        /* ── Design tokens (Seven Stars Starry Night) ── */
+
+        :root {
+            --night:          #0a0a14;
+            --night-surface:  #111122;
+            --night-card:     #161628;
+            --night-deep:     #0d0d20;
+            --gold:           #ffd700;
+            --gold-dim:       rgba(255, 215, 0, 0.10);
+            --gold-border:    rgba(255, 215, 0, 0.22);
+            --faith:          #4da6ff;   /* faith-blue — virtue colour */
+            --faith-dim:      rgba(77, 166, 255, 0.10);
+            --faith-border:   rgba(77, 166, 255, 0.28);
+            --covenant:       #50c878;   /* covenant-green */
+            --text:           #e8e0f0;
+            --text-muted:     #9090b0;
+            --border:         rgba(255, 215, 0, 0.12);
+            --radius:         14px;
+            --radius-sm:      8px;
+            --shadow-md:      0 6px 24px rgba(0, 0, 0, 0.55);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        @media (prefers-reduced-motion: no-preference) {
+            html { scroll-behavior: smooth; }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--night);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        *:focus-visible { outline: 3px solid var(--faith); outline-offset: 3px; }
+
+        /* ── Header ── */
+
+        .site-header {
+            background: rgba(10, 10, 20, 0.96);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .logo img { height: 32px; border-radius: 4px; }
+
+        nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            padding: 0.4rem 0.9rem;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.82rem;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--gold-dim);
+            color: var(--gold);
+            border-color: var(--gold-border);
+        }
+
+        .menu-toggle {
+            display: none;
+            margin-left: auto;
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            color: var(--gold);
+            cursor: pointer;
+        }
+
+        @media (max-width: 680px) {
+            #main-nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0; right: 0;
+                background: rgba(10, 10, 20, 0.98);
+                padding: 1rem;
+                z-index: 200;
+                border-bottom: 1px solid var(--border);
+                gap: 0.4rem;
+            }
+            #main-nav.show { display: flex; }
+            .menu-toggle { display: block; }
+            .nav-btn { width: 100%; }
+        }
+
+        /* ── Cinematic Hero ── */
+
+        .story-hero {
+            position: relative;
+            background:
+                linear-gradient(175deg, rgba(10, 10, 20, 0.5) 0%, rgba(0, 40, 80, 0.7) 60%, rgba(10, 10, 20, 0.95) 100%),
+                linear-gradient(135deg, #0a1a2e 0%, #05101e 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 4.5rem 1.5rem 3rem;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .story-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 50%, rgba(77, 166, 255, 0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 70% 30%, rgba(80, 200, 120, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 90%, rgba(255, 215, 0, 0.06) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .rain-drops {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .rain-drops::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent 0px,
+                transparent 3px,
+                rgba(77, 166, 255, 0.025) 3px,
+                rgba(77, 166, 255, 0.025) 4px
+            );
+        }
+
+        .series-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--faith-dim);
+            border: 1px solid var(--faith-border);
+            color: var(--faith);
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.3rem 0.8rem;
+            border-radius: 999px;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.15;
+            margin-bottom: 0.75rem;
+            text-shadow: 0 0 40px rgba(77, 166, 255, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 540px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.7;
+        }
+
+        .hero-meta {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        /* ── Virtue badge ── */
+
+        .virtue-banner {
+            max-width: 800px;
+            margin: 2rem auto 0;
+            padding: 0 1.5rem;
+        }
+
+        .virtue-card {
+            background: var(--faith-dim);
+            border: 1px solid var(--faith-border);
+            border-radius: var(--radius);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .virtue-icon {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 12px rgba(77, 166, 255, 0.5));
+            animation: starGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes starGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(77, 166, 255, 0.4)); }
+            50%       { filter: drop-shadow(0 0 22px rgba(77, 166, 255, 0.7)); }
+        }
+
+        .virtue-text h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: var(--faith);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 0.25rem;
+        }
+
+        .virtue-text p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ── Main layout ── */
+
+        .story-layout {
+            max-width: 1100px;
+            margin: 2.5rem auto 0;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            flex: 1;
+            align-items: start;
+        }
+
+        @media (max-width: 800px) {
+            .story-layout {
+                grid-template-columns: 1fr;
+            }
+            .lore-sidebar { order: -1; }
+        }
+
+        /* ── Chapter navigation ── */
+
+        .chapter-nav {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .chap-btn {
+            background: var(--night-card);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.4rem 0.85rem;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        .chap-btn:hover {
+            background: var(--faith-dim);
+            color: var(--faith);
+            border-color: var(--faith-border);
+        }
+
+        .chap-btn.active {
+            background: var(--faith-dim);
+            color: var(--faith);
+            border-color: var(--faith-border);
+        }
+
+        /* ── Chapter content ── */
+
+        .chapter-panel {
+            background: var(--night-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            display: none;
+        }
+
+        .chapter-panel.active { display: block; }
+
+        .chapter-header {
+            background: linear-gradient(90deg, var(--faith-dim), transparent);
+            border-bottom: 1px solid var(--border);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .chapter-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.68rem;
+            color: var(--faith);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.3rem;
+        }
+
+        .chapter-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--text);
+            line-height: 1.3;
+        }
+
+        .chapter-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+        }
+
+        .chapter-image-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--night-deep);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            letter-spacing: 0.06em;
+        }
+
+        .chapter-image-placeholder span { font-size: 2.5rem; }
+
+        .chapter-body {
+            padding: 1.5rem;
+        }
+
+        .chapter-text {
+            font-size: 0.97rem;
+            line-height: 1.8;
+            color: #cac0dc;
+        }
+
+        .chapter-text p { margin-bottom: 1em; }
+
+        .chapter-text p:last-child { margin-bottom: 0; }
+
+        .scripture-block {
+            background: rgba(77, 166, 255, 0.06);
+            border-left: 3px solid var(--faith);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+        }
+
+        .scripture-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--text);
+            line-height: 1.65;
+            margin-bottom: 0.4rem;
+        }
+
+        .scripture-ref {
+            font-size: 0.75rem;
+            color: var(--faith);
+            font-weight: 700;
+            letter-spacing: 0.06em;
+        }
+
+        /* ── Chapter nav arrows ── */
+
+        .chapter-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .chap-nav-btn {
+            background: transparent;
+            border: 1px solid var(--faith-border);
+            color: var(--faith);
+            padding: 0.5rem 1.1rem;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .chap-nav-btn:hover:not(:disabled) { background: var(--faith-dim); }
+
+        .chap-nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+        .chap-progress {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ── Lore Sidebar ── */
+
+        .lore-sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
+
+        .lore-card {
+            background: var(--night-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+        }
+
+        .lore-heading {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.72rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.85rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .motif-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .motif-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .motif-icon { flex-shrink: 0; font-size: 1rem; margin-top: 0.05rem; }
+
+        .series-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--night-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .series-link:hover {
+            background: var(--gold-dim);
+            border-color: var(--gold-border);
+        }
+
+        .series-link .series-label { flex: 1; }
+
+        .series-link .series-title {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text);
+            display: block;
+            margin-bottom: 0.15rem;
+        }
+
+        .series-link .series-meta {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .series-link .series-arrow { color: var(--gold); font-size: 1rem; }
+
+        .virtue-tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .virtue-tag {
+            background: var(--night-surface);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.25rem 0.65rem;
+            border-radius: 999px;
+        }
+
+        .virtue-tag.faith {
+            background: var(--faith-dim);
+            border-color: var(--faith-border);
+            color: var(--faith);
+        }
+
+        /* ── Footer ── */
+
+        .site-footer {
+            background: var(--night-surface);
+            border-top: 1px solid var(--border);
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 3rem;
+        }
+
+        .site-footer a { color: var(--faith); text-decoration: none; }
+
+        .site-footer a:hover { text-decoration: underline; }
+
+        /* ── Book-open animation ── */
+
+        @keyframes bookOpen {
+            0%   { opacity: 0; transform: perspective(800px) rotateY(-12deg) translateX(-20px); }
+            100% { opacity: 1; transform: perspective(800px) rotateY(0deg)   translateX(0); }
+        }
+
+        .story-layout > .story-main {
+            animation: bookOpen 0.5s ease-out both;
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <a href="/" class="logo" aria-label="Amazing Grace Home Living — Home">
+        <img src="../../assets/logo.png" alt="Amazing Grace Home Living Logo">
+        Amazing Grace
+    </a>
+    <nav id="main-nav" aria-label="Main navigation">
+        <a href="/" class="nav-btn">🏠 Home</a>
+        <a href="/arcade" class="nav-btn">🎮 Arcade</a>
+        <a href="/ministry" class="nav-btn">🕊️ Ministry</a>
+        <a href="/ministries/" class="nav-btn">✨ Seven Stars</a>
+        <a href="/stories/" class="nav-btn active">📚 Library</a>
+    </nav>
+    <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
+</header>
+
+<main>
+
+    <!-- ── Cinematic Hero ── -->
+    <section class="story-hero" aria-label="Story hero">
+        <div class="rain-drops" aria-hidden="true"></div>
+        <span class="series-badge">📖 Genesis Foundations · Book 1</span>
+        <h1 class="hero-title">Noah and the Ark</h1>
+        <p class="hero-subtitle">The original story that inspired the Matrix of Conscience — obedience, renewal, and the divine covenant that reshaped creation.</p>
+        <div class="hero-meta">
+            <span><span aria-hidden="true">✍️</span> Sheila Garcia</span>
+            <span><span aria-hidden="true">📅</span> Genesis Foundations Series</span>
+            <span><span aria-hidden="true">⭐</span> Virtue: Patience (Sterope)</span>
+            <span><span aria-hidden="true">📖</span> 7 chapters</span>
+        </div>
+    </section>
+
+    <!-- ── Virtue banner ── -->
+    <div class="virtue-banner">
+        <div class="virtue-card">
+            <span class="virtue-icon" aria-hidden="true">⭐</span>
+            <div class="virtue-text">
+                <h3>Seven-Star Virtue: Patience — Sterope</h3>
+                <p>Noah's journey embodies the Sixth Star — enduring a hundred years of ridicule to complete a task no one else believed in. He built not from certainty, but from obedience. Patience is the covenant before the rain falls.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Story layout: chapters + sidebar ── -->
+    <div class="story-layout">
+
+        <!-- Main content: chapter reader -->
+        <div class="story-main" aria-label="Story reader">
+
+            <!-- Chapter navigation tabs -->
+            <nav class="chapter-nav" aria-label="Chapter navigation" id="chap-tabs"></nav>
+
+            <!-- Chapter panels (injected by JS) -->
+            <div id="chapter-panels"></div>
+
+        </div>
+
+        <!-- Lore sidebar -->
+        <aside class="lore-sidebar" aria-label="Story lore and connections">
+
+            <div class="lore-card">
+                <h2 class="lore-heading">📌 Story Motifs</h2>
+                <ul class="motif-list">
+                    <li><span class="motif-icon">🌊</span><span><strong>The Flood</strong> — reset as a form of divine grace; destruction that clears the way for covenant.</span></li>
+                    <li><span class="motif-icon">🕊️</span><span><strong>The Dove</strong> — the first messenger of peace; a type of the Holy Spirit descending on the faithful.</span></li>
+                    <li><span class="motif-icon">🌈</span><span><strong>The Rainbow</strong> — God's signature on the covenant; a promise written in light across the sky.</span></li>
+                    <li><span class="motif-icon">⚓</span><span><strong>The Ark</strong> — engineering as an act of worship; obedience made manifest in wood and pitch.</span></li>
+                    <li><span class="motif-icon">⏳</span><span><strong>One Hundred Years</strong> — faith endures beyond ridicule; Noah built what others could not imagine.</span></li>
+                </ul>
+            </div>
+
+            <div class="lore-card">
+                <h2 class="lore-heading">🔗 Series Connections</h2>
+                <a href="/ministry/bible-journey.html" class="series-link">
+                    <span class="series-label">
+                        <span class="series-title">The Matrix of Conscience</span>
+                        <span class="series-meta">Next in Genesis Foundations · 7 chapters</span>
+                    </span>
+                    <span class="series-arrow" aria-hidden="true">→</span>
+                </a>
+                <br>
+                <a href="/stories/amazing-grace-covenant/" class="series-link">
+                    <span class="series-label">
+                        <span class="series-title">Amazing Grace: Covenant of New Beginnings</span>
+                        <span class="series-meta">Synthesis of divine and digital creation</span>
+                    </span>
+                    <span class="series-arrow" aria-hidden="true">→</span>
+                </a>
+            </div>
+
+            <div class="lore-card">
+                <h2 class="lore-heading">🏷️ Tags</h2>
+                <div class="virtue-tag-list">
+                    <span class="virtue-tag faith">Patience</span>
+                    <span class="virtue-tag">Obedience</span>
+                    <span class="virtue-tag">Covenant</span>
+                    <span class="virtue-tag">Flood</span>
+                    <span class="virtue-tag">New Beginnings</span>
+                    <span class="virtue-tag">Genesis</span>
+                    <span class="virtue-tag">Origins</span>
+                </div>
+            </div>
+
+            <div class="lore-card">
+                <h2 class="lore-heading">📚 Back to Library</h2>
+                <a href="/stories/" class="series-link" aria-label="Back to Storybook Library">
+                    <span class="series-label">
+                        <span class="series-title">Storybook Library</span>
+                        <span class="series-meta">All stories, testimonies &amp; adventures</span>
+                    </span>
+                    <span class="series-arrow" aria-hidden="true">←</span>
+                </a>
+            </div>
+
+        </aside>
+    </div>
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="/">amazinggracehl.org</a> &mdash; <a href="/stories/">Library</a> &mdash; <a href="/ministry">Ministry</a></p>
+</footer>
+
+<script>
+(function () {
+    // ── Mobile nav toggle ──
+    var toggle = document.querySelector('.menu-toggle');
+    var nav = document.getElementById('main-nav');
+    if (toggle && nav) {
+        toggle.addEventListener('click', function () {
+            var open = nav.classList.toggle('show');
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+    }
+
+    // ── Story chapters ──
+    var chapters = [
+        {
+            title: 'The Weight of the World',
+            label: 'Chapter 1',
+            scripture: { text: '"The LORD saw how great the wickedness of the human race had become on the earth, and that every inclination of the thoughts of the human heart was only evil all the time."', ref: 'Genesis 6:5' },
+            image: null,
+            text: [
+                'In the age before memory, the earth had grown heavy. Not with mountains or sea, but with the weight of choices — choices made every morning by every person who had turned away from the voice that first spoke light into darkness.',
+                'Noah heard that voice still. While others built empires of self, he built a life of quiet faithfulness. His neighbours laughed at the old man who spoke of rain in a sky that had never wept — who insisted that the silence between God and creation was not abandonment, but patience.',
+                'The LORD watched. And in the watching, there was grief so vast it bent the fabric of time. Something had to change. Not because God had given up — but because He had not.'
+            ]
+        },
+        {
+            title: 'The Blueprint of Grace',
+            label: 'Chapter 2',
+            scripture: { text: '"I am going to bring floodwaters on the earth to destroy all life under the heavens, every creature that has the breath of life in it. Everything on earth will perish. But I will establish my covenant with you."', ref: 'Genesis 6:17–18' },
+            image: null,
+            text: [
+                'The instructions came not as a whisper but as a tide — specifications so precise they left no room for improvisation, yet so impossible they demanded everything Noah had. Three hundred cubits long. Fifty wide. Thirty high. Four hundred and fifty feet of faith in the form of gopher wood.',
+                'For a hundred years, Noah built. His sons grew up measuring, hauling, sealing. Neighbours catalogued his madness with the precision of scholars: the old fool who builds a boat on dry land, who speaks of a God patient enough to wait a century for one man\'s faithfulness.',
+                'But the blueprint was not just for a vessel. It was for a covenant — the first of many promises God would write across human history. Every plank Noah laid was a sentence in a language he didn\'t fully speak yet. He was building the grammar of grace.'
+            ]
+        },
+        {
+            title: 'The Gathering Storm',
+            label: 'Chapter 3',
+            scripture: { text: '"And Noah did all that the LORD commanded him."', ref: 'Genesis 7:5' },
+            image: null,
+            text: [
+                'Seven days before the rain, the animals came. Not in chaos but in procession — a language of creation Noah had never witnessed. Pair by pair they arrived, each species carrying its own rhythm, its own silence. Something in their movement said: we know what is coming.',
+                'Noah\'s family sealed the doors from within. Outside, the sky had taken on a colour no one could name — not the grey of storm clouds but something deeper, a bruise beneath the fabric of the world.',
+                'On the seventeenth day of the second month, in the six hundredth year of Noah\'s life, the fountains of the great deep burst open and the windows of heaven were unlatched. The rain that had never fallen began to fall.',
+                'The earth wept. And it was not the end. It was the beginning of something the world had never seen: a God who could grieve, and still choose to save.'
+            ]
+        },
+        {
+            title: 'Forty Days of Silence',
+            label: 'Chapter 4',
+            scripture: { text: '"The waters flooded the earth for a hundred and fifty days."', ref: 'Genesis 7:24' },
+            image: null,
+            text: [
+                'Inside the ark, time moved differently. The sound of rain became the only constant — a percussion that covered every other sound, every memory of a world now gone beneath the surface. The animals settled. The children of Noah\'s family found new rhythms in the feeding, the tending, the keeping.',
+                'Noah did not know if the water would ever stop. That was the architecture of faith — not certainty, but continuation. You feed the animals on the morning when you cannot see the horizon. You keep moving in the dark because the One who sent the rain also promised the rainbow.',
+                'Some silences are not empty. Some are full of everything that was being held, everything being remade. Noah floated in the silence and trusted the one who had spoken to him when no one else was listening.'
+            ]
+        },
+        {
+            title: 'The Dove and the Branch',
+            label: 'Chapter 5',
+            scripture: { text: '"When the dove returned to him in the evening, there in its beak was a freshly plucked olive leaf! Then Noah knew that the water had receded from the earth."', ref: 'Genesis 8:11' },
+            image: null,
+            text: [
+                'First he sent the raven. It flew back and forth until the water dried, restless and returning with nothing. Then the dove — three times. The first time, nothing. The second time, an olive branch still wet with the language of a new world. The third time, the dove did not return at all.',
+                'Noah wept. Not from grief but from recognition. The branch in the dove\'s beak was a message written in the oldest language — the language of growing things, of roots pushing through mud, of a world insisting on life again.',
+                'The door of the ark had been sealed from outside — by God. Now, for the first time in over a year, the voice came again: "Come out of the ark." The same voice that said go in, said come out. That is the full shape of obedience: it waits for the word that opens.'
+            ]
+        },
+        {
+            title: 'The First Altar',
+            label: 'Chapter 6',
+            scripture: { text: '"Then Noah built an altar to the LORD and, taking some of all the clean animals and clean birds, he sacrificed burnt offerings on it. The LORD smelled the pleasing aroma and said in his heart: \'Never again will I curse the ground because of humans.\'"', ref: 'Genesis 8:20–21' },
+            image: null,
+            text: [
+                'The first thing Noah did on dry ground was not to survey the land, count what remained, or calculate what had been lost. He built an altar.',
+                'Worship before inventory. Gratitude before strategy. The offering rose as smoke into a sky that was clear for the first time in over a year, and the smell of it carried something God called pleasing — not because God needed the offering, but because the offering was a declaration: we are not our own. We owe everything to the One who kept us.',
+                'In that smoke, something shifted. A promise formed in the heart of the Almighty — not a contract, but a covenant. Never again. The covenant was unconditional. It did not depend on what humanity would do next. It was written in the character of God: steadfast love that endures beyond even its own grief.'
+            ]
+        },
+        {
+            title: 'The Rainbow Covenant',
+            label: 'Chapter 7',
+            scripture: { text: '"I have set my rainbow in the clouds, and it will be the sign of the covenant between me and the earth. Whenever I bring clouds over the earth and the rainbow appears in the clouds, I will remember my covenant between me and you and all living creatures of every kind."', ref: 'Genesis 9:13–15' },
+            image: null,
+            text: [
+                'The rainbow was not for Noah alone. It was for every creature that breathed — a signature in light written across the sky each time rain gathered. God said: "I will remember." Not that He might forget — but that the bow would be a reminder of the promise He had made to Himself.',
+                'The arc of that covenant stretches across all of human history. It is in the foundation of every promise made in faithfulness. It is in the engineering blueprints of the Matrix of Conscience, where the White Rabbit and the Guardian of Grace built Nimbus Land on the same principle: that renewal is possible, that the flood does not have the last word.',
+                'Noah planted a vineyard after the covenant. He planted life in the new ground. The story of Noah is not a story about water — it is a story about what is built after the water recedes: altars, covenants, vineyards, and the long, faithful work of beginning again.',
+                'That work is ours too.'
+            ]
+        }
+    ];
+
+    var tabsEl   = document.getElementById('chap-tabs');
+    var panelsEl = document.getElementById('chapter-panels');
+    var current  = 0;
+
+    function renderChapter(idx) {
+        var c = chapters[idx];
+
+        // ── Tab button ──
+        var btn = document.createElement('button');
+        btn.className = 'chap-btn' + (idx === 0 ? ' active' : '');
+        btn.textContent = c.label;
+        btn.setAttribute('aria-selected', idx === 0 ? 'true' : 'false');
+        btn.addEventListener('click', function () { showChapter(idx); });
+        tabsEl.appendChild(btn);
+
+        // ── Panel ──
+        var panel = document.createElement('div');
+        panel.className = 'chapter-panel' + (idx === 0 ? ' active' : '');
+        panel.id = 'panel-' + idx;
+
+        // header
+        var hdr = document.createElement('div');
+        hdr.className = 'chapter-header';
+        var lbl = document.createElement('div');
+        lbl.className = 'chapter-label';
+        lbl.textContent = c.label + ' of ' + chapters.length;
+        var ttl = document.createElement('h2');
+        ttl.className = 'chapter-title';
+        ttl.textContent = c.title;
+        hdr.appendChild(lbl);
+        hdr.appendChild(ttl);
+        panel.appendChild(hdr);
+
+        // image
+        if (c.image) {
+            var img = document.createElement('img');
+            img.className = 'chapter-image';
+            img.src = c.image;
+            img.alt = c.title;
+            panel.appendChild(img);
+        } else {
+            var ph = document.createElement('div');
+            ph.className = 'chapter-image-placeholder';
+            ph.setAttribute('aria-hidden', 'true');
+            var phIcon = document.createElement('span');
+            phIcon.textContent = '🌊';
+            var phLabel = document.createElement('span');
+            phLabel.textContent = c.title;
+            ph.appendChild(phIcon);
+            ph.appendChild(phLabel);
+            panel.appendChild(ph);
+        }
+
+        // body
+        var body = document.createElement('div');
+        body.className = 'chapter-body';
+
+        // scripture
+        if (c.scripture) {
+            var sb = document.createElement('div');
+            sb.className = 'scripture-block';
+            var st = document.createElement('p');
+            st.className = 'scripture-text';
+            st.textContent = c.scripture.text;
+            var sr = document.createElement('cite');
+            sr.className = 'scripture-ref';
+            sr.textContent = '— ' + c.scripture.ref;
+            sb.appendChild(st);
+            sb.appendChild(sr);
+            body.appendChild(sb);
+        }
+
+        // paragraphs
+        var textWrap = document.createElement('div');
+        textWrap.className = 'chapter-text';
+        c.text.forEach(function (para) {
+            var p = document.createElement('p');
+            p.textContent = para;
+            textWrap.appendChild(p);
+        });
+        body.appendChild(textWrap);
+        panel.appendChild(body);
+
+        // footer nav
+        var footer = document.createElement('div');
+        footer.className = 'chapter-footer';
+
+        var prevBtn = document.createElement('button');
+        prevBtn.className = 'chap-nav-btn';
+        prevBtn.textContent = '← Previous';
+        prevBtn.disabled = idx === 0;
+        prevBtn.addEventListener('click', function () { if (current > 0) showChapter(current - 1); });
+
+        var prog = document.createElement('span');
+        prog.className = 'chap-progress';
+        prog.textContent = (idx + 1) + ' / ' + chapters.length;
+
+        var nextBtn = document.createElement('button');
+        nextBtn.className = 'chap-nav-btn';
+        nextBtn.textContent = 'Next →';
+        nextBtn.disabled = idx === chapters.length - 1;
+        nextBtn.addEventListener('click', function () { if (current < chapters.length - 1) showChapter(current + 1); });
+
+        footer.appendChild(prevBtn);
+        footer.appendChild(prog);
+        footer.appendChild(nextBtn);
+        panel.appendChild(footer);
+
+        panelsEl.appendChild(panel);
+    }
+
+    function showChapter(idx) {
+        current = idx;
+        var tabs   = tabsEl.querySelectorAll('.chap-btn');
+        var panels = panelsEl.querySelectorAll('.chapter-panel');
+        tabs.forEach(function (t, i) {
+            t.classList.toggle('active', i === idx);
+            t.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+        });
+        panels.forEach(function (p, i) {
+            p.classList.toggle('active', i === idx);
+        });
+        // Update prev/next button disabled state
+        var footers = panelsEl.querySelectorAll('.chapter-footer');
+        if (footers[idx]) {
+            var btns = footers[idx].querySelectorAll('.chap-nav-btn');
+            if (btns[0]) btns[0].disabled = idx === 0;
+            if (btns[1]) btns[1].disabled = idx === chapters.length - 1;
+        }
+    }
+
+    chapters.forEach(function (_, i) { renderChapter(i); });
+})();
+</script>
+</body>
+</html>

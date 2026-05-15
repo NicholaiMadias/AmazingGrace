@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Nexus Match-Maker",
+  "short_name": "Match-Maker",
+  "description": "Atlas-based Match-Maker extension scaffold aligned to the Seven-Star visual system.",
+  "version": "0.1.0",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://*/",
+    "http://*/"
+  ],
+  "action": {
+    "default_title": "Nexus Match-Maker",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "svg/gems-atlas.svg",
+        "svg/master-atlas.svg",
+        "assets/*.png",
+        "engine/*.js"
+      ],
+      "matches": [
+        "https://*/",
+        "http://*/"
+      ]
+    }
+  ]
+}

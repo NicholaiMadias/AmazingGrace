@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225" width="400" height="225">
+  <defs>
+    <linearGradient id="sky3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a2a50"/>
+      <stop offset="100%" stop-color="#3a6080"/>
+    </linearGradient>
+    <linearGradient id="ground3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5a8a30"/>
+      <stop offset="100%" stop-color="#2a4a18"/>
+    </linearGradient>
+    <linearGradient id="house3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f5e6c8"/>
+      <stop offset="100%" stop-color="#e2cc9a"/>
+    </linearGradient>
+    <linearGradient id="roof3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c25a0a"/>
+      <stop offset="100%" stop-color="#8a3e06"/>
+    </linearGradient>
+    <filter id="shadow3"><feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.3"/></filter>
+  </defs>
+  <!-- Sky -->
+  <rect width="400" height="225" fill="url(#sky3)"/>
+  <!-- Moon glow -->
+  <circle cx="340" cy="40" r="22" fill="rgba(255,230,150,0.15)"/>
+  <circle cx="340" cy="40" r="14" fill="rgba(255,230,150,0.2)"/>
+  <!-- Ground -->
+  <rect x="0" y="165" width="400" height="60" fill="url(#ground3)"/>
+  <!-- Flower pots -->
+  <ellipse cx="145" cy="165" rx="10" ry="5" fill="#8b4513" opacity="0.8"/>
+  <rect x="140" y="152" width="10" height="14" fill="#a0522d" opacity="0.9"/>
+  <circle cx="145" cy="150" r="6" fill="#ff6b6b" opacity="0.9"/>
+  <ellipse cx="255" cy="165" rx="10" ry="5" fill="#8b4513" opacity="0.8"/>
+  <rect x="250" y="152" width="10" height="14" fill="#a0522d" opacity="0.9"/>
+  <circle cx="255" cy="150" r="6" fill="#ff9f43" opacity="0.9"/>
+  <!-- Cottage body (smaller) -->
+  <rect x="95" y="100" width="210" height="65" fill="url(#house3)" filter="url(#shadow3)"/>
+  <!-- Roof -->
+  <polygon points="80,100 200,40 320,100" fill="url(#roof3)" filter="url(#shadow3)"/>
+  <!-- Small dormer -->
+  <polygon points="175,70 200,52 225,70" fill="#d4530a"/>
+  <rect x="178" y="70" width="44" height="25" fill="#f5e6c8"/>
+  <rect x="182" y="73" width="16" height="18" rx="2" fill="#7ab8d4"/>
+  <rect x="202" y="73" width="16" height="18" rx="2" fill="#7ab8d4"/>
+  <!-- Door -->
+  <rect x="180" y="122" width="40" height="43" rx="4" fill="#8a3e06"/>
+  <rect x="182" y="124" width="36" height="39" rx="3" fill="#b85a20"/>
+  <circle cx="214" cy="144" r="3" fill="#ffd700"/>
+  <!-- Windows -->
+  <rect x="104" y="112" width="44" height="32" rx="3" fill="#aad4ec"/>
+  <line x1="126" y1="112" x2="126" y2="144" stroke="#8abcdc" stroke-width="1.5"/>
+  <line x1="104" y1="128" x2="148" y2="128" stroke="#8abcdc" stroke-width="1.5"/>
+  <rect x="252" y="112" width="44" height="32" rx="3" fill="#aad4ec"/>
+  <line x1="274" y1="112" x2="274" y2="144" stroke="#8abcdc" stroke-width="1.5"/>
+  <line x1="252" y1="128" x2="296" y2="128" stroke="#8abcdc" stroke-width="1.5"/>
+  <!-- Address bar -->
+  <rect x="0" y="195" width="400" height="30" fill="rgba(0,0,0,0.35)"/>
+  <text x="200" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#ffd700" letter-spacing="1">926 E Poinsettia Ave · Tampa, FL</text>
+</svg>

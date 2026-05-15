@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HKZ2G2VN78"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-HKZ2G2VN78');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Amazing Grace: The Matrix of Conscience (Classic) — the original Sub-Routines-driven engine, full-screen HUD experience.">
+  <meta name="theme-color" content="#000000">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Matrix of Conscience — Classic Engine | Amazing Grace Arcade">
+  <meta property="og:description" content="Play the original Sub-Routines-driven Matrix of Conscience engine in a full-screen holographic HUD.">
+  <meta property="og:url" content="https://amazinggracehl.org/arcade/matrix-classic">
+  <link rel="icon" type="image/png" href="../assets/logo.png">
+  <title>Matrix of Conscience (Classic) | Amazing Grace Arcade</title>
+  <link rel="stylesheet" crossorigin href="../assets/matrix-classic-DVX7_Msz.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="mc-header">
+    <a href="/" class="mc-brand" aria-label="Amazing Grace Home Living — Home">
+      <img src="../assets/logo.png" alt="Amazing Grace">
+      <span>Amazing Grace</span>
+    </a>
+    <nav class="mc-nav" aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/arcade">Arcade</a>
+      <a href="/arcade/matrix-debug.html">Debug</a>
+      <a href="/stories/">Library</a>
+      <a href="/ministry">Ministry</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Full-screen HUD -->
+  <div class="mc-hud-area">
+    <div class="matrix-classic-frame" role="main" aria-label="Matrix of Conscience Classic Engine">
+      <div class="mc-frame-title">Matrix of Conscience — Classic Engine</div>
+      <div id="matrix-classic-game" aria-label="Game canvas"></div>
+    </div>
+  </div>
+
+  <script src="../js/subroutines-shell.js"></script>
+  <script src="../js/matrix-progression.js"></script>
+  <!-- Classic engine boot script -->
+  <script src="../js/matrix-classic.js"></script>
+
+</body>
+</html>

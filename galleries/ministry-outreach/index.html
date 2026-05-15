@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Voice of Jesus Ministry outreach gallery — community events, street ministry, and outreach work.">
+    <meta name="theme-color" content="#1e3a8a">
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo.svg">
+    <title>Outreach Gallery | Amazing Grace Home Living</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+        :root { --navy: #1e3a8a; }
+        body { font-family:'Inter',sans-serif; background:#f3f4f6; color:#333; margin:0; padding:0; display:flex; flex-direction:column; min-height:100vh; }
+        *:focus-visible { outline:3px solid #3b82f6; outline-offset:2px; }
+        .site-header { background:var(--navy); color:white; padding:1rem 2rem; box-shadow:0 4px 6px rgba(0,0,0,0.1); display:flex; justify-content:space-between; align-items:center; position:relative; }
+        .logo { display:flex; align-items:center; gap:0.75rem; font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; text-decoration:none; color:white; }
+        .logo img { height:40px; width:auto; border-radius:4px; }
+        .nav-links { display:flex; gap:0.75rem; }
+        .nav-btn { background:rgba(255,255,255,0.1); color:white; text-decoration:none; padding:0.5rem 1rem; border-radius:6px; font-size:0.9rem; font-weight:600; transition:background 0.2s; }
+        .nav-btn:hover, .nav-btn.active { background:rgba(255,255,255,0.25); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.75rem; color:white; cursor:pointer; padding:0.25rem; }
+        @media(max-width:640px){
+            .nav-links{ display:none; flex-direction:column; position:absolute; top:100%; left:0; right:0; background-color:var(--navy); padding:1rem; z-index:100; box-shadow:0 4px 6px rgba(0,0,0,0.2); gap:0.5rem; }
+            .nav-links.show{ display:flex; }
+            .menu-toggle{ display:block; }
+            .nav-btn{ width:100%; padding:0.75rem 1rem; }
+        }
+        .hero { background:linear-gradient(135deg,#1e3a8a 0%,#1e40af 100%); color:white; text-align:center; padding:3rem 1.5rem 2rem; }
+        .hero h1 { font-family:'Playfair Display',serif; font-size:clamp(1.5rem,4vw,2.25rem); margin-bottom:0.5rem; }
+        .hero p { opacity:0.85; font-size:0.95rem; }
+        .container { max-width:1000px; margin:2rem auto; padding:0 1.5rem; flex:1; }
+        .breadcrumb { font-size:0.825rem; color:#6b7280; margin-bottom:1.5rem; }
+        .breadcrumb a { color:#2563eb; text-decoration:none; }
+        .breadcrumb a:hover { text-decoration:underline; }
+        .gallery-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1rem; }
+        .gallery-item { border-radius:12px; overflow:hidden; background:white; box-shadow:0 1px 3px rgba(0,0,0,0.1); aspect-ratio:4/3; }
+        .gallery-item img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.2s; }
+        .gallery-item img:hover { transform:scale(1.03); }
+        .gallery-empty { background:white; border-radius:16px; padding:3rem; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+        .gallery-empty-icon { font-size:3rem; margin-bottom:1rem; }
+        .gallery-empty p { color:#6b7280; font-size:1rem; }
+        #gallery-status { color:#6b7280; font-size:0.875rem; margin-bottom:1rem; }
+        main { flex:1; display:flex; flex-direction:column; }
+        .site-footer { background:#1f2937; color:#9ca3af; text-align:center; padding:1.5rem; font-size:0.875rem; margin-top:auto; }
+        .site-footer a { color:#60a5fa; text-decoration:none; }
+        .site-footer a:hover { text-decoration:underline; }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <a href="/" class="logo" aria-label="Amazing Grace Home Living — Home">
+            <img src="../../assets/logo.svg" alt="Amazing Grace Home Living Logo">
+            <span>Amazing Grace</span>
+        </a>
+        <nav id="main-nav" class="nav-links" aria-label="Main navigation">
+            <a href="/" class="nav-btn">🏠 Home</a>
+            <a href="/stories/" class="nav-btn">📚 Library</a>
+            <a href="/arcade" class="nav-btn">🎮 Arcade</a>
+            <a href="/ministry" class="nav-btn active" aria-current="page">🕊️ Ministry</a>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
+    </header>
+    <main>
+        <div class="hero">
+            <h1>🤝 Outreach Gallery</h1>
+            <p>Community events, street ministry, and outreach work from Voice of Jesus Ministry</p>
+        </div>
+        <div class="container">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <a href="/">Home</a> › <a href="/ministry">Ministry</a> › Outreach Gallery
+            </nav>
+            <p id="gallery-status" role="status" aria-live="polite"></p>
+            <div id="gallery-grid" class="gallery-grid" aria-label="Outreach photos"></div>
+            <div id="gallery-empty" class="gallery-empty" style="display:none">
+                <div class="gallery-empty-icon">🖼️</div>
+                <p>No images uploaded yet.</p>
+            </div>
+        </div>
+    </main>
+    <footer class="site-footer">
+        <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="/">amazinggracehl.org</a></p>
+    </footer>
+    <script>
+        (function loadGallery() {
+            const grid   = document.getElementById('gallery-grid');
+            const empty  = document.getElementById('gallery-empty');
+            const status = document.getElementById('gallery-status');
+
+            fetch('images.json')
+                .then(r => r.ok ? r.json() : Promise.reject('not found'))
+                .then(images => {
+                    if (!Array.isArray(images) || images.length === 0) { showEmpty(); return; }
+                    status.textContent = images.length + ' photo' + (images.length !== 1 ? 's' : '');
+                    images.forEach(src => {
+                        const wrap = document.createElement('div');
+                        wrap.className = 'gallery-item';
+                        const img = document.createElement('img');
+                        img.src = src;
+                        img.alt = 'Ministry outreach photo';
+                        img.loading = 'lazy';
+                        wrap.appendChild(img);
+                        grid.appendChild(wrap);
+                    });
+                })
+                .catch(() => showEmpty());
+
+            function showEmpty() {
+                empty.style.display = 'block';
+                status.textContent = 'No images uploaded yet.';
+            }
+        })();
+    </script>
+    <script>
+        (function () {
+            var toggle = document.querySelector('.menu-toggle');
+            var nav = document.getElementById('main-nav');
+            if (toggle && nav) {
+                toggle.addEventListener('click', function () {
+                    var isExpanded = nav.classList.toggle('show');
+                    toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+                });
+            }
+        })();
+    </script>
+    <div id="constellation-nav"></div>
+    <script type="module" src="../../constellation-nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225" width="400" height="225">
+  <defs>
+    <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f2a3a"/>
+      <stop offset="100%" stop-color="#1e5c7a"/>
+    </linearGradient>
+    <linearGradient id="ground2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a6b20"/>
+      <stop offset="100%" stop-color="#243f14"/>
+    </linearGradient>
+    <linearGradient id="house2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d4e8d4"/>
+      <stop offset="100%" stop-color="#b8d4b8"/>
+    </linearGradient>
+    <linearGradient id="roof2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2d5a3a"/>
+      <stop offset="100%" stop-color="#1a3a24"/>
+    </linearGradient>
+    <filter id="shadow2"><feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.3"/></filter>
+  </defs>
+  <!-- Sky -->
+  <rect width="400" height="225" fill="url(#sky2)"/>
+  <!-- Stars -->
+  <circle cx="50" cy="30" r="1.5" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="130" cy="20" r="1" fill="rgba(255,255,255,0.5)"/>
+  <circle cx="280" cy="25" r="1.5" fill="rgba(255,255,255,0.7)"/>
+  <circle cx="360" cy="35" r="1" fill="rgba(255,255,255,0.4)"/>
+  <circle cx="340" cy="15" r="1.5" fill="rgba(255,255,255,0.6)"/>
+  <!-- Ground -->
+  <rect x="0" y="165" width="400" height="60" fill="url(#ground2)"/>
+  <!-- Pathway -->
+  <polygon points="175,165 225,165 240,225 160,225" fill="#c8b89a" opacity="0.6"/>
+  <!-- House body -->
+  <rect x="70" y="90" width="260" height="75" fill="url(#house2)" filter="url(#shadow2)"/>
+  <!-- Roof (flat-ish) -->
+  <polygon points="55,90 200,25 345,90" fill="url(#roof2)" filter="url(#shadow2)"/>
+  <!-- Chimney -->
+  <rect x="140" y="40" width="18" height="38" fill="#2a4a30"/>
+  <rect x="138" y="37" width="22" height="6" fill="#345a3a"/>
+  <!-- Main door -->
+  <rect x="178" y="118" width="44" height="47" rx="4" fill="#2a5a3a"/>
+  <rect x="180" y="120" width="40" height="43" rx="3" fill="#3a7a4e"/>
+  <circle cx="216" cy="142" r="3" fill="#ffd700"/>
+  <!-- Windows -->
+  <rect x="88" y="104" width="52" height="38" rx="3" fill="#85c4e0"/>
+  <line x1="114" y1="104" x2="114" y2="142" stroke="#6ab0d0" stroke-width="1.5"/>
+  <line x1="88" y1="123" x2="140" y2="123" stroke="#6ab0d0" stroke-width="1.5"/>
+  <rect x="260" y="104" width="52" height="38" rx="3" fill="#85c4e0"/>
+  <line x1="286" y1="104" x2="286" y2="142" stroke="#6ab0d0" stroke-width="1.5"/>
+  <line x1="260" y1="123" x2="312" y2="123" stroke="#6ab0d0" stroke-width="1.5"/>
+  <!-- Garage door hint -->
+  <rect x="0" y="195" width="400" height="30" fill="rgba(0,0,0,0.35)"/>
+  <text x="200" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#7effd8" letter-spacing="1">1142 7th St NW · Largo, FL</text>
+</svg>

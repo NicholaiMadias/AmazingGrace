@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="News and updates from Amazing Grace Home Living and the Voice of Jesus Ministry — Tampa Bay, FL.">
+    <meta name="theme-color" content="#1e3a8a">
+
+    <link rel="icon" type="image/png" href="../assets/logo.png">
+    <title>News | Amazing Grace Home Living</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+        :root { --navy: #1e3a8a; --blue: #2563eb; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        *:focus-visible { outline: 3px solid #3b82f6; outline-offset: 2px; }
+
+        .site-header {
+            background-color: var(--navy);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            display: flex; align-items: center; gap: 0.75rem;
+            font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700;
+            text-decoration: none; color: white;
+        }
+
+        .logo img { height: 40px; width: auto; border-radius: 4px; }
+
+        .nav-links { display: flex; gap: 0.75rem; }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.1); color: white; text-decoration: none;
+            padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.25); }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            color: white;
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        @media (max-width: 640px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--navy);
+                padding: 1rem;
+                z-index: 100;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+                gap: 0.5rem;
+            }
+            .nav-links.show { display: flex; }
+            .menu-toggle { display: block; }
+            .nav-btn { width: 100%; padding: 0.75rem 1rem; }
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white; text-align: center; padding: 3.5rem 1.5rem 2.5rem;
+        }
+
+        .hero-icon { font-size: 3rem; margin-bottom: 0.75rem; }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.75rem, 4vw, 2.5rem); margin-bottom: 0.75rem;
+        }
+
+        .hero p { font-size: 1rem; opacity: 0.85; max-width: 520px; margin: 0 auto; line-height: 1.6; }
+
+        .news-container {
+            max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem;
+            display: flex; flex-direction: column; gap: 2rem;
+        }
+
+        .news-card {
+            background: white; border-radius: 16px; overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--blue);
+            padding: 1.75rem 2rem;
+            text-decoration: none; color: inherit; display: block;
+            transition: box-shadow 0.2s, transform 0.15s;
+        }
+
+        .news-card:hover {
+            box-shadow: 0 4px 12px rgba(37,99,235,0.15);
+            transform: translateY(-2px);
+        }
+
+        .news-tag {
+            display: inline-block; background: #dbeafe; color: #1e40af;
+            font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;
+            border-radius: 999px; margin-bottom: 0.6rem; text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .news-title {
+            font-family: 'Playfair Display', serif; font-size: 1.4rem;
+            color: #1e3a8a; margin-bottom: 0.5rem; line-height: 1.3;
+        }
+
+        .news-meta { color: #6b7280; font-size: 0.8rem; margin-bottom: 0.75rem; }
+
+        .news-excerpt { color: #374151; line-height: 1.75; font-size: 0.95rem; }
+
+        main { flex: 1; }
+
+        .breadcrumb {
+            max-width: 860px; margin: 1rem auto 0; padding: 0 1.5rem;
+            font-size: 0.825rem; color: #6b7280;
+        }
+
+        .breadcrumb a { color: var(--blue); text-decoration: none; }
+
+        .breadcrumb a:hover { text-decoration: underline; }
+
+        .site-footer {
+            background: #1f2937; color: #9ca3af;
+            text-align: center; padding: 1.5rem; font-size: 0.875rem; margin-top: 3rem;
+        }
+
+        .site-footer a { color: #60a5fa; text-decoration: none; }
+
+        .site-footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <a href="/" class="logo" aria-label="Amazing Grace Home Living — Home">
+            <img src="../assets/logo.png" alt="Amazing Grace Home Living Logo">
+            <span>Amazing Grace</span>
+        </a>
+        <nav id="main-nav" class="nav-links" aria-label="Main navigation">
+            <a href="/" class="nav-btn">🏠 Home</a>
+            <a href="/arcade" class="nav-btn">🎮 Arcade</a>
+            <a href="/ministry" class="nav-btn">🕊️ Ministry</a>
+            <a href="/stories" class="nav-btn">📚 Library</a>
+            <a href="/news" class="nav-btn active">📰 News</a>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
+    </header>
+
+    <main>
+        <div class="hero">
+            <div class="hero-icon">📰</div>
+            <h1>News &amp; Updates</h1>
+            <p>Latest announcements, articles, and community updates from Amazing Grace Home Living and the Voice of Jesus Ministry.</p>
+        </div>
+
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a> › News
+        </nav>
+
+        <div class="news-container">
+
+            <a href="/news/articles/zyko-learn.html" class="news-card" aria-labelledby="news1-title">
+                <span class="news-tag">Education</span>
+                <h2 id="news1-title" class="news-title">Zyko Learn: Faith-Based Learning for the Next Generation</h2>
+                <p class="news-meta">Amazing Grace Home Living &mdash; May 2026</p>
+                <p class="news-excerpt">Discover how Zyko Learn is bringing interactive, faith-centered education to residents and the wider community through the Seven Stars Arcade platform.</p>
+            </a>
+
+            <a href="/news/articles/future-articles.html" class="news-card" aria-labelledby="news2-title" style="border-left-color:#059669;">
+                <span class="news-tag" style="background:#d1fae5;color:#065f46;">Coming Soon</span>
+                <h2 id="news2-title" class="news-title">More Articles Coming Soon</h2>
+                <p class="news-meta">Amazing Grace Home Living &mdash; 2026</p>
+                <p class="news-excerpt">We are continually growing. Check back for new stories, ministry updates, housing announcements, and community highlights.</p>
+            </a>
+
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="/">amazinggracehl.org</a></p>
+    </footer>
+
+    <script>
+        (function () {
+            var toggle = document.querySelector('.menu-toggle');
+            var nav = document.getElementById('main-nav');
+            if (toggle && nav) {
+                toggle.addEventListener('click', function () {
+                    var isExpanded = nav.classList.toggle('show');
+                    toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Amazing Grace Nexus Arcade — play Seven Stars, Match Maker, and Matrix of Conscience, interactive faith-based games from Amazing Grace Home Living.">
+    <meta name="theme-color" content="#0f172a">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Nexus Arcade — Amazing Grace Home Living">
+    <meta property="og:description" content="Play Seven Stars, Match Maker, and Matrix of Conscience at the Amazing Grace Nexus Arcade.">
+    <meta property="og:url" content="https://amazinggracehl.org/arcade">
+
+    <link rel="icon" type="image/png" href="../assets/logo-S7NXL_ug.png">
+    <link rel="stylesheet" href="../style2.css">
+    <title>Nexus Arcade | Amazing Grace Home Living</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+        :root {
+            --bg:        #0f172a;
+            --surface:   #1e293b;
+            --surface2:  #0f172a;
+            --border:    #334155;
+            --accent:    #7effd8;
+            --accent2:   #ffd700;
+            --text:      #e2e8f0;
+            --text-muted:#94a3b8;
+            --header-bg: #0f172a;
+            --nav-btn:   #1e3a8a;
+            --nav-btn-h: #2563eb;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            body { scroll-behavior: smooth; }
+        }
+
+        *:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        /* ---- Header ---- */
+
+        .site-header {
+            background-color: var(--header-bg);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo img { height: 36px; width: auto; border-radius: 4px; }
+
+        .main-nav {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn {
+            background-color: var(--nav-btn);
+            border: 1px solid transparent;
+            padding: 0.45rem 1.1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #bfdbfe;
+            transition: background-color 0.2s, color 0.2s;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .nav-btn:hover { background-color: var(--nav-btn-h); color: white; }
+
+        .nav-btn.active { background-color: var(--accent); color: #0f172a; }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0; right: 0;
+                background-color: var(--header-bg);
+                padding: 1rem;
+                z-index: 100;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+                gap: 0.5rem;
+                border-bottom: 1px solid var(--border);
+            }
+            .main-nav.show { display: flex; }
+            .menu-toggle { display: block; }
+            .nav-btn { width: 100%; justify-content: flex-start; padding: 0.75rem 1rem; }
+        }
+
+        /* ---- Portal Selector Banner ---- */
+
+        .portal-bar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .portal-link {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .portal-link:hover { color: var(--accent); background: rgba(126,255,216,0.08); }
+
+        .portal-link.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
+
+        /* ---- Main ---- */
+
+        main { flex-grow: 1; padding: 2rem 1rem; }
+
+        .arcade-header { text-align: center; margin-bottom: 2.5rem; }
+
+        .arcade-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.75rem, 5vw, 3rem);
+            font-weight: 700;
+            color: var(--accent2);
+            text-shadow: 0 0 20px rgba(255,215,0,0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .arcade-header p { color: var(--text-muted); font-size: 1rem; }
+
+        /* ---- Game Grid ---- */
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto 3rem;
+        }
+
+        .game-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .game-card.card-stars::before   { background: radial-gradient(circle at 30% 20%, rgba(255,215,0,0.12), transparent 60%); }
+
+        .game-card.card-match::before   { background: radial-gradient(circle at 30% 20%, rgba(126,255,216,0.12), transparent 60%); }
+
+        .game-card.card-matrix::before  { background: radial-gradient(circle at 30% 20%, rgba(167,139,250,0.12), transparent 60%); }
+
+        .badge-violet { background: rgba(167,139,250,0.12); color: #a78bfa; border: 1px solid rgba(167,139,250,0.3); }
+
+        .play-btn-violet { background: #a78bfa; color: #1a1035; }
+
+        .game-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.4); border-color: var(--accent); }
+
+        .game-card:hover::before { opacity: 1; }
+
+        .game-card-icon { font-size: 2.5rem; }
+
+        .game-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .game-card-desc { font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; }
+
+        .game-card-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            margin-top: auto;
+            align-self: flex-start;
+        }
+
+        .badge-gold   { background: rgba(255,215,0,0.15); color: var(--accent2); border: 1px solid rgba(255,215,0,0.3); }
+
+        .badge-teal   { background: rgba(126,255,216,0.1); color: var(--accent);  border: 1px solid rgba(126,255,216,0.3); }
+
+        .badge-purple { background: rgba(139,92,246,0.12); color: #c084fc;        border: 1px solid rgba(139,92,246,0.3); }
+
+        .card-matrix-act1::before { background: radial-gradient(circle at 30% 20%, rgba(139,92,246,0.14), transparent 60%); }
+
+        .game-card.card-match-v2::before { background: radial-gradient(circle at 30% 20%, rgba(99,255,206,0.14), transparent 60%); }
+
+        .game-card.card-listings { cursor: default; grid-column: 1 / -1; }
+
+        .game-card.card-listings::before { background: radial-gradient(circle at 30% 20%, rgba(34,197,94,0.1), transparent 60%); }
+
+        .badge-green { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+
+        .card-listings .listing-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+
+        .card-listings .listing-list li { font-size: 0.875rem; color: var(--text-muted); line-height: 1.5; }
+
+        .card-listings .listing-list li strong { color: white; }
+
+        .card-listings .listing-contact { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+        .card-listings .listing-contact a { color: var(--accent); text-decoration: none; }
+
+        .card-listings .listing-contact a:hover { text-decoration: underline; }
+
+        .play-btn {
+            margin-top: 0.5rem;
+            padding: 0.6rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            align-self: flex-start;
+        }
+
+        .play-btn-gold  { background: var(--accent2); color: #1a1a2e; }
+
+        .play-btn-teal  { background: var(--accent);  color: #0f172a; }
+
+        .play-btn:hover { filter: brightness(1.1); transform: scale(1.04); }
+
+        /* ---- Game Stage (full play area) ---- */
+
+        .game-stage {
+            display: none;
+            max-width: 1000px;
+            margin: 0 auto;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .game-stage.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .stage-back-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            margin-bottom: 1.25rem;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .stage-back-btn:hover { color: white; border-color: var(--accent); }
+
+        /* ---- Seven Stars game wrapper (dark-themed) ---- */
+
+        .game-wrapper {
+            width: 100%;
+            max-width: 700px;
+            min-height: 65vh;
+            background: #1a1a2e;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .game-header-bar {
+            background-color: #0f0f1e;
+            color: var(--accent2);
+            padding: 1.25rem;
+            text-align: center;
+            font-size: 1.4rem;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #4e4e6a;
+        }
+
+        .game-content {
+            flex-grow: 1;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            overflow-y: auto;
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .game-message-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+        }
+
+        .game-message-box {
+            background: #1a1a2e;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            max-width: 80%;
+            color: white;
+            border: 2px solid var(--accent2);
+            box-shadow: 0 0 20px rgba(255,215,0,0.3);
+        }
+
+        .game-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent2);
+            color: #1a1a2e;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .game-btn:hover { background-color: #e6c200; }
+
+        .arcade-downloads {
+            display: grid;
+            gap: 0.75rem;
+            width: 100%;
+            max-width: 980px;
+            margin: 1.25rem auto 0;
+        }
+
+        .arcade-download-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .arcade-download-btn small {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            opacity: 0.85;
+            margin-top: 0.15rem;
+        }
+
+        .match-maker-icon-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+
+        .match-maker-gems {
+            display: flex;
+            gap: 0.35rem;
+            align-items: center;
+        }
+
+        .match-maker-gems svg,
+        .match-maker-icon-wrap svg {
+            width: 28px;
+            height: 28px;
+            display: block;
+        }
+
+        /* Seven Stars map/option styles */
+
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+
+        .map-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255,255,255,0.08);
+            border: 2px solid #4e4e6a;
+            border-radius: 1rem;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .map-item:hover { transform: translateY(-3px); box-shadow: 0 0 10px var(--accent2); border-color: var(--accent2); }
+
+        .map-item.completed { background: rgba(255,215,0,0.15); border-color: var(--accent2); }
+
+        .star-svg { width: 28px; height: 28px; margin-bottom: 0.4rem; stroke: var(--accent2); }
+
+        .map-item.completed .star-svg polygon { fill: var(--accent2); }
+
+        .option-button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.75rem;
+            text-align: left;
+            border: 2px solid #4e4e6a;
+            background: rgba(255,255,255,0.08);
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .option-button:hover:not(:disabled) { background: rgba(255,255,255,0.15); border-color: var(--accent2); }
+
+        .option-button.correct { background: rgba(34,197,94,0.3); border-color: #22c55e; color: #86efac; }
+
+        .option-button.wrong   { background: rgba(239,68,68,0.3);  border-color: #ef4444; color: #fca5a5; }
+
+        /* ---- Match Maker styles (within arcade page) ---- */
+
+        .match-card {
+            background: linear-gradient(135deg,rgba(10,14,30,.97),rgba(8,10,22,.95));
+            border: 1px solid #1d3042;
+            border-radius: 16px;
+            padding: 1rem;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 12px 50px rgba(0,0,0,.45),inset 0 0 0 1px rgba(126,255,216,.05);
+        }
+
+        .match-card h2 {
+            text-align: center;
+            font-size: 1.1rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: #7effd8;
+            margin-bottom: .6rem;
+        }
+
+        .match-shell { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; }
+
+        @media (max-width:860px) { .match-shell { grid-template-columns: 1fr; } }
+
+        .match-stats { display: flex; justify-content: space-around; font-size: .85rem; color: #a6b7c6; margin-bottom: .65rem; }
+
+        .match-stats > div { transition: all .3s ease; }
+
+        .match-stats > div.score-pop { animation: mmScorePop .5s ease; }
+
+        .match-stats span { color: #7effd8; font-weight: 700; }
+
+        .match-momentum { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: .4rem; }
+
+        .momentum-chip {
+            background: linear-gradient(135deg,#0e1a2b,#0c1b24);
+            border: 1px solid #12324b;
+            border-radius: 10px;
+            padding: .35rem .75rem;
+            font-size: .78rem;
+            color: #d9f5ff;
+            display: inline-flex;
+            gap: .3rem;
+            align-items: center;
+            transition: all .3s ease;
+        }
+
+        .momentum-chip.active {
+            background: linear-gradient(135deg,#1a2e3b,#1c3544);
+            border-color: #7effd8;
+            box-shadow: 0 0 12px rgba(126,255,216,.3);
+            transform: scale(1.05);
+        }
+
+        .momentum-chip strong { color: #7effd8; transition: color .3s ease; }
+
+        .momentum-chip.active strong { color: #fff; text-shadow: 0 0 8px rgba(126,255,216,.6); }
+
+        .board-wrap {
+            background: linear-gradient(145deg,#0b0f1c,#0f1324);
+            border-radius: 14px;
+            border: 1px solid #18283a;
+            padding: .8rem;
+            box-shadow: inset 0 0 0 1px rgba(126,255,216,.05);
+        }
+
+        .match-grid-board {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(7,1fr);
+            gap: .4rem;
+            padding: .8rem;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background: radial-gradient(circle at 40% 20%,rgba(126,255,216,.12),transparent 45%),#0b0f1c;
+            border-radius: 12px;
+            border: 1px solid #12324b;
+        }
+
+        .match-cell {
+            position: relative;
+            aspect-ratio: 1/1;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.35rem;
+            cursor: pointer;
+            background: linear-gradient(135deg,#0c1b24,#112436);
+            box-shadow: 0 0 6px rgba(0,0,0,.6),0 0 16px rgba(126,255,216,.05);
+            transition: transform .15s ease,box-shadow .15s ease,filter .15s ease;
+            user-select: none;
+            overflow: visible;
+            border: 1px solid rgba(126,255,216,.05);
+        }
+
+        .match-cell:hover  { transform: scale(1.05); box-shadow: 0 0 18px rgba(126,255,216,.18); }
+
+        .match-cell:active { transform: scale(.94); }
+
+        .match-cell.selected { box-shadow: 0 0 0 3px #7effd8,0 0 20px rgba(126,255,216,.6); transform: scale(1.08); }
+
+        .match-cell.matching { animation: mmPop .28s ease; filter: drop-shadow(0 0 16px rgba(255,255,255,.5)); }
+
+        .glyph { position: relative; z-index: 1; pointer-events: none; width: 80%; height: 80%; background-size: contain; background-repeat: no-repeat; background-position: center; }
+
+        .glyph.emoji { width: auto; height: auto; background: none; }
+
+        .special-chip {
+            position: absolute; bottom: 6px; right: 6px;
+            background: rgba(255,255,255,.12); color: #fff;
+            border-radius: 6px; padding: .1rem .35rem; font-size: .7rem;
+            border: 1px solid rgba(255,255,255,.2);
+            box-shadow: 0 0 8px rgba(255,255,255,.25);
+        }
+
+        .gem-heart { background: linear-gradient(135deg,#1b0e18,#2a1322); border-color: rgba(255,107,157,.2); }
+
+        .gem-star  { background: linear-gradient(135deg,#201c0f,#2a2213); border-color: rgba(255,215,0,.2);  }
+
+        .gem-cross { background: linear-gradient(135deg,#12141f,#1c2033); border-color: rgba(126,166,255,.2); }
+
+        .gem-flame { background: linear-gradient(135deg,#24130f,#35180f); border-color: rgba(255,99,71,.2);  }
+
+        .gem-drop  { background: linear-gradient(135deg,#0f1b24,#0f2432); border-color: rgba(79,195,247,.2); }
+
+        .gem-wild  { background: linear-gradient(135deg,#1a1030,#10301a); border-color: rgba(126,255,216,.3); }
+
+        .special-row,.special-col,.special-bomb,.special-wild {
+            box-shadow: 0 0 18px rgba(126,255,216,.25),inset 0 0 12px rgba(126,255,216,.1);
+            border-color: rgba(126,255,216,.5);
+            animation: mmSpecialPulse 2s ease-in-out infinite;
+        }
+
+        .match-badge-banner {
+            text-align: center; font-size: .92rem; color: #7effd8;
+            background: #0d2a19; border: 1px solid #00ff4160;
+            border-radius: 10px; padding: .6rem 1rem; margin-top: .6rem;
+            box-shadow: 0 6px 20px rgba(0,0,0,.35);
+        }
+
+        .match-badge-banner.hidden { display: none; }
+
+        .match-restart-btn {
+            display: block; margin: .8rem auto 0;
+            background: linear-gradient(135deg,#0c1c2a,#0f2536);
+            border: 1px solid #7effd8; color: #7effd8;
+            padding: .45rem 1.4rem; border-radius: 8px; cursor: pointer;
+            font-size: .88rem; letter-spacing: .08em;
+            transition: transform .15s,box-shadow .2s,background .15s;
+            box-shadow: 0 8px 18px rgba(0,255,65,.12);
+        }
+
+        .match-restart-btn:hover { background: #113042; transform: translateY(-1px); }
+
+        .match-restart-btn:active { transform: translateY(1px); }
+
+        .store {
+            background: linear-gradient(135deg,#0c1324,#0f1a2f);
+            border: 1px solid #18283a;
+            border-radius: 12px;
+            padding: .75rem;
+            box-shadow: inset 0 0 0 1px rgba(126,255,216,.05);
+        }
+
+        .store-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: .6rem; color: #d9f5ff; }
+
+        .store-head h3 { font-size: 1rem; letter-spacing: .08em; text-transform: uppercase; color: #7effd8; }
+
+        .store-currency {
+            background: rgba(126,255,216,.08); border: 1px solid rgba(126,255,216,.3);
+            padding: .35rem .6rem; border-radius: 8px; font-size: .85rem;
+        }
+
+        .store-items { display: grid; gap: .5rem; }
+
+        .store-item {
+            background: linear-gradient(135deg,#0f1f33,#0f2742); color: #d9f5ff;
+            border: 1px solid rgba(126,255,216,.25); border-radius: 10px;
+            padding: .6rem .75rem; text-align: left; cursor: pointer;
+            transition: transform .1s ease,box-shadow .2s ease; width: 100%;
+        }
+
+        .store-item:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(0,0,0,.35); }
+
+        .store-item:active { transform: translateY(1px); }
+
+        .store-title { font-weight: 700; color: #7effd8; }
+
+        .store-meta { font-size: .82rem; color: #a6b7c6; margin-top: .1rem; }
+
+        .particle {
+            position: absolute; pointer-events: none; width: 8px; height: 8px;
+            border-radius: 50%; animation: mmParticleFloat .8s ease-out forwards; z-index: 100;
+        }
+
+        .mm-hud { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-bottom: .75rem; }
+
+        .mm-stat {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 8px; padding: .4rem .9rem;
+            min-width: 72px; text-align: center;
+        }
+
+        .mm-stat-label { font-size: .65rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: .05em; }
+
+        .mm-stat-value { font-size: 1.2rem; font-weight: 700; color: #7effd8; }
+
+        .mm-conscience {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1rem 1.25rem;
+            max-width: 420px; width: 100%;
+        }
+
+        .mm-bar-row   { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+
+        .mm-bar-label { font-size: .7rem; font-weight: 600; color: var(--text); width: 56px; flex-shrink: 0; }
+
+        .mm-bar-track { flex: 1; background: var(--border); border-radius: 999px; height: 8px; overflow: hidden; }
+
+        .mm-bar-fill  { height: 100%; border-radius: 999px; transition: width .4s ease; width: 0%; }
+
+        .mm-bar-pct   { font-size: .7rem; color: var(--text-muted); width: 26px; text-align: right; flex-shrink: 0; }
+
+        @keyframes mmPop { 0%{transform:scale(1)} 35%{transform:scale(1.12)} 100%{transform:scale(1)} }
+
+        @keyframes mmSpecialPulse {
+            0%,100%{box-shadow:0 0 18px rgba(126,255,216,.25),inset 0 0 12px rgba(126,255,216,.1)}
+            50%{box-shadow:0 0 25px rgba(126,255,216,.4),inset 0 0 18px rgba(126,255,216,.2)}
+        }
+
+        @keyframes mmParticleFloat {
+            0%{opacity:1;transform:translate(0,0) scale(1)}
+            100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(0)}
+        }
+
+        @keyframes mmScorePop {
+            0%{transform:scale(1)} 50%{transform:scale(1.15);color:#7effd8} 100%{transform:scale(1)}
+        }
+
+        /* ---- Footer ---- */
+
+        .site-footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .site-footer a { color: var(--accent); text-decoration: none; }
+
+        .site-footer a:hover { text-decoration: underline; }
+
+        /* ---- Certificate / Completion ---- */
+
+        .cert-input {
+            width: 100%; padding: 0.5rem 0.75rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            color: var(--text);
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .cert-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+        .cert-btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
+
+        .cert-canvas-wrap { max-width: 100%; overflow-x: auto; }
+
+        #cert-canvas { display: none; max-width: 100%; border: 2px solid var(--accent2); border-radius: 0.5rem; margin: 1rem auto; }
+
+        #cert-download-btns { display: none; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
+    </style>
+  <script type="module" crossorigin src="../assets/modulepreload-polyfill-Bchw24nj.js"></script>
+  <script type="module" crossorigin src="../assets/constellation-nav-Bi2J6JPz.js"></script>
+  <link rel="stylesheet" crossorigin href="../assets/constellation-nav-BLnZXU5f.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <a href="../" class="logo" aria-label="Amazing Grace Home Living — Home">
+            <img src="../assets/logo.png" alt="Amazing Grace Home Living Logo">
+            <span>Amazing Grace</span>
+        </a>
+
+        <nav id="main-nav" class="main-nav" aria-label="Main navigation">
+            <a href="../" class="nav-btn">🏠 Home</a>
+            <a href="/stories/" class="nav-btn">📚 Library</a>
+            <a href="./" class="nav-btn active" aria-current="page">🎮 Arcade</a>
+            <a href="../#properties" class="nav-btn">🏘️ Listings</a>
+            <a href="../ministries/" class="nav-btn" style="background:rgba(124,58,237,0.4);">✨ Seven Stars</a>
+            <a href="../#contact" class="nav-btn">✉️ Contact</a>
+        </nav>
+
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
+    </header>
+
+    <!-- Portal Selector -->
+    <div class="portal-bar" role="navigation" aria-label="Portal navigation">
+        <a href="../#properties" class="portal-link">🏠 Listings</a>
+        <a href="./" class="portal-link active" aria-current="page">🎮 Arcade</a>
+        <a href="../ministry/" class="portal-link">🕊️ Ministry</a>
+        <a href="../ministries/" class="portal-link">✨ Seven Stars</a>
+    </div>
+
+    <!-- Main -->
+    <main>
+
+        <!-- Game Grid (lobby) -->
+        <div id="game-lobby">
+            <div class="arcade-header">
+                <h1>⚡ Nexus Arcade</h1>
+                <p>Play, learn, and grow through interactive faith-based games.</p>
+            </div>
+
+            <div class="arcade-downloads" aria-label="Offline downloads">
+                <a class="game-btn arcade-download-btn" href="./downloads/nexus-match-maker.zip" download="nexus-match-maker.zip" aria-label="Download the Nexus Match-Maker browser extension scaffold">
+                    <span>🧩 Download Nexus Match-Maker Extension <small>MV3 scaffold + Seven-Star atlas assets</small></span>
+                    <span aria-hidden="true">⬇</span>
+                </a>
+            </div>
+
+            <div class="game-grid">
+
+                <!-- Seven Stars Card -->
+                <div class="game-card card-stars" role="button" tabindex="0" aria-label="Play The Mystery of the Seven Stars" onclick="launchGame('sevenstars')" onkeydown="if(event.key==='Enter'||event.key===' ')launchGame('sevenstars')">
+                    <div class="game-card-icon">⭐</div>
+                    <div class="game-card-title">Mystery of the Seven Stars</div>
+                    <div class="game-card-desc">Journey through the seven churches of Asia Minor. Read their stories and test your biblical knowledge to collect all seven stars.</div>
+                    <span class="game-card-badge badge-gold">Knowledge Quest</span>
+                    <button class="play-btn play-btn-gold" tabindex="-1">▶ Play Now</button>
+                </div>
+
+                <!-- Match Maker Card -->
+                <div class="game-card card-match" role="button" tabindex="0" aria-label="Play Match Maker" onclick="launchGame('matchmaker')" onkeydown="if(event.key==='Enter'||event.key===' ')launchGame('matchmaker')">
+                    <div class="game-card-icon match-maker-icon-wrap" aria-hidden="true">
+                        <svg viewBox="0 0 128 128">
+                            <use href="../assets/master-atlas-Crf8CIfF.svg#icon-seven-stars"></use>
+                        </svg>
+                        <span class="match-maker-gems">
+                            <svg viewBox="0 0 50 50">
+                                <use href="../assets/svg/gems-atlas.svg#gem-electra"></use>
+                            </svg>
+                            <svg viewBox="0 0 50 50">
+                                <use href="../assets/svg/gems-atlas.svg#gem-maia"></use>
+                            </svg>
+                            <svg viewBox="0 0 50 50">
+                                <use href="../assets/svg/gems-atlas.svg#gem-taygete"></use>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="game-card-title">Match Maker</div>
+                    <div class="game-card-desc">Swap and match Seven-Star gems on a 7×7 board. Unlock special tiles, build combos, grow your Conscience Meter, and earn ⭐ credits (1 pt = 1 credit).</div>
+                    <span class="game-card-badge badge-teal">Gem Puzzle</span>
+                    <button class="play-btn play-btn-teal" tabindex="-1">▶ Play Now</button>
+                </div>
+
+                <!-- Match Maker V2 Card -->
+                <div class="game-card card-match-v2" role="button" tabindex="0" aria-label="Play Match Maker V2 — Seven Element Edition" onclick="launchGame('matchmaker2')" onkeydown="if(event.key==='Enter'||event.key===' ')launchGame('matchmaker2')">
+                    <div class="game-card-icon">💎</div>
+                    <div class="game-card-title">Match Maker V2</div>
+                    <div class="game-card-desc">Seven elemental gems, ley-line multipliers, canvas particle FX, conscience engine, and narrative beats. Align the lattice.</div>
+                    <span class="game-card-badge badge-teal">New · V2 Engine</span>
+                    <button class="play-btn play-btn-teal" tabindex="-1">▶ Play V2</button>
+                </div>
+
+                <!-- Quick Click Card -->
+                <a href="./quick-click/" class="game-card card-match-v2" style="text-decoration:none;" aria-label="Play Quick Click">
+                    <div class="game-card-icon">⚡</div>
+                    <div class="game-card-title">Quick Click</div>
+                    <div class="game-card-desc">A fast reflex challenge. Targets appear at random intervals — hit as many as you can before the timer ends.</div>
+                    <span class="game-card-badge badge-teal">New · Reflex</span>
+                    <button class="play-btn play-btn-teal" tabindex="-1">▶ Play Now</button>
+                </a>
+
+                <!-- Star Matrix Card -->
+                <a href="./star-matrix/" class="game-card card-stars" style="text-decoration:none;" aria-label="Play Star Matrix">
+                    <div class="game-card-icon">🌟</div>
+                    <div class="game-card-title">Star Matrix</div>
+                    <div class="game-card-desc">Match star constellations on a 7×7 board. Align 5 star types and reach 1000 points to earn your certificate.</div>
+                    <span class="game-card-badge badge-gold">New · Star Puzzle</span>
+                    <button class="play-btn play-btn-gold" tabindex="-1">▶ Play Now</button>
+                </a>
+
+                <!-- Matrix of Conscience Card -->
+                <a href="./matrix-of-conscience/" class="game-card card-matrix" style="text-decoration:none;" aria-label="Play Matrix of Conscience">
+                    <div class="game-card-icon">🧠</div>
+                    <div class="game-card-title">Matrix of Conscience</div>
+                    <div class="game-card-desc">Explore the Seven Pillars of faith in this interactive journey. Reflect, decide, and build your conscience matrix.</div>
+                    <span class="game-card-badge badge-purple">Journey · 7 Pillars</span>
+                    <button class="play-btn play-btn-violet" tabindex="-1">▶ Enter the Matrix</button>
+                </a>
+
+                <!-- Matrix Act 1 Card -->
+                <a href="./matrix-act-1/" class="game-card card-matrix-act1" style="text-decoration:none;" aria-label="Play Matrix Act 1 — Conscience Protocol">
+                    <div class="game-card-icon">🔮</div>
+                    <div class="game-card-title">Matrix Act 1</div>
+                    <div class="game-card-desc">Journey through 7 chapters of the Conscience Protocol. Encrypted signals, locked nodes, and the architecture of forgiveness await.</div>
+                    <span class="game-card-badge badge-purple">New · Story</span>
+                    <button class="play-btn" style="background:#7c3aed;color:#fff;" tabindex="-1">▶ Begin Act 1</button>
+                </a>
+
+                <!-- Property Listings Card -->
+                <div id="property-listings" class="game-card card-listings" aria-label="Available Rooms — Amazing Grace Home Living">
+                    <div class="game-card-icon">🏠</div>
+                    <div class="game-card-title">Available Rooms — Amazing Grace Home Living</div>
+                    <ul class="listing-list">
+                        <li><strong>926 E Poinsettia Ave, Tampa FL</strong> — $850/mo (all inclusive, washer/dryer, Wi‑Fi, utilities, parking)</li>
+                        <li><strong>1142 7th St NW, Largo FL</strong> — $1,000/mo (standard room, washer/dryer, full kitchen, Wi‑Fi, utilities, parking)</li>
+                        <li><strong>1144 7th St NW, Largo FL</strong> — $1,000/mo (spacious room, washer/dryer, full kitchen, Wi‑Fi, utilities, parking)</li>
+                    </ul>
+                    <p class="listing-contact">Call <a href="tel:+17274202873">727‑420‑2873</a> or email <a href="mailto:admin@amazinggracehl.org">admin@amazinggracehl.org</a> to schedule a tour.</p>
+                    <span class="game-card-badge badge-green">Rooms Available</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ======================================================
+             Seven Stars Game Stage
+             ====================================================== -->
+        <div id="stage-sevenstars" class="game-stage">
+            <button class="stage-back-btn" onclick="backToLobby()">← Back to Arcade</button>
+
+            <div class="game-wrapper relative mx-auto">
+                <div class="game-header-bar">The Mystery of the Seven Stars</div>
+                <div id="game-screen" class="game-content">
+                    <!-- Rendered by JS -->
+                </div>
+                <!-- Alert overlay -->
+                <div id="game-alert-overlay" class="game-message-overlay">
+                    <div class="game-message-box">
+                        <p id="game-alert-text" class="text-lg font-semibold mb-4"></p>
+                        <button id="game-alert-close" class="game-btn">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================
+             Match Maker Game Stage
+             ====================================================== -->
+        <div id="stage-matchmaker" class="game-stage">
+            <button class="stage-back-btn" onclick="backToLobby()">← Back to Arcade</button>
+
+            <!-- HUD -->
+            <div class="mm-hud">
+                <div class="mm-stat"><div class="mm-stat-label">Score</div><div id="match-score" class="mm-stat-value">0</div></div>
+                <div class="mm-stat"><div class="mm-stat-label">Level</div><div id="match-level" class="mm-stat-value">1</div></div>
+                <div class="mm-stat"><div class="mm-stat-label">Moves</div><div id="match-moves" class="mm-stat-value">20</div></div>
+            </div>
+
+            <div id="match-msg" class="text-sm text-center min-h-[1.4em] mb-2" style="color:#7effd8"></div>
+
+            <div id="match-badge-banner" class="hidden text-center font-bold py-2 px-4 rounded max-w-sm mx-auto mb-2 match-badge-banner"></div>
+
+            <!-- 7×7 Grid -->
+            <div id="match-grid" class="match-grid-board mx-auto" role="grid" aria-label="Match Maker game board"></div>
+
+            <!-- Conscience Meter -->
+            <div class="mm-conscience mx-auto mt-4">
+                <h3 class="text-xs font-bold mb-2 text-center uppercase tracking-wide" style="color:var(--text-muted)">Conscience Meter</h3>
+                <div class="mm-bar-row"><span class="mm-bar-label">Empathy</span><div class="mm-bar-track"><div id="mc-empathy-bar" class="mm-bar-fill bg-pink-400"></div></div><span id="mc-empathy" class="mm-bar-pct">0</span></div>
+                <div class="mm-bar-row"><span class="mm-bar-label">Justice</span><div class="mm-bar-track"><div id="mc-justice-bar" class="mm-bar-fill bg-blue-400"></div></div><span id="mc-justice" class="mm-bar-pct">0</span></div>
+                <div class="mm-bar-row"><span class="mm-bar-label">Wisdom</span><div class="mm-bar-track"><div id="mc-wisdom-bar" class="mm-bar-fill bg-purple-400"></div></div><span id="mc-wisdom" class="mm-bar-pct">0</span></div>
+                <div class="mm-bar-row"><span class="mm-bar-label">Growth</span><div class="mm-bar-track"><div id="mc-growth-bar" class="mm-bar-fill bg-green-400"></div></div><span id="mc-growth" class="mm-bar-pct">0</span></div>
+            </div>
+
+            <!-- Save Slot -->
+            <div class="text-center mt-4">
+                <label for="save-slot" class="text-sm font-medium mr-2" style="color:var(--text-muted)">Save Slot:</label>
+                <select id="save-slot" class="border rounded px-2 py-1 text-sm" style="background:var(--surface);border-color:var(--border);color:var(--text)">
+                    <option value="slot1">Slot 1</option>
+                    <option value="slot2">Slot 2</option>
+                    <option value="slot3">Slot 3</option>
+                </select>
+            </div>
+
+            <!-- Star Progress Map -->
+            <div id="star-map-container" class="mx-auto mt-4" style="max-width:560px;background:var(--surface);border-radius:0.75rem;border:1px solid var(--border);" aria-label="Star progress map"></div>
+
+            <!-- Certificates link -->
+            <div class="text-center mt-3">
+                <a href="./certificates/" style="font-size:0.75rem;color:var(--text-muted);text-decoration:none;">📜 My Certificates</a>
+            </div>
+        </div>
+
+        <!-- ======================================================
+             Match Maker V2 Game Stage
+             ====================================================== -->
+        <div id="stage-matchmaker2" class="game-stage">
+            <button class="stage-back-btn" onclick="backToLobby()">← Back to Arcade</button>
+
+            <!-- V2 HUD -->
+            <div class="mm-hud">
+                <div class="mm-stat"><div class="mm-stat-label">Score</div><div id="v2-score" class="mm-stat-value">0</div></div>
+                <div class="mm-stat"><div class="mm-stat-label">Level</div><div id="v2-level" class="mm-stat-value">1</div></div>
+                <div class="mm-stat"><div class="mm-stat-label">Moves</div><div id="v2-moves" class="mm-stat-value">0</div></div>
+            </div>
+
+            <div id="v2-msg" class="text-sm text-center min-h-[1.4em] mb-1" style="color:#7effd8"></div>
+            <div id="v2-narrative" class="hidden" aria-live="polite" aria-atomic="true"></div>
+            <div id="v2-badge-banner" class="hidden" role="status" aria-live="polite"></div>
+
+            <!-- V2 Board + canvas overlay -->
+            <div class="v2-game-wrapper mx-auto">
+                <div id="v2-board" role="grid" aria-label="Match Maker V2 game board"></div>
+                <canvas id="fx-overlay" aria-hidden="true"></canvas>
+            </div>
+
+            <!-- V2 Conscience Bars -->
+            <div class="v2-conscience-panel mx-auto mt-4">
+                <h3>Conscience Matrix</h3>
+                <div class="v2-bar-row">
+                    <span class="v2-bar-label">Karma</span>
+                    <div class="v2-bar-track"><div id="v2-bar-karma"     class="v2-bar-fill v2-bar-karma"></div></div>
+                    <span id="v2-pct-karma"     class="v2-bar-pct">0%</span>
+                </div>
+                <div class="v2-bar-row">
+                    <span class="v2-bar-label">Wisdom</span>
+                    <div class="v2-bar-track"><div id="v2-bar-wisdom"    class="v2-bar-fill v2-bar-wisdom"></div></div>
+                    <span id="v2-pct-wisdom"    class="v2-bar-pct">0%</span>
+                </div>
+                <div class="v2-bar-row">
+                    <span class="v2-bar-label">Integrity</span>
+                    <div class="v2-bar-track"><div id="v2-bar-integrity" class="v2-bar-fill v2-bar-integrity"></div></div>
+                    <span id="v2-pct-integrity" class="v2-bar-pct">0%</span>
+                </div>
+                <div class="v2-bar-row">
+                    <span class="v2-bar-label">Community</span>
+                    <div class="v2-bar-track"><div id="v2-bar-community" class="v2-bar-fill v2-bar-community"></div></div>
+                    <span id="v2-pct-community" class="v2-bar-pct">0%</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="../">amazinggracehl.org</a></p>
+    </footer>
+
+    <!-- Star map module (updates on level completion) -->
+    <script>
+        (function () {
+            function refreshStarMap() {
+                import('../star-map.js').then(function (m) {
+                    var container = document.getElementById('star-map-container');
+                    if (container) m.renderStarMap(container);
+                }).catch(function (err) { console.warn('[star-map] Failed to load star-map.js:', err); });
+            }
+
+            refreshStarMap();
+            document.addEventListener('matchmaker-level-complete', refreshStarMap);
+            document.addEventListener('matchmakerComplete', refreshStarMap);
+        })();
+    </script>
+
+    <script>
+        // ── Mobile menu toggle ──────────────────────────────────────────
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mainNav    = document.getElementById('main-nav');
+        menuToggle.addEventListener('click', () => {
+            const expanded = mainNav.classList.toggle('show');
+            menuToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        });
+
+        // ── Game launcher ───────────────────────────────────────────────
+        const lobby          = document.getElementById('game-lobby');
+        const stageSeven     = document.getElementById('stage-sevenstars');
+        const stageMatch     = document.getElementById('stage-matchmaker');
+        const stageMatch2    = document.getElementById('stage-matchmaker2');
+        let matchInitialized  = false;
+        let match2Initialized = false;
+
+        function launchGame(id) {
+            lobby.style.display = 'none';
+            stageSeven.classList.remove('active');
+            stageMatch.classList.remove('active');
+            stageMatch2.classList.remove('active');
+
+            if (id === 'sevenstars') {
+                stageSeven.classList.add('active');
+                if (!window._sevenStarsStarted) {
+                    window._sevenStarsStarted = true;
+                    initSevenStars();
+                }
+            } else if (id === 'matchmaker') {
+                stageMatch.classList.add('active');
+                if (!matchInitialized) {
+                    matchInitialized = true;
+                    import('../match-maker-ui.js')
+                        .then(m => m.initMatchMaker(null, null))
+                        .catch(err => {
+                            console.error('Match Maker failed to load:', err);
+                            document.getElementById('match-grid').innerHTML =
+                                '<p style="color:var(--text-muted);padding:2rem;text-align:center">⚠️ Match Maker could not be loaded. Please refresh the page.</p>';
+                        });
+                }
+            } else if (id === 'matchmaker2') {
+                stageMatch2.classList.add('active');
+                if (!match2Initialized) {
+                    match2Initialized = true;
+                    import('../match-maker-ui2.js')
+                        .then(m => m.initMatchMakerV2(null, null))
+                        .catch(err => {
+                            console.error('Match Maker V2 failed to load:', err);
+                            document.getElementById('v2-board').innerHTML =
+                                '<p style="color:var(--text-muted);padding:2rem;text-align:center">⚠️ Match Maker V2 could not be loaded. Please refresh the page.</p>';
+                        });
+                }
+            }
+        }
+
+        function backToLobby() {
+            stageSeven.classList.remove('active');
+            stageMatch.classList.remove('active');
+            stageMatch2.classList.remove('active');
+            lobby.style.display = '';
+        }
+
+        // ── Match Maker completion certificate ─────────────────────────
+        document.addEventListener('matchmakerComplete', (e) => {
+            const scoreVal = e.detail?.score ?? 0;
+            const stage    = document.getElementById('stage-matchmaker');
+            if (!stage) return;
+
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;inset:0;background:var(--bg);z-index:9000;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-y:auto;padding:2rem 1rem;text-align:center;';
+
+            overlay.innerHTML = `
+                <div style="max-width:600px;width:100%;margin:0 auto">
+                    <div style="font-size:3rem;margin-bottom:.75rem">🎉</div>
+                    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.25rem);color:#FFD700;margin-bottom:.5rem">Congratulations!</h2>
+                    <p style="color:#94a3b8;margin-bottom:1.25rem;line-height:1.6">You've completed all five levels of Match Maker!<br>Final Score: <strong style="color:#7effd8">${scoreVal}</strong></p>
+                    <div style="background:rgba(126,255,216,.08);border:1px solid var(--accent);border-radius:1rem;padding:1.25rem;margin-bottom:1.5rem">
+                        <p style="color:var(--accent);font-weight:700;margin-bottom:.35rem">🔮 Match Maker — All Levels Complete</p>
+                        <p style="color:#cbd5e1;font-size:.825rem">Empathy &bull; Justice &bull; Wisdom &bull; Growth</p>
+                    </div>
+                    <div style="margin-bottom:1rem">
+                        <label for="mm-cert-name" style="color:#94a3b8;font-size:.875rem;display:block;margin-bottom:.4rem;text-align:left">Your name for the certificate (optional):</label>
+                        <input id="mm-cert-name" type="text" placeholder="Player" maxlength="40" class="cert-input">
+                    </div>
+                    <div class="cert-btn-row" style="margin-bottom:.75rem">
+                        <button id="mm-gen-cert" class="game-btn" style="background:#7effd8;color:#0f172a;font-weight:700">🏆 Generate Certificate</button>
+                    </div>
+                    <div class="cert-canvas-wrap" style="width:100%">
+                        <canvas id="mm-cert-canvas" style="display:none;max-width:100%;border:2px solid var(--accent);border-radius:.5rem;margin:1rem auto"></canvas>
+                    </div>
+                    <div id="mm-cert-btns" class="cert-btn-row" style="display:none;margin-bottom:1rem">
+                        <button id="mm-dl-png" class="game-btn">⬇ Download PNG</button>
+                        <button id="mm-print" class="game-btn" style="background:rgba(255,255,255,.08)">🖨 Print / Save PDF</button>
+                    </div>
+                    <button id="mm-back-lobby" class="game-btn" style="background:none;border:1px solid var(--border);color:#94a3b8;margin-top:.5rem">↩ Back to Arcade</button>
+                </div>`;
+
+            document.body.appendChild(overlay);
+
+            function drawMMCert(canvas, name) {
+                canvas.width  = 800;
+                canvas.height = 560;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#0f172a';
+                ctx.fillRect(0, 0, 800, 560);
+                ctx.strokeStyle = '#7effd8';
+                ctx.lineWidth = 6;
+                ctx.strokeRect(16, 16, 768, 528);
+                ctx.strokeStyle = 'rgba(126,255,216,0.3)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(26, 26, 748, 508);
+                ctx.font = '28px serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('🔮', 50, 80);
+                ctx.fillText('🔮', 750, 80);
+                ctx.fillStyle = '#7effd8';
+                ctx.font = 'bold 36px Georgia, serif';
+                ctx.fillText('Certificate of Completion', 400, 100);
+                ctx.fillStyle = 'rgba(126,255,216,0.4)';
+                ctx.fillRect(100, 115, 600, 2);
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = 'italic 18px Georgia, serif';
+                ctx.fillText('This certifies that', 400, 160);
+                ctx.fillStyle = '#FFD700';
+                ctx.font = 'bold 32px Georgia, serif';
+                ctx.fillText(name, 400, 215);
+                ctx.fillStyle = '#e2e8f0';
+                ctx.font = '18px Georgia, serif';
+                ctx.fillText('has successfully completed all five levels of', 400, 265);
+                ctx.fillStyle = '#7effd8';
+                ctx.font = 'bold 26px Georgia, serif';
+                ctx.fillText('Match Maker', 400, 310);
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '14px Georgia, serif';
+                ctx.fillText('Aligning virtues of Empathy, Justice, Wisdom, and Growth', 400, 350);
+                ctx.fillText('through the power of faith-based gem matching', 400, 373);
+                ctx.fillStyle = 'rgba(126,255,216,0.4)';
+                ctx.fillRect(100, 408, 600, 1);
+                const date = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+                ctx.fillStyle = '#e2e8f0';
+                ctx.font = '16px Georgia, serif';
+                ctx.fillText('Completed on ' + date + '  |  Final Score: ' + scoreVal, 400, 445);
+                const uid = 'AGC-MM-' + Date.now().toString(36).toUpperCase();
+                ctx.fillStyle = '#64748b';
+                ctx.font = '12px monospace';
+                ctx.fillText('Certificate ID: ' + uid, 400, 490);
+                ctx.fillStyle = '#334155';
+                ctx.font = 'bold 11px sans-serif';
+                ctx.fillText('Amazing Grace Home Living — amazinggracehl.org', 400, 535);
+            }
+
+            overlay.querySelector('#mm-gen-cert').addEventListener('click', () => {
+                const name   = (overlay.querySelector('#mm-cert-name').value.trim() || 'Player');
+                const canvas = overlay.querySelector('#mm-cert-canvas');
+                drawMMCert(canvas, name);
+                canvas.style.display = 'block';
+                overlay.querySelector('#mm-cert-btns').style.display = 'flex';
+            });
+
+            overlay.querySelector('#mm-dl-png').addEventListener('click', () => {
+                const canvas = overlay.querySelector('#mm-cert-canvas');
+                if (!canvas || canvas.style.display === 'none') return;
+                canvas.toBlob(blob => {
+                    if (!blob) { console.error('Certificate export failed: canvas produced no blob.'); return; }
+                    const url = URL.createObjectURL(blob);
+                    const a   = document.createElement('a');
+                    a.href = url; a.download = 'match-maker-certificate-' + Date.now() + '.png';
+                    document.body.appendChild(a); a.click();
+                    document.body.removeChild(a); URL.revokeObjectURL(url);
+                });
+            });
+
+            overlay.querySelector('#mm-print').addEventListener('click', () => {
+                const canvas = overlay.querySelector('#mm-cert-canvas');
+                if (!canvas || canvas.style.display === 'none') return;
+                const dataUrl = canvas.toDataURL('image/png');
+                const win = window.open('', '_blank');
+                if (!win) return;
+                win.document.write('<!DOCTYPE html><html><head><title>Certificate</title><style>body{margin:0;background:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh}img{max-width:100%}</style></head><body><img src="' + dataUrl + '" onload="window.print()"></body></html>');
+                win.document.close();
+            });
+
+            overlay.querySelector('#mm-back-lobby').addEventListener('click', () => {
+                overlay.remove();
+                backToLobby();
+            });
+        });
+
+        // ── Seven Stars game ────────────────────────────────────────────
+        const churches = [
+            { name:"Ephesus",      message:"The church in Ephesus was known for its hard work and perseverance. However, Jesus warned them that they had abandoned their 'first love.'",                                                                  question:"What did Jesus say the church in Ephesus had forsaken?",          options:["Their wealth","Their first love","Their good deeds","Their leader"],                         answer:"Their first love" },
+            { name:"Smyrna",       message:"The church in Smyrna faced tribulation and poverty, but Jesus commended their faithfulness. He had no words of rebuke for them and encouraged them to be faithful, even to death.",                             question:"What was the church in Smyrna's main challenge?",                 options:["False prophets","Lukewarm faith","Persecution and poverty","Spiritual pride"],              answer:"Persecution and poverty" },
+            { name:"Pergamum",     message:"Pergamum was where 'Satan's throne' was, and the church was praised for holding fast to Jesus' name despite living in a very worldly city. But some tolerated false teachings.",                              question:"What was the main problem for the church in Pergamum?",          options:["They were too busy","They were persecuted","They compromised with false teachings","They were arrogant"], answer:"They compromised with false teachings" },
+            { name:"Thyatira",     message:"This church was praised for its love, faith, and service, and its good works were increasing. But they were rebuked for tolerating a false prophetess who led people into immorality.",                       question:"What did Jesus rebuke the church in Thyatira for?",               options:["Leaving their first love","Being spiritually dead","Tolerating a false prophetess","Being poor"], answer:"Tolerating a false prophetess" },
+            { name:"Sardis",       message:"The church in Sardis had a reputation for being alive, but Jesus said they were 'dead.' He urged them to wake up and strengthen what remained.",                                                              question:"What was the condition of the church in Sardis?",                options:["Faithful and enduring","Spiritually dead","Rich and prosperous","Facing persecution"],      answer:"Spiritually dead" },
+            { name:"Philadelphia", message:"The church in Philadelphia was commended for having little strength but keeping Jesus' word and not denying His name. He promised them an 'open door' and protection.",                                       question:"What did Jesus praise the church in Philadelphia for?",           options:["Being rich and prosperous","Having a strong leader","Keeping His word and not denying His name","Their many good works"], answer:"Keeping His word and not denying His name" },
+            { name:"Laodicea",     message:"This church was wealthy and self-sufficient, but Jesus called them 'lukewarm.' He wanted them to be either hot or cold, not complacent in their faith.",                                                      question:"What was the main problem with the church in Laodicea?",         options:["They were facing persecution","They were compromising with false teachings","They were lukewarm and complacent","They were poor and starving"], answer:"They were lukewarm and complacent" }
+        ];
+
+        function initSevenStars() {
+            const gameScreen = document.getElementById('game-screen');
+            const overlay    = document.getElementById('game-alert-overlay');
+            const alertText  = document.getElementById('game-alert-text');
+            const alertClose = document.getElementById('game-alert-close');
+            let completedStars = JSON.parse(localStorage.getItem('aghl_sevenStarsCompleted') || '[]');
+
+            function showAlert(text, cb) {
+                alertText.textContent = text;
+                overlay.style.display = 'flex';
+                alertClose.onclick = () => { overlay.style.display = 'none'; if (cb) cb(); };
+            }
+
+            /** Show a transient notification toast above the game screen. */
+            function ssShowNotification(msg, type = 'error') {
+                const el = document.createElement('div');
+                const bg = type === 'success' ? '#22c55e' : '#ef4444';
+                el.style.cssText = [
+                    'position:fixed', 'top:20px', 'left:50%', 'transform:translateX(-50%)',
+                    `background:${bg}`, 'color:#fff', 'padding:12px 24px',
+                    'border-radius:8px', 'font-weight:700', 'z-index:10000',
+                    'pointer-events:none', 'box-shadow:0 4px 12px rgba(0,0,0,.4)',
+                    'font-size:.95rem', 'max-width:90vw', 'text-align:center'
+                ].join(';');
+                el.textContent = msg;
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 4000);
+            }
+
+            /** Draw the completion certificate onto `canvas`. */
+            function ssCertDraw(canvas, name, date, certId) {
+                const ctx = canvas.getContext('2d');
+
+                // Background gradient
+                const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                grad.addColorStop(0, '#0f172a');
+                grad.addColorStop(1, '#1e293b');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Gold border
+                ctx.strokeStyle = '#FFD700';
+                ctx.lineWidth = 8;
+                ctx.strokeRect(16, 16, canvas.width - 32, canvas.height - 32);
+                ctx.strokeStyle = 'rgba(255,215,0,.3)';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(28, 28, canvas.width - 56, canvas.height - 56);
+
+                // Stars row
+                ctx.font = '28px serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐', canvas.width / 2, 76);
+
+                // Title
+                ctx.font = 'bold 36px "Playfair Display", serif';
+                ctx.fillStyle = '#FFD700';
+                ctx.fillText('Certificate of Completion', canvas.width / 2, 140);
+
+                // Subtitle
+                ctx.font = '18px "Inter", sans-serif';
+                ctx.fillStyle = '#94a3b8';
+                ctx.fillText('The Mystery of the Seven Stars', canvas.width / 2, 176);
+
+                // Divider
+                ctx.strokeStyle = 'rgba(255,215,0,.4)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(80, 196);
+                ctx.lineTo(canvas.width - 80, 196);
+                ctx.stroke();
+
+                // Recipient
+                ctx.font = '16px "Inter", sans-serif';
+                ctx.fillStyle = '#94a3b8';
+                ctx.fillText('This certifies that', canvas.width / 2, 240);
+
+                ctx.font = 'bold 30px "Playfair Display", serif';
+                ctx.fillStyle = '#e2e8f0';
+                ctx.fillText(name, canvas.width / 2, 286);
+
+                ctx.font = '16px "Inter", sans-serif';
+                ctx.fillStyle = '#94a3b8';
+                ctx.fillText('has discovered all Seven Stars and completed the journey', canvas.width / 2, 326);
+                ctx.fillText('through the seven churches of Asia Minor.', canvas.width / 2, 350);
+
+                // Divider
+                ctx.beginPath();
+                ctx.moveTo(80, 372);
+                ctx.lineTo(canvas.width - 80, 372);
+                ctx.stroke();
+
+                // Date & ID
+                ctx.font = '13px "Inter", sans-serif';
+                ctx.fillStyle = '#64748b';
+                ctx.textAlign = 'left';
+                ctx.fillText(`Completed: ${date}`, 80, 404);
+                ctx.textAlign = 'right';
+                ctx.fillText(`ID: ${certId}`, canvas.width - 80, 404);
+
+                // Footer
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#7effd8';
+                ctx.font = 'bold 13px "Inter", sans-serif';
+                ctx.fillText('Amazing Grace Home Living — amazinggracehl.org', canvas.width / 2, 436);
+            }
+
+            /** Render the name-entry phase so the player can get their certificate. */
+            function renderCertName() {
+                gameScreen.innerHTML = `
+                    <div id="cert-phase" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;max-width:480px;margin:0 auto;padding:2rem 1rem">
+                        <div style="font-size:2.5rem;margin-bottom:1rem">🏆</div>
+                        <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,4vw,2rem);color:#FFD700;margin-bottom:.5rem">All Seven Stars Found!</h2>
+                        <p style="color:#94a3b8;margin-bottom:1.5rem;line-height:1.6">You've completed the journey through the seven churches of Asia Minor. Enter your name to download your certificate.</p>
+                        <input id="cert-name-input" type="text" maxlength="60" placeholder="Your Name"
+                            style="width:100%;max-width:320px;padding:.65rem 1rem;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:1rem;margin-bottom:1rem;text-align:center" />
+                        <button id="cert-generate-btn" class="game-btn" style="font-size:1rem;padding:.75rem 2rem">⬇ Download Certificate</button>
+                        <button id="cert-back-btn" style="margin-top:.75rem;background:none;border:none;color:#64748b;cursor:pointer;font-size:.875rem;font-weight:600">← Back to Map</button>
+                    </div>`;
+                document.getElementById('cert-generate-btn').addEventListener('click', ssGenerateCert);
+                document.getElementById('cert-back-btn').addEventListener('click', renderMap);
+            }
+
+            /** Generate, draw, and download the completion certificate.
+             *  Errors from ssCertDraw() or toDataURL() are caught and surfaced
+             *  via ssShowNotification(); the name-entry phase stays visible so
+             *  the player can try again without losing their input. */
+            function ssGenerateCert() {
+                const nameInput = document.getElementById('cert-name-input');
+                const name = nameInput?.value.trim() || 'Player';
+                const date = new Date().toLocaleDateString();
+                const certId = 'AGHL-SS-' + Date.now();
+
+                const canvas = document.createElement('canvas');
+                canvas.width  = 800;
+                canvas.height = 460;
+
+                try {
+                    ssCertDraw(canvas, name, date, certId);
+                    const dataUrl = canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.href     = dataUrl;
+                    link.download = 'seven-stars-certificate.png';
+                    link.click();
+                    ssShowNotification('Certificate downloaded! 🎉', 'success');
+                } catch (err) {
+                    console.error('Certificate generation failed:', err);
+                    ssShowNotification('Certificate generation failed — please try again.');
+                    // Keep the name-entry phase visible so the player can retry
+                }
+            }
+
+            function renderTitle() {
+                gameScreen.innerHTML = `
+                    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;max-width:480px;margin:0 auto;padding:2rem 1rem">
+                        <h1 style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.25rem);color:#FFD700;margin-bottom:1rem">Find the Seven Stars</h1>
+                        <p style="color:#94a3b8;margin-bottom:2rem;line-height:1.6">Embark on a spiritual journey to the seven churches of Asia Minor. Read their messages and test your knowledge to collect the stars.</p>
+                        <button id="start-journey-btn" class="game-btn" style="font-size:1rem;padding:.75rem 2rem">Start Journey</button>
+                    </div>`;
+                document.getElementById('start-journey-btn').addEventListener('click', renderMap);
+            }
+
+            function renderMap() {
+                gameScreen.innerHTML = `
+                    <p style="font-size:1rem;font-weight:600;color:#e2e8f0;margin-bottom:.5rem">Select a destination to explore:</p>
+                    <div class="map-grid" style="padding-bottom:1.5rem">
+                        ${churches.map((c, i) => `
+                            <div class="map-item ${completedStars.includes(c.name) ? 'completed' : ''}" data-index="${i}" role="button" tabindex="0" aria-label="Explore ${c.name}">
+                                <svg class="star-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <span style="font-weight:700;font-size:.9rem">${c.name}</span>
+                                <span style="font-size:.75rem;margin-top:.25rem;color:${completedStars.includes(c.name) ? '#22c55e' : '#64748b'}">${completedStars.includes(c.name) ? '✔ Collected' : 'Unexplored'}</span>
+                            </div>`).join('')}
+                    </div>`;
+                gameScreen.querySelectorAll('.map-item').forEach(item => {
+                    const activate = () => renderChurch(parseInt(item.dataset.index));
+                    item.addEventListener('click', activate);
+                    item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') activate(); });
+                });
+            }
+
+            function renderChurch(i) {
+                const c = churches[i];
+                const done = completedStars.includes(c.name);
+                gameScreen.innerHTML = `
+                    <div style="width:100%;max-width:560px;background:rgba(255,255,255,.06);border:1px solid #334155;border-radius:1rem;padding:1.5rem;text-align:left;margin-top:.5rem">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+                            <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#FFD700">${c.name}</h2>
+                            ${done ? '<span style="background:rgba(34,197,94,.15);color:#22c55e;font-size:.75rem;font-weight:700;padding:.2rem .6rem;border-radius:999px;border:1px solid #22c55e">⭐ Collected</span>' : ''}
+                        </div>
+                        <p style="color:#cbd5e1;line-height:1.7;background:rgba(0,0,0,.3);padding:1rem;border-radius:.5rem;margin-bottom:1.5rem;font-style:italic">"${c.message}"</p>
+                        <div id="quiz-area"></div>
+                        <button id="back-map" style="margin-top:1.25rem;background:none;border:none;color:#64748b;cursor:pointer;font-size:.875rem;font-weight:600">← Return to Map</button>
+                    </div>`;
+                document.getElementById('back-map').addEventListener('click', renderMap);
+                if (!done) renderQuiz(i);
+                else {
+                    document.getElementById('quiz-area').innerHTML =
+                        `<p style="color:#22c55e;font-weight:700;text-align:center;padding:.75rem">✅ You already collected this star!</p>`;
+                }
+            }
+
+            function renderQuiz(i) {
+                const c   = churches[i];
+                const box = document.getElementById('quiz-area');
+                box.innerHTML = `
+                    <p style="font-weight:700;color:#e2e8f0;margin-bottom:.75rem">${c.question}</p>
+                    ${c.options.map(o => `<button class="option-button" data-answer="${o}">${o}</button>`).join('')}`;
+                box.querySelectorAll('.option-button').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const correct = btn.dataset.answer === c.answer;
+                        btn.classList.add(correct ? 'correct' : 'wrong');
+                        box.querySelectorAll('.option-button').forEach(b => b.disabled = true);
+                        if (correct) {
+                            completedStars = [...new Set([...completedStars, c.name])];
+                            localStorage.setItem('aghl_sevenStarsCompleted', JSON.stringify(completedStars));
+                            if (completedStars.length === churches.length) {
+                                showAlert(`⭐ ${c.name} Star Collected! All Seven Stars found!`, renderCertName);
+                            } else {
+                                showAlert(`⭐ ${c.name} Star Collected! "${c.name}" virtue unlocked.`, renderMap);
+                            }
+                        } else {
+                            showAlert(`Not quite. The correct answer is: "${c.answer}"`, () => renderMap());
+                        }
+                    });
+                });
+            }
+
+            renderTitle();
+        }
+    </script>
+    <div id="constellation-nav"></div>
+
+</body>
+</html>

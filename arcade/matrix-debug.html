@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HKZ2G2VN78"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-HKZ2G2VN78');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Matrix of Conscience — Debug build. Engine introspection, FPS, state, and rolling log.">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" type="image/png" href="../assets/logo.png">
+  <title>Matrix of Conscience — Debug | Amazing Grace Arcade</title>
+  <link rel="stylesheet" crossorigin href="../assets/matrix-classic-DVX7_Msz.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="mc-header">
+    <a href="/" class="mc-brand" aria-label="Amazing Grace Home Living — Home">
+      <img src="../assets/logo.png" alt="Amazing Grace">
+      <span>Amazing Grace</span>
+    </a>
+    <nav class="mc-nav" aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/arcade">Arcade</a>
+      <a href="/arcade/matrix-classic.html">Classic</a>
+      <a href="/stories/">Library</a>
+      <a href="/ministry">Ministry</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Full-screen HUD -->
+  <div class="mc-hud-area">
+    <div class="matrix-classic-frame" role="main" aria-label="Matrix of Conscience Debug">
+
+      <div class="mc-frame-title">Matrix of Conscience — Debug Build</div>
+
+      <!-- Debug overlay -->
+      <div class="mc-debug-overlay" id="mc-debug-panel" aria-live="polite" aria-label="Debug panel">
+        <h3>Engine Debug</h3>
+        <div class="mc-debug-row"><span class="mc-debug-key">Version</span><span class="mc-debug-value" id="dbg-version">classic</span></div>
+        <div class="mc-debug-row"><span class="mc-debug-key">Engine</span><span class="mc-debug-value" id="dbg-engine">—</span></div>
+        <div class="mc-debug-row"><span class="mc-debug-key">State</span><span class="mc-debug-value" id="dbg-state">booting</span></div>
+        <div class="mc-debug-row"><span class="mc-debug-key">FPS</span><span class="mc-debug-value" id="dbg-fps">—</span></div>
+        <div class="mc-debug-row"><span class="mc-debug-key">Last event</span><span class="mc-debug-value" id="dbg-event">—</span></div>
+        <div class="mc-debug-row"><span class="mc-debug-key">CI/CD</span><span class="mc-debug-value" id="dbg-cicd">—</span></div>
+        <div class="mc-debug-log" id="dbg-log" aria-label="Log"></div>
+      </div>
+
+      <!-- Game mount -->
+      <div id="matrix-classic-game" aria-label="Game canvas"></div>
+    </div>
+  </div>
+
+  <!-- Classic engine boot script -->
+  <script src="../js/matrix-classic.js"></script>
+
+  <!-- Debug controller -->
+  <script>
+  (function () {
+    var logEl    = document.getElementById('dbg-log');
+    var stateEl  = document.getElementById('dbg-state');
+    var engineEl = document.getElementById('dbg-engine');
+    var fpsEl    = document.getElementById('dbg-fps');
+    var eventEl  = document.getElementById('dbg-event');
+    var cicdEl   = document.getElementById('dbg-cicd');
+
+    // ── CI/CD status ──────────────────────────────────────────
+    // Displays the last known build failure for quick reference.
+    // Run ID and commit hash are intentionally fixed to the failing build.
+    function displayKnownCICDFailure() {
+      if (!cicdEl) return;
+      var lastCheck = new Date().toLocaleTimeString();
+      var statusText = 'FAILED (c3c8371)';
+      var statusLink = 'https://github.com/NicholaiMadias/Amazing-Grace/actions/runs/25528040604';
+      var anchor = document.createElement('a');
+      anchor.href = statusLink;
+      anchor.target = '_blank';
+      anchor.rel = 'noopener noreferrer';
+      anchor.style.cssText = 'color:#ff4444;text-decoration:underline;';
+      anchor.textContent = statusText;
+      cicdEl.textContent = '';
+      cicdEl.appendChild(anchor);
+      window.MatrixDebug.log('CI/CD Alert: Amazing-Grace build failed (Checked: ' + lastCheck + ')');
+    }
+
+    // Expose public API for engine hooks (called directly by matrix-classic.js)
+    window.MatrixDebug = {
+      log: function (msg) {
+        var entry = document.createElement('span');
+        entry.className = 'mc-debug-log-entry';
+        entry.textContent = msg;
+        if (logEl) {
+          logEl.appendChild(entry);
+          logEl.scrollTop = logEl.scrollHeight;
+        }
+      },
+      setState: function (state) {
+        if (stateEl) stateEl.textContent = state;
+      },
+      setEngine: function (engine) {
+        if (engineEl) engineEl.textContent = engine;
+      },
+      setEvent: function (evt) {
+        if (eventEl) eventEl.textContent = evt;
+      }
+    };
+
+    // Mirror console.log/warn to the rolling log panel
+    var origLog  = console.log.bind(console);
+    var origWarn = console.warn.bind(console);
+    console.log = function () {
+      origLog.apply(console, arguments);
+      window.MatrixDebug.log('[log] ' + Array.from(arguments).join(' '));
+    };
+    console.warn = function () {
+      origWarn.apply(console, arguments);
+      window.MatrixDebug.log('[warn] ' + Array.from(arguments).join(' '));
+    };
+
+    // Rudimentary FPS counter (rAF-based)
+    var lastTs = 0;
+    var frames = 0;
+    function rafTick(ts) {
+      frames++;
+      if (ts - lastTs >= 1000) {
+        if (fpsEl) fpsEl.textContent = frames;
+        frames = 0;
+        lastTs = ts;
+      }
+      requestAnimationFrame(rafTick);
+    }
+    requestAnimationFrame(rafTick);
+
+    // Capture click/keydown as "last event"
+    document.addEventListener('click',   function (e) { if (eventEl) eventEl.textContent = 'click @ ' + e.target.tagName; });
+    document.addEventListener('keydown', function (e) { if (eventEl) eventEl.textContent = 'key: '   + e.key; });
+
+    // Run CI/CD check on load
+    displayKnownCICDFailure();
+  })();
+  </script>
+</body>
+</html>

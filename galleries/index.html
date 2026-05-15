@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Galleries — Amazing Grace Home Living</title>
+
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #f7f7f7; color: #222; }
+    header { background: #1a1a1a; color: white; padding: 20px; text-align: center; }
+    header h1 { margin: 0; font-size: 28px; }
+    nav { margin-top: 10px; }
+    nav a { color: #fff; text-decoration: none; margin: 0 10px; font-weight: 600; }
+    nav a:hover { text-decoration: underline; }
+
+    .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+
+    .property-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .property-card h2 { margin-top: 0; font-size: 24px; }
+
+    .gallery-preview {
+      display: flex;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .gallery-preview img {
+      width: 32%;
+      border-radius: 8px;
+      object-fit: cover;
+      height: 160px;
+    }
+
+    .view-link {
+      color: #0056d6;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .view-link:hover { text-decoration: underline; }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      margin-top: 40px;
+      background: #1a1a1a;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Property Galleries</h1>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/stories/">Library</a>
+    <a href="/contact">Contact</a>
+    <a href="/ministry">Ministry</a>
+  </nav>
+</header>
+
+<div class="container">
+
+  <!-- 1142 -->
+  <div class="property-card">
+    <h2>1142 7th Street NW — Largo, FL</h2>
+    <div class="gallery-preview">
+      <img src="/public/assets/galleries/1142-7th-street/1.jpg">
+      <img src="/public/assets/galleries/1142-7th-street/2.jpg">
+      <img src="/public/assets/galleries/1142-7th-street/3.jpg">
+    </div>
+    <a class="view-link" href="/galleries/1142-7th-street/">View Full Gallery</a>
+  </div>
+
+  <!-- 1144 -->
+  <div class="property-card">
+    <h2>1144 7th Street NW — Largo, FL</h2>
+    <div class="gallery-preview">
+      <img src="/public/assets/galleries/1144-7th-street/1.jpg">
+      <img src="/public/assets/galleries/1144-7th-street/2.jpg">
+      <img src="/public/assets/galleries/1144-7th-street/3.jpg">
+    </div>
+    <a class="view-link" href="/galleries/1144-7th-street/">View Full Gallery</a>
+  </div>
+
+  <!-- 926 Poinsettia -->
+  <div class="property-card">
+    <h2>926 E Poinsettia Ave — Tampa, FL</h2>
+    <div class="gallery-preview">
+      <img src="/public/assets/galleries/926-poinsettia/1.jpg">
+      <img src="/public/assets/galleries/926-poinsettia/2.jpg">
+      <img src="/public/assets/galleries/926-poinsettia/3.jpg">
+    </div>
+    <a class="view-link" href="/galleries/926-poinsettia/">View Full Gallery</a>
+  </div>
+
+  <!-- Tampa -->
+  <div class="property-card">
+    <h2>Tampa Property — Tampa, FL</h2>
+    <div class="gallery-preview">
+      <img src="/public/assets/galleries/tampa-property/1.jpg">
+      <img src="/public/assets/galleries/tampa-property/2.jpg">
+      <img src="/public/assets/galleries/tampa-property/3.jpg">
+    </div>
+    <a class="view-link" href="/galleries/tampa-property/">View Full Gallery</a>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 Amazing Grace Home Living — All Rights Reserved
+</footer>
+
+<div id="constellation-nav"></div>
+<script type="module" src="../constellation-nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     style="position:absolute;width:0;height:0;overflow:hidden"
+     aria-hidden="true"
+     focusable="false">
+
+  <!-- ========================================================= -->
+  <!-- ===============  SHARED FILTERS & GRADIENTS  ============ -->
+  <!-- ========================================================= -->
+
+  <defs>
+
+    <!-- Soft outer glow (for black hole, white dwarf) -->
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Strong glow (for stars) -->
+    <filter id="strongGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Subtle turbulence texture (expanded region avoids clipping on some renderers) -->
+    <filter id="turbulenceTexture" x="-50%" y="-50%" width="200%" height="200%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" result="noise"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feBlend in="SourceGraphic" in2="noise" mode="overlay"/>
+    </filter>
+
+    <!-- ========================================================= -->
+    <!-- GRADIENTS (objectBoundingBox for stars) -->
+    <!-- ========================================================= -->
+
+    <!-- Blue star gradient -->
+    <radialGradient id="gradBlue" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#9fd6ff"/>
+      <stop offset="50%" stop-color="#3aa4ff"/>
+      <stop offset="100%" stop-color="#0050c8"/>
+    </radialGradient>
+
+    <!-- Yellow star gradient -->
+    <radialGradient id="gradYellow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff7b3"/>
+      <stop offset="50%" stop-color="#ffd84d"/>
+      <stop offset="100%" stop-color="#d49a00"/>
+    </radialGradient>
+
+    <!-- Red star gradient -->
+    <radialGradient id="gradRed" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffb3b3"/>
+      <stop offset="50%" stop-color="#ff4d4d"/>
+      <stop offset="100%" stop-color="#b30000"/>
+    </radialGradient>
+
+    <!-- White dwarf gradient -->
+    <radialGradient id="gradWhite" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#e6f7ff"/>
+      <stop offset="100%" stop-color="#b3d9ff"/>
+    </radialGradient>
+
+    <!-- Ruby heart gradient -->
+    <radialGradient id="gradRuby" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffb3c6"/>
+      <stop offset="50%" stop-color="#ff4d6d"/>
+      <stop offset="100%" stop-color="#b3002d"/>
+    </radialGradient>
+
+    <!-- Silver burst gradient -->
+    <radialGradient id="gradSilver" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#d9d9d9"/>
+      <stop offset="100%" stop-color="#8c8c8c"/>
+    </radialGradient>
+
+    <!-- ========================================================= -->
+    <!-- BLACK HOLE GRADIENTS (userSpaceOnUse for precision) -->
+    <!-- ========================================================= -->
+
+    <radialGradient id="gradBlackHoleCore" gradientUnits="userSpaceOnUse"
+      cx="64" cy="64" r="40">
+      <stop offset="0%" stop-color="#000000"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </radialGradient>
+
+    <radialGradient id="gradAccretion" gradientUnits="userSpaceOnUse"
+      cx="64" cy="64" r="60">
+      <stop offset="0%" stop-color="#ffb366"/>
+      <stop offset="40%" stop-color="#ff5e00"/>
+      <stop offset="80%" stop-color="#b30000"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+
+  </defs>
+
+  <!-- ========================================================= -->
+  <!-- ======================= SYMBOLS ========================= -->
+  <!-- ========================================================= -->
+
+  <!-- ========================================================= -->
+  <!-- Alcyone — Blue Star (Primary) -->
+  <!-- ========================================================= -->
+  <symbol id="alcyone" viewBox="0 0 128 128">
+    <circle cx="64" cy="64" r="40" fill="url(#gradBlue)" filter="url(#strongGlow)"/>
+    <circle cx="64" cy="64" r="40" filter="url(#turbulenceTexture)" opacity="0.25"/>
+  </symbol>
+
+  <!-- ========================================================= -->
+  <!-- Electra — Blue Star (Rotated 90°) -->
+  <!-- ========================================================= -->
+  <symbol id="electra" viewBox="0 0 128 128">
+    <g transform="rotate(90 64 64)">
+      <circle cx="64" cy="64" r="40" fill="url(#gradBlue)" filter="url(#strongGlow)"/>
+      <circle cx="64" cy="64" r="40" filter="url(#turbulenceTexture)" opacity="0.25"/>
+    </g>
+  </symbol>
+
+  <!-- ========================================================= -->
+  <!-- Maia — Yellow Star -->
+  <!-- ========================================================= -->
+  <symbol id="maia" viewBox="0 0 128 128">
+    <circle cx="64" cy="64" r="40" fill="url(#gradYellow)" filter="url(#strongGlow)"/>
+    <circle cx="64" cy="64" r="40" filter="url(#turbulenceTexture)" opacity="0.25"/>
+  </symbol>
+
+  <!-- ========================================================= -->
+  <!-- Taygete — Red Plasma Star -->
+  <!-- ========================================================= -->
+  <symbol id="taygete" viewBox="0 0 128 128">
+    <circle cx="64" cy="64" r="40" fill="url(#gradRed)" filter="url(#strongGlow)"/>
+    <circle cx="64" cy="64" r="40" filter="url(#turbulenceTexture)" opacity="0.35"/>
+  </symbol>
+
+  <!-- ========================================================= -->
+  <!-- Celaeno — White Dwarf -->
+  <!-- ========================================================= -->
+  <symbol id="celaeno" viewBox="0 0 128 128">
+    <circle cx="64" cy="64" r="38" fill="url(#gradWhite)" filter="url(#softGlow)"/>
+    <circle cx="64" cy="64" r="38" filter="url(#turbulenceTexture)" opacity="0.15"/>
+  </symbol>
+
+  <!-- ========================================================= -->
+  <!-- Sterope — Ruby Heart -->
+  <!-- ========================================================= -->
+  <symbol id="sterope" viewBox="0 0 128 128">
+    <path d="M64 90 L30 55 A20 20 0 0 1 64 35 A20 20 0 0 1 98 55 Z"
+      fill="url(#gradRuby)" filter="url(#strongGlow)"/>
+  </symbol>
+
+  <!-- ========================================================= -->
+  <!-- Merope — Silver / White Burst -->
+  <!-- ========================================================= -->
+  <symbol id="merope" viewBox="0 0 128 128">
+    <g filter="url(#strongGlow)">
+      <circle cx="64" cy="64" r="10" fill="url(#gradSilver)"/>
+      <line x1="64" y1="10" x2="64" y2="118" stroke="white" stroke-width="4" opacity="0.8"/>
+      <line x1="10" y1="64" x2="118" y2="64" stroke="white" stroke-width="4" opacity="0.8"/>
+      <line x1="25" y1="25" x2="103" y2="103" stroke="white" stroke-width="3" opacity="0.6"/>
+      <line x1="25" y1="103" x2="103" y2="25" stroke="white" stroke-width="3" opacity="0.6"/>
+    </g>
+  </symbol>
+
+  <!-- ========================================================= -->
+  <!-- Atlas — Black Hole -->
+  <!-- ========================================================= -->
+  <symbol id="atlas" viewBox="0 0 128 128">
+    <!-- Core -->
+    <circle cx="64" cy="64" r="30" fill="url(#gradBlackHoleCore)" filter="url(#softGlow)"/>
+
+    <!-- Accretion disk -->
+    <circle cx="64" cy="64" r="55" fill="url(#gradAccretion)" opacity="0.9"/>
+
+    <!-- Subtle turbulence -->
+    <circle cx="64" cy="64" r="55" filter="url(#turbulenceTexture)" opacity="0.2"/>
+  </symbol>
+
+</svg>

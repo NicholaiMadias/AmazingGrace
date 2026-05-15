@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E8E8E8"/>
+      <stop offset="100%" stop-color="#D0D0D0"/>
+    </linearGradient>
+    <linearGradient id="ceiling" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F0F0F0"/>
+      <stop offset="100%" stop-color="#E0E0E0"/>
+    </linearGradient>
+    <linearGradient id="counter" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4A3828"/>
+      <stop offset="100%" stop-color="#3A2C22"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C8B896"/>
+      <stop offset="100%" stop-color="#B0A07A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Room walls -->
+  <rect width="800" height="450" fill="url(#wall)"/>
+
+  <!-- Ceiling -->
+  <rect x="0" y="0" width="800" height="110" fill="url(#ceiling)"/>
+
+  <!-- Left wall perspective -->
+  <polygon points="0,0 160,0 160,450 0,450" fill="#DCDCDC"/>
+  <!-- Left wall shadow -->
+  <polygon points="0,0 160,0 160,450 0,450" fill="rgba(0,0,0,0.06)"/>
+
+  <!-- Floor -->
+  <rect x="0" y="340" width="800" height="110" fill="url(#floor)"/>
+  <!-- Floor grout lines -->
+  <line x1="0" y1="370" x2="800" y2="370" stroke="rgba(0,0,0,0.08)" stroke-width="1.5"/>
+  <line x1="0" y1="400" x2="800" y2="400" stroke="rgba(0,0,0,0.08)" stroke-width="1.5"/>
+  <line x1="0" y1="430" x2="800" y2="430" stroke="rgba(0,0,0,0.08)" stroke-width="1.5"/>
+  <line x1="200" y1="340" x2="200" y2="450" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+  <line x1="400" y1="340" x2="400" y2="450" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+  <line x1="600" y1="340" x2="600" y2="450" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+
+  <!-- Ceiling light fixture (matching photo) -->
+  <ellipse cx="400" cy="45" rx="35" ry="22" fill="#D4B864"/>
+  <ellipse cx="400" cy="42" rx="28" ry="16" fill="#C8A840"/>
+  <!-- Glass dome -->
+  <ellipse cx="400" cy="58" rx="25" ry="16" fill="rgba(255,255,255,0.85)"/>
+  <ellipse cx="400" cy="55" rx="22" ry="13" fill="rgba(255,240,180,0.90)"/>
+  <!-- Light glow -->
+  <ellipse cx="400" cy="90" rx="80" ry="30" fill="rgba(255,240,180,0.18)"/>
+
+  <!-- UPPER CABINETS (white, matching photo) -->
+  <!-- Cabinet row above counter -->
+  <rect x="160" y="110" width="520" height="115" fill="#F8F8F8" rx="2"/>
+  <!-- Cabinet doors -->
+  <rect x="165" y="114" width="118" height="107" fill="#F5F5F5" rx="2" stroke="#DDDDDD" stroke-width="1.5"/>
+  <rect x="289" y="114" width="118" height="107" fill="#F5F5F5" rx="2" stroke="#DDDDDD" stroke-width="1.5"/>
+  <rect x="413" y="114" width="118" height="107" fill="#F5F5F5" rx="2" stroke="#DDDDDD" stroke-width="1.5"/>
+  <rect x="537" y="114" width="138" height="107" fill="#F5F5F5" rx="2" stroke="#DDDDDD" stroke-width="1.5"/>
+  <!-- Cabinet handles (brass/gold — matching photo) -->
+  <rect x="218" y="158" width="18" height="5" fill="#B8960A" rx="2"/>
+  <rect x="342" y="158" width="18" height="5" fill="#B8960A" rx="2"/>
+  <rect x="466" y="158" width="18" height="5" fill="#B8960A" rx="2"/>
+  <rect x="595" y="158" width="18" height="5" fill="#B8960A" rx="2"/>
+  <!-- Cabinet shadow line -->
+  <line x1="160" y1="225" x2="680" y2="225" stroke="rgba(0,0,0,0.15)" stroke-width="2"/>
+
+  <!-- Wall outlets -->
+  <rect x="360" y="240" width="20" height="28" fill="#F0F0F0" rx="2" stroke="#CCC" stroke-width="1"/>
+  <circle cx="370" cy="247" r="3" fill="#AAA"/>
+  <circle cx="370" cy="258" r="3" fill="#AAA"/>
+
+  <!-- COUNTER TOP (dark, matching photo) -->
+  <rect x="160" y="260" width="520" height="26" fill="url(#counter)" rx="2"/>
+  <!-- Counter edge highlight -->
+  <line x1="160" y1="261" x2="680" y2="261" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+
+  <!-- LOWER CABINETS -->
+  <rect x="160" y="286" width="520" height="90" fill="#F0F0F0" rx="2"/>
+  <rect x="165" y="290" width="148" height="82" fill="#EDEDED" rx="2" stroke="#DDDDDD" stroke-width="1.5"/>
+  <rect x="319" y="290" width="148" height="82" fill="#EDEDED" rx="2" stroke="#DDDDDD" stroke-width="1.5"/>
+  <rect x="473" y="290" width="202" height="82" fill="#EDEDED" rx="2" stroke="#DDDDDD" stroke-width="1.5"/>
+  <!-- Lower handles -->
+  <rect x="220" y="326" width="40" height="5" fill="#B8960A" rx="2"/>
+  <rect x="375" y="326" width="40" height="5" fill="#B8960A" rx="2"/>
+  <rect x="545" y="326" width="40" height="5" fill="#B8960A" rx="2"/>
+
+  <!-- SINK (dark, inset into counter) -->
+  <rect x="215" y="252" width="135" height="20" fill="#2A2A2A" rx="3"/>
+  <rect x="218" y="254" width="60" height="15" fill="#1A1A1A" rx="2"/>
+  <rect x="282" y="254" width="65" height="15" fill="#1A1A1A" rx="2"/>
+  <!-- Faucet -->
+  <rect x="274" y="240" width="7" height="16" fill="#8A8A8A" rx="2"/>
+  <rect x="265" y="238" width="25" height="5" fill="#8A8A8A" rx="2"/>
+
+  <!-- REFRIGERATOR (off-white/cream — matching photo, left side) -->
+  <rect x="160" y="110" width="90" height="265" fill="#F2F0E8" rx="3"/>
+  <!-- Fridge door seam -->
+  <line x1="160" y1="230" x2="250" y2="230" stroke="#CCCCCC" stroke-width="2"/>
+  <!-- Fridge handles -->
+  <rect x="240" y="145" width="7" height="45" fill="#C0C0C0" rx="3"/>
+  <rect x="240" y="248" width="7" height="35" fill="#C0C0C0" rx="3"/>
+  <!-- Fridge brand mark -->
+  <rect x="175" y="115" width="55" height="8" fill="rgba(0,0,0,0.07)" rx="1"/>
+  <!-- Fridge shadow -->
+  <rect x="160" y="110" width="90" height="265" fill="none" stroke="#CCCCCC" stroke-width="2" rx="3"/>
+
+  <!-- BLACK ELECTRIC STOVE (right side, matching photo) -->
+  <rect x="590" y="225" width="90" height="150" fill="#222222" rx="3"/>
+  <!-- Stove top burners -->
+  <ellipse cx="615" cy="238" rx="12" ry="8" fill="#333" stroke="#444" stroke-width="1.5"/>
+  <ellipse cx="655" cy="238" rx="12" ry="8" fill="#333" stroke="#444" stroke-width="1.5"/>
+  <ellipse cx="615" cy="260" rx="12" ry="8" fill="#333" stroke="#444" stroke-width="1.5"/>
+  <ellipse cx="655" cy="260" rx="12" ry="8" fill="#333" stroke="#444" stroke-width="1.5"/>
+  <!-- Oven door -->
+  <rect x="596" y="280" width="78" height="88" fill="#2A2A2A" rx="2"/>
+  <rect x="600" y="284" width="70" height="79" fill="#1A1A1A" rx="2"/>
+  <!-- Oven window -->
+  <rect x="606" y="290" width="58" height="45" fill="#111" rx="2"/>
+  <!-- Oven handle -->
+  <rect x="600" y="283" width="70" height="5" fill="#888" rx="2"/>
+  <!-- Controls -->
+  <circle cx="606" cy="268" r="5" fill="#444"/>
+  <circle cx="622" cy="268" r="5" fill="#444"/>
+  <circle cx="638" cy="268" r="5" fill="#444"/>
+  <circle cx="654" cy="268" r="5" fill="#444"/>
+
+  <!-- DOOR in back wall (white, 6-panel, matching photo) -->
+  <rect x="468" y="135" width="102" height="205" fill="#F8F8F8" rx="3" stroke="#DDDDDD" stroke-width="2"/>
+  <!-- 6 door panels -->
+  <rect x="476" y="143" width="40" height="42" fill="rgba(0,0,0,0.03)" rx="1" stroke="#DDDDDD" stroke-width="1"/>
+  <rect x="522" y="143" width="40" height="42" fill="rgba(0,0,0,0.03)" rx="1" stroke="#DDDDDD" stroke-width="1"/>
+  <rect x="476" y="191" width="40" height="68" fill="rgba(0,0,0,0.03)" rx="1" stroke="#DDDDDD" stroke-width="1"/>
+  <rect x="522" y="191" width="40" height="68" fill="rgba(0,0,0,0.03)" rx="1" stroke="#DDDDDD" stroke-width="1"/>
+  <rect x="476" y="265" width="40" height="67" fill="rgba(0,0,0,0.03)" rx="1" stroke="#DDDDDD" stroke-width="1"/>
+  <rect x="522" y="265" width="40" height="67" fill="rgba(0,0,0,0.03)" rx="1" stroke="#DDDDDD" stroke-width="1"/>
+  <!-- Brass door knob -->
+  <circle cx="561" cy="244" r="6" fill="#C8960A"/>
+  <!-- Door glow / light -->
+  <rect x="468" y="135" width="102" height="205" fill="rgba(255,240,180,0.08)" rx="3"/>
+
+  <!-- Label bar -->
+  <rect x="0" y="400" width="800" height="50" fill="rgba(26,82,118,0.92)"/>
+  <text x="400" y="425" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.04em">926 E Poinsettia Ave — Largo, FL</text>
+  <text x="400" y="443" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.75)" text-anchor="middle" letter-spacing="0.07em">ALL-INCLUSIVE · UTILITIES PAID · QUIET AREA</text>
+</svg>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Concept Folio | Matrix of Conscience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        matrix: {
+                            base: '#0a0a0c',
+                            accent: '#3b82f6',
+                            highlight: '#60a5fa',
+                            surface: 'rgba(23, 23, 26, 0.7)',
+                            glass: 'rgba(255, 255, 255, 0.03)',
+                        },
+                        dublin: {
+                            mist: '#94a3b8',
+                            teal: '#2dd4bf',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            '0%': { opacity: 0.4 },
+                            '100%': { opacity: 0.8 },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0a0c;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(23, 23, 26, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #2dd4bf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .custom-video-controls::-webkit-media-controls-panel {
+            background-color: rgba(10, 10, 12, 0.8);
+        }
+
+        .weather-chip {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Scanline effect */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%,
+                rgba(0, 0, 0, 0.1) 50%
+            ), linear-gradient(
+                90deg,
+                rgba(255, 0, 0, 0.02),
+                rgba(0, 255, 0, 0.01),
+                rgba(0, 0, 255, 0.02)
+            );
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+    </style>
+</head>
+<body class="selection:bg-blue-500/30">
+
+    <div class="scanlines"></div>
+
+    <!-- Background Elements -->
+    <div class="fixed top-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+    <div class="fixed bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-teal-600/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+    <main class="relative z-10 max-w-6xl mx-auto px-6 py-12 lg:py-24">
+        
+        <!-- Header Section -->
+        <header class="mb-16 lg:mb-24 text-center lg:text-left">
+            <div class="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full weather-chip animate-pulse-slow">
+                <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
+                <span class="text-xs font-semibold uppercase tracking-widest text-blue-300">Project: Matrix of Conscience</span>
+            </div>
+            <h1 class="text-5xl lg:text-8xl font-extrabold font-display mb-6 tracking-tight">
+                AFRI <span class="gradient-text">FOLIO</span>
+            </h1>
+            <p class="text-lg lg:text-xl text-slate-400 max-w-2xl leading-relaxed">
+                Exploring the delicate balance between systemic control and human ethics. A Dublin-centric vision of the future.
+            </p>
+        </header>
+
+        <!-- Main Video Concept -->
+        <section class="mb-24 scroll-reveal">
+            <div class="glass-card overflow-hidden group">
+                <div class="p-4 lg:p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
+                    <h2 class="text-xl font-semibold font-display flex items-center gap-3">
+                        <span class="p-2 bg-blue-500/20 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                        </span>
+                        Core Concept Trailer
+                    </h2>
+                    <div class="flex gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500/40"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/40"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/40"></div>
+                    </div>
+                </div>
+                <div class="relative aspect-video w-full bg-black">
+                    <video 
+                        id="conceptVideo"
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700" 
+                        src="https://opal.google/board/blobs/c2e1c519-c424-4a8f-91e8-b32062abb413" 
+                        controls
+                        playsinline
+                    >
+                    </video>
+                </div>
+                <div class="p-6 bg-white/5 flex flex-wrap gap-4 items-center justify-between">
+                    <div class="flex gap-6">
+                        <button onclick="document.getElementById('conceptVideo').play()" class="text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors">Play</button>
+                        <button onclick="document.getElementById('conceptVideo').pause()" class="text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors">Pause</button>
+                        <button onclick="document.getElementById('conceptVideo').currentTime = 0; document.getElementById('conceptVideo').play()" class="text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors">Restart</button>
+                    </div>
+                    <span class="text-[10px] text-slate-500 font-mono italic">Audio enabled - 4K Digital Master</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Environment Context Bento Grid -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-24">
+            <div class="lg:col-span-2 glass-card p-8 flex flex-col justify-between scroll-reveal">
+                <div>
+                    <h3 class="text-2xl font-bold font-display mb-4 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-teal-400"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        Location Data
+                    </h3>
+                    <p class="text-slate-400 leading-relaxed mb-6">
+                        The narrative heart beats within <span class="text-white font-medium italic">Dublin, Ireland</span>. Serving as the primary hub for the <span class="text-blue-400">Afri organization</span>, the city is no longer just a capital—it's the central node of the global conscience framework.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-blue-500/50 transition-all">
+                        <span class="text-[10px] uppercase text-slate-500 block mb-1">Architecture</span>
+                        <span class="text-sm font-semibold">Brutalist-Cyber</span>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-blue-500/50 transition-all">
+                        <span class="text-[10px] uppercase text-slate-500 block mb-1">Status</span>
+                        <span class="text-sm font-semibold">Operational</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card p-8 scroll-reveal" style="transition-delay: 100ms;">
+                <h3 class="text-2xl font-bold font-display mb-6 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M17.5 19c.7 0 1.3-.2 1.8-.7.5-.5.7-1.1.7-1.8 0-1.4-1.1-2.5-2.5-2.5-.3 0-.6.1-.9.2C16.1 12.8 14.2 12 12 12c-2.2 0-4.1.8-4.6 2.2-.3-.1-.6-.2-.9-.2-1.4 0-2.5 1.1-2.5 2.5 0 .7.2 1.3.7 1.8.5.5 1.1.7 1.8.7h11z"></path><path d="M12 3v2"></path><path d="m4.9 4.9 1.4 1.4"></path><path d="M3 12h2"></path><path d="m4.9 19.1 1.4-1.4"></path><path d="M12 21v2"></path><path d="m19.1 19.1-1.4-1.4"></path><path d="M21 12h2"></path><path d="m19.1 4.9-1.4 1.4"></path></svg>
+                    Real-Time Environment
+                </h3>
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-400">Temperature</span>
+                        <span class="text-xl font-bold">14°C</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-400">Real-Feel</span>
+                        <span class="text-xl font-bold text-blue-400">6°C</span>
+                    </div>
+                    <div class="h-px bg-white/10"></div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-400">Humidity</span>
+                        <span class="text-xl font-bold">87%</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs text-teal-400 font-mono">MOSTLY CLEAR / SCATTERED CLOUDS</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Discarded Concepts - Asymmetrical Grid -->
+        <section class="mb-24">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12 scroll-reveal">
+                <div>
+                    <h2 class="text-4xl lg:text-6xl font-extrabold font-display mb-4">ARCHIVE <span class="text-slate-600">0.1</span></h2>
+                    <p class="text-slate-400 text-lg">Exploratory iterations and discarded design paths.</p>
+                </div>
+                <div class="h-px flex-grow bg-white/10 mx-8 hidden lg:block mb-4"></div>
+                <span class="text-xs font-mono text-slate-500 mb-4 uppercase tracking-[0.2em]">Restricted Access</span>
+            </div>
+
+            <div class="space-y-12">
+                <!-- Concept 1 -->
+                <article class="group relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-center scroll-reveal">
+                    <div class="lg:col-span-7 order-2 lg:order-1">
+                        <div class="glass-card overflow-hidden transition-transform duration-500 group-hover:scale-[1.01] group-hover:shadow-2xl group-hover:shadow-blue-500/10">
+                            <img src="https://opal.google/board/blobs/767c752c-15c9-4dd8-9361-45d23f45ec73" alt="Neo-Dublin Resistor Concept" class="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700">
+                        </div>
+                    </div>
+                    <div class="lg:col-span-5 order-1 lg:order-2">
+                        <div class="inline-block px-3 py-1 rounded bg-blue-500/20 text-blue-400 text-[10px] font-bold tracking-widest uppercase mb-4">Concept 01</div>
+                        <h3 class="text-3xl font-bold font-display mb-6 group-hover:text-blue-400 transition-colors">Neo-Dublin Resistor</h3>
+                        <p class="text-slate-400 leading-relaxed mb-6 text-lg">
+                            Navigate the misty streets of a futuristic Dublin where the <span class="text-white italic">"Matrix of Conscience"</span> has become a surveillance nightmare.
+                        </p>
+                        <div class="p-6 rounded-2xl bg-white/5 border border-white/5 italic text-slate-300">
+                            "As Ella, you must hack into the Dublin Spire to upload Relief Signals, using the city's unique weather—like the shifting Atlantic mist—to remain undetected by the Red Queen's drones."
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Concept 2 -->
+                <article class="group relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-center scroll-reveal" style="transition-delay: 200ms;">
+                    <div class="lg:col-span-5">
+                        <div class="inline-block px-3 py-1 rounded bg-teal-500/20 text-teal-400 text-[10px] font-bold tracking-widest uppercase mb-4">Concept 02</div>
+                        <h3 class="text-3xl font-bold font-display mb-6 group-hover:text-teal-400 transition-colors">Entropy’s Edge: Sector 4</h3>
+                        <p class="text-slate-400 leading-relaxed mb-6 text-lg">
+                            The Matrix is collapsing! In this fast-paced platformer, you follow the <span class="text-white italic">White Rabbit</span> through a de-stabilizing industrial wasteland.
+                        </p>
+                        <div class="p-6 rounded-2xl bg-white/5 border border-white/5 italic text-slate-300">
+                            "The 'Digital Humidity' of the Dublin-inspired air slows the system's processing speed, creating 'glitch-zones' you can exploit. Your goal: collect Data Caches before the level de-rezzes completely."
+                        </div>
+                    </div>
+                    <div class="lg:col-span-7">
+                        <div class="glass-card overflow-hidden transition-transform duration-500 group-hover:scale-[1.01] group-hover:shadow-2xl group-hover:shadow-teal-500/10">
+                            <img src="https://opal.google/board/blobs/336fa5d8-a352-4abb-8a62-3548dd30eae1" alt="Entropy’s Edge Concept" class="w-full h-auto grayscale group-hover:grayscale-0 transition-all duration-700">
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Footer Visual -->
+        <div class="mt-32 pt-12 border-t border-white/5 flex flex-col items-center justify-center text-center">
+            <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center mb-6 animate-float">
+                <div class="w-4 h-4 bg-blue-400 rounded-sm rotate-45"></div>
+            </div>
+            <p class="text-slate-600 font-mono text-[10px] uppercase tracking-[0.5em] mb-12">End of Folio / Transmission Terminated</p>
+        </div>
+    </main>
+
+    <script>
+        // Simple Scroll Reveal Implementation
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // Video interaction logic
+        const video = document.getElementById('conceptVideo');
+        
+        // Ensure video is properly loaded with sound intent
+        video.addEventListener('canplay', () => {
+            console.log('Video system ready.');
+        });
+    </script>
+</body>
+</html>
+

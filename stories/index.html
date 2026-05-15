@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HKZ2G2VN78"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-HKZ2G2VN78');
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Storybook Library — ministry testimonies, branching narratives, and fictional adventures from Amazing Grace Home Living.">
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" type="image/png" href="../assets/logo-S7NXL_ug.png">
+    <title>Storybook Library | Amazing Grace Home Living</title>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #000;
+            color: #ccc;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1rem;
+            line-height: 1.7;
+            padding: 2rem 1.5rem;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        a { color: #4af; text-decoration: underline; }
+        a:hover, a:focus { color: #7cf; }
+        a:focus-visible { outline: 2px solid #4af; outline-offset: 2px; }
+
+        /* ── Top nav ── */
+        .topnav {
+            font-size: 0.85rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem 1rem;
+        }
+        .topnav a { white-space: nowrap; }
+
+        /* ── Header ── */
+        header h1 {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0.25rem;
+            letter-spacing: 0.02em;
+        }
+        header p.sub {
+            color: #777;
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #333;
+            margin: 1.5rem 0;
+        }
+
+        /* ── Story list ── */
+        #story-list {
+            list-style: none;
+            padding: 0;
+        }
+        #story-list li {
+            margin-bottom: 1.4rem;
+        }
+        .row {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+        .icon {
+            font-style: normal;
+            font-size: 1rem;
+            flex-shrink: 0;
+            width: 1.5rem;
+            text-align: center;
+        }
+        .story-link {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .meta {
+            font-size: 0.8rem;
+            color: #666;
+            padding-left: 2rem;
+        }
+
+        /* ── Error ── */
+        .error {
+            color: #f66;
+            background: #200;
+            border: 1px solid #600;
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+        }
+        .error:empty { display: none; }
+
+        /* ── Arcade banner ── */
+        .arcade-banner {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 1.5rem;
+            padding: 0.6rem 0.85rem;
+            background: #050e1d;
+            border-left: 3px solid #4af;
+            border-radius: 0 4px 4px 0;
+            line-height: 1.5;
+        }
+        .arcade-banner a { color: #4af; }
+
+        /* ── Section headings ── */
+        .section-heading {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #4af;
+            margin: 2rem 0 0.75rem;
+        }
+
+        /* ── Character list ── */
+        #character-list {
+            list-style: none;
+            padding: 0;
+        }
+        #character-list li {
+            margin-bottom: 1.4rem;
+        }
+
+        /* ── Footer ── */
+        footer {
+            margin-top: 3rem;
+            border-top: 1px solid #333;
+            padding-top: 1rem;
+            font-size: 0.8rem;
+            color: #555;
+        }
+    </style>
+  <script type="module" crossorigin src="../assets/modulepreload-polyfill-Bchw24nj.js"></script>
+  <script type="module" crossorigin src="../assets/constellation-nav-Bi2J6JPz.js"></script>
+  <link rel="stylesheet" crossorigin href="../assets/constellation-nav-BLnZXU5f.css">
+</head>
+<body>
+
+<nav class="topnav" aria-label="Site navigation">
+    <a href="/">Home</a>
+    <a href="/stories/">Library</a>
+    <a href="/ministry/">Ministry</a>
+    <a href="/arcade/">Arcade</a>
+</nav>
+
+<header>
+    <h1>📚 Storybook Library</h1>
+    <p class="sub">Faith stories, parables, and narrative journeys from the Nexus Arcade canon.</p>
+</header>
+
+<p class="arcade-banner">
+    🎮 <strong>Nexus Arcade</strong> — experience these stories as interactive games and narrative missions at <a href="/arcade/">/arcade</a>
+</p>
+
+<hr>
+
+<ul id="story-list" aria-label="Story list"></ul>
+
+<hr>
+
+<h2 id="characters" class="section-heading">🏃‍♀️ Characters</h2>
+<ul id="character-list" aria-label="Character dossiers"></ul>
+
+<div id="error" class="error" role="status" aria-live="polite"></div>
+
+<footer>
+    <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="/">amazinggracehl.org</a></p>
+</footer>
+
+<script>
+    /* Pick a simple glyph icon based on entry metadata */
+    function pickIcon(entry) {
+        var tags = Array.isArray(entry.tags) ? entry.tags.map(function(t) { return String(t).toLowerCase(); }) : [];
+        var genre = String(entry.genre || '').toLowerCase();
+        if (tags.indexOf('faith') !== -1 || genre.indexOf('faith') !== -1) return '✝';
+        if (tags.indexOf('matrix') !== -1 || tags.indexOf('sci-fi') !== -1 || genre.indexOf('sci') !== -1) return '⌬';
+        if (tags.indexOf('covenant') !== -1) return '✧';
+        return '📖';
+    }
+
+    /* Build the muted metadata string shown below each link */
+    function formatMeta(entry) {
+        var parts = [];
+        if (entry.author) parts.push(entry.author);
+        if (entry.series) parts.push(entry.series);
+        if (entry.genre)  parts.push(entry.genre);
+        if (Array.isArray(entry.tags) && entry.tags.length) {
+            parts.push('tags: ' + entry.tags.join(', '));
+        }
+        return parts.join(' — ');
+    }
+
+    /* Escape a string for safe insertion into HTML */
+    function esc(str) {
+        return String(str || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    async function loadStories() {
+        var list      = document.getElementById('story-list');
+        var charList  = document.getElementById('character-list');
+        var error     = document.getElementById('error');
+
+        try {
+            var res = await fetch('./library.json');
+            if (!res.ok) throw new Error('HTTP ' + res.status + ' loading ./library.json');
+
+            var data    = await res.json();
+            var entries = Array.isArray(data.entries) ? data.entries : [];
+            var chars   = Array.isArray(data.characters) ? data.characters : [];
+
+            if (!entries.length) {
+                error.textContent = 'No entries found in stories/library.json (expected { entries: [...] }).';
+                return;
+            }
+
+            entries.forEach(function(entry) {
+                /* Prefer explicit path; fall back to slug-based folder */
+                var href = entry.path || (entry.slug ? './' + entry.slug + '/' : '#');
+
+                var li = document.createElement('li');
+                li.innerHTML =
+                    '<div class="row">' +
+                        '<span class="icon" aria-hidden="true">' + esc(pickIcon(entry)) + '</span>' +
+                        '<a class="story-link" href="' + esc(href) + '">' + esc(entry.title || 'Untitled') + '</a>' +
+                    '</div>' +
+                    '<div class="meta">' + esc(formatMeta(entry)) + '</div>';
+
+                list.appendChild(li);
+            });
+
+            /* Render characters section */
+            if (chars.length) {
+                chars.forEach(function(char) {
+                    var href = char.path || (char.slug ? './characters/' + char.slug + '.html' : '#');
+                    var meta = [char.role, char.tags ? 'tags: ' + char.tags.join(', ') : ''].filter(Boolean).join(' — ');
+
+                    var li = document.createElement('li');
+                    li.innerHTML =
+                        '<div class="row">' +
+                            '<span class="icon" aria-hidden="true">🏃</span>' +
+                            '<a class="story-link" href="' + esc(href) + '">' + esc(char.title || 'Untitled') + '</a>' +
+                        '</div>' +
+                        '<div class="meta">' + esc(meta) + '</div>';
+
+                    charList.appendChild(li);
+                });
+            } else {
+                /* Hide the characters section if empty */
+                var h = document.getElementById('characters');
+                if (h) h.style.display = 'none';
+                if (charList) charList.style.display = 'none';
+            }
+
+        } catch (err) {
+            console.error('Failed to load ./library.json', err);
+            error.textContent = 'Failed to load stories. ' + String(err);
+        }
+    }
+
+    loadStories();
+</script>
+<div id="constellation-nav"></div>
+</body>
+</html>
