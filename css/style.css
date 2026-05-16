@@ -1,11 +1,20 @@
-/* Add this to your main stylesheet */
-img:not([src]), 
-img[src=""], 
-img:invalid {
-    display: none !important;
+/* ── Navigation Logo ── */
+.nav-logo-link {
+  display: none; /* Hidden by default on mobile devices */
+  margin-right: 1rem;
 }
 
-/* This specifically targets images that fail to load */
-img:onerror {
-    display: none;
+.nav-logo {
+  height: 24px; /* Matches standard text line height */
+  width: auto;
+  aspect-ratio: attr(width) / attr(height); /* Prevents layout cumulative shift */
+  vertical-align: middle;
+  filter: drop-shadow(0 0 5px rgba(0, 255, 102, 0.3)); /* Matrix glow */
+}
+
+/* ── Desktop View (Screens wider than 768px) ── */
+@media (min-width: 768px) {
+  .nav-logo-link {
+    display: inline-block; /* Activates the logo on desktop */
+  }
 }
