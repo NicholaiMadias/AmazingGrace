@@ -100,25 +100,6 @@
             border-radius: 6px;
         }
 
-        .brand-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .brand-name {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: var(--accent);
-            line-height: 1.1;
-        }
-
-        .brand-sub {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            letter-spacing: 0.03em;
-        }
-
         /* ── Nav ── */
         #main-nav {
             display: flex;
@@ -154,3 +135,19 @@
         }
     </style>
 </head>
+<body>
+
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="/" class="brand">
+                <img src="./Assets/logo.png" alt="Logo" class="brand-logo">
+            </a>
+            <nav id="main-nav">
+                <a href="/stories" class="nav-btn nav-gold">Stories</a>
+                <a href="/arcade" class="nav-btn">Arcade</a>
+            </nav>
+        </div>
+    </header>
+
+</body>
+</html>
