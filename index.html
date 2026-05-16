@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Amazing Grace Home Living — Secure, all-inclusive housing in Tampa and Largo, Voice of Jesus Ministry, and The Seven Stars Educational Arcade.">
     <meta name="theme-color" content="#0f172a">
+    
+    <meta name="google-site-verification" content="OuIzxhlLML_vBGItdMtD6laYGGBVHiyFuX0Ot4xr9po" />
 
     <link rel="icon" type="image/png" href="./Assets/logo.png">
     <link rel="manifest" href="./manifest.json">
@@ -137,9 +139,18 @@
             font-weight: 600;
             color: var(--accent-link);
             background: transparent;
-            transition: color 0.2s, text-shadow 0.2s;
+            transition: color 0.2s, text-shadow 0.2s, border-color 0.2s;
         }
 
         .nav-icon { width: 18px; height: 18px; flex-shrink: 0; }
 
-        .nav-btn.nav-gold     { border-color: rgba(255,215,0,
+        /* Complete Navigation Classes */
+        .nav-btn.nav-gold { 
+            color: var(--col-gold); 
+        }
+        .nav-btn.nav-gold:hover { 
+            border-color: var(--gold-dim); 
+            text-shadow: 0 0 8px var(--col-gold); 
+        }
+    </style>
+</head>
