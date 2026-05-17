@@ -1010,7 +1010,7 @@
             });
 
             document.addEventListener('keydown', (event) => {
-                if (event?.key !== 'Escape' || !nav.classList.contains('open')) return;
+                if (event.key !== 'Escape' || !nav.classList.contains('open')) return;
                 nav.classList.remove('open');
                 toggle.setAttribute('aria-expanded', 'false');
                 if (nav.contains(document.activeElement)) {

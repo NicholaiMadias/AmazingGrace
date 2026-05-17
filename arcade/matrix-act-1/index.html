@@ -128,6 +128,11 @@
       transition: background .15s, color .15s;
     }
     .btn-secondary:hover { background: #7c3aed; color: #fff; }
+    #chapter-status {
+      min-height: 1.5rem;
+      color: #a78bfa;
+      font-size: 0.95rem;
+    }
 
     /* ── Progress indicator ── */
     #progress-bar {
@@ -178,6 +183,7 @@
     <button class="btn-primary" id="btn-start" type="button">▶ Begin Act 1</button>
     <a class="btn-secondary" href="/arcade/">← Back to Lobby</a>
   </div>
+  <p id="chapter-status" role="status" aria-live="polite"></p>
 </main>
 
 <footer>Amazing Grace Home Living · Nexus Arcade · Matrix Act 1</footer>
@@ -298,7 +304,10 @@ function openChapter(id) {
     progress.completed.push(id);
     saveProgress(progress);
   }
-  alert(`Chapter ${id}: ${ch.title}\n\n[Full chapter content coming soon]`);
+  const status = document.getElementById('chapter-status');
+  if (status) {
+    status.textContent = `Chapter ${id}: ${ch.title} — full chapter content coming soon.`;
+  }
   render();
 }
 
