@@ -1,501 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Amazing Grace Home Living — Secure, all-inclusive housing in Tampa and Largo, Voice of Jesus Ministry, and The Seven Stars Educational Arcade.">
-    <meta name="theme-color" content="#0f172a">
-    
-    <meta name="google-site-verification" content="OuIzxhlLML_vBGItdMtD6laYGGBVHiyFuX0Ot4xr9po" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Amazing Grace Home Living — Listings, Arcade, and Ministry.">
+  <meta name="theme-color" content="#0f172a">
+  <title>Amazing Grace Home Living</title>
+  <link rel="icon" type="image/png" href="./assets/logo.png">
+  <link rel="manifest" href="./manifest.json">
+  <style>
+    :root {
+      --bg: #020617;
+      --panel: #0f172a;
+      --line: #1e293b;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #22d3ee;
+    }
 
-    <link rel="icon" type="image/png" href="./assets/logo.png">
-    <link rel="manifest" href="./manifest.json">
-    <title>Amazing Grace Home Living</title>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600&display=swap');
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(2, 6, 23, 0.95);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--line);
+      padding: 0.9rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
 
-        :root {
-            --night:         #000000;
-            --night-surface: #000000;
-            --night-card:    #000000;
-            --gold:          #ffd700;
-            --gold-dim:      rgba(255,215,0,0.18);
-            --accent:        #00ff66;
-            --accent-dim:    rgba(0,255,102,0.1);
-            --accent-link:   #00aaff;
-            --accent-link-h: #33ccff;
-            --border:        #003344;
-            --text:          #00ff66;
-            --text-muted:    rgba(0,255,102,0.65);
-            --radius:        12px;
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: var(--text);
+      margin-right: auto;
+      font-weight: 700;
+    }
 
-            /* nav gem colours */
-            --col-gold:      #ffd700;
-            --col-sapphire:  #00aaff;
-            --col-silver:    #b0bec5;
-            --col-ruby:      #e57373;
-            --col-amethyst:  #00ff66;
-            --col-emerald:   #33ccff;
+    .logo img {
+      width: 34px;
+      height: 34px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    .menu-toggle {
+      display: none;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      padding: 0.45rem 0.65rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    #main-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .nav-btn:hover { border-color: var(--accent); }
+
+    main {
+      width: min(980px, 100% - 2rem);
+      margin: 3rem auto;
+      display: grid;
+      gap: 1rem;
+      flex: 1;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
+      padding: 1.25rem;
+    }
+
+    .card h2 { margin: 0 0 0.5rem; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.6; }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 1.2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 760px) {
+      .menu-toggle { display: inline-flex; }
+      #main-nav {
+        display: none;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        padding: 0.75rem;
+        background: #020617;
+        border-bottom: 1px solid var(--line);
+        flex-direction: column;
+        align-items: stretch;
+      }
+      #main-nav.open { display: flex; }
+      .nav-btn { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="./" aria-label="Amazing Grace Home Living home">
+      <img src="./assets/logo.png" alt="Amazing Grace Home Living logo">
+      <span>Amazing Grace</span>
+    </a>
+
+    <nav id="main-nav" aria-label="Main navigation">
+      <a class="nav-btn" href="./">Home</a>
+      <a class="nav-btn" href="./galleries/">Listings</a>
+      <a class="nav-btn" href="./arcade/">Arcade</a>
+      <a class="nav-btn" href="./ministry/">Ministry</a>
+      <a class="nav-btn" href="./stories/">Library</a>
+      <a class="nav-btn" href="./contact/">Contact</a>
+    </nav>
+
+    <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Listings</h2>
+      <p>Safe, stable, and community-focused housing opportunities.</p>
+    </section>
+    <section class="card">
+      <h2>Arcade</h2>
+      <p>Interactive educational games designed for growth and learning.</p>
+    </section>
+    <section class="card">
+      <h2>Ministry</h2>
+      <p>Faith-centered resources and outreach for individuals and families.</p>
+    </section>
+  </main>
+
+  <footer>© 2026 Amazing Grace Home Living</footer>
+
+  <script>
+    // Mobile nav toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mainNav = document.getElementById('main-nav');
+
+    if (menuToggle && mainNav) {
+      const closeNav = () => {
+        mainNav.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      };
+
+      const openNav = () => {
+        mainNav.classList.add('open');
+        menuToggle.setAttribute('aria-expanded', 'true');
+      };
+
+      menuToggle.addEventListener('click', () => {
+        if (mainNav.classList.contains('open')) {
+          closeNav();
+          return;
         }
-
-        @media (prefers-reduced-motion: no-preference) {
-            html { scroll-behavior: smooth; }
-        }
-
-        body {
-            font-family: 'Orbitron', 'Exo 2', 'Inter', sans-serif;
-            background: #000000;
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: #000000;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        *:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-
-        /* ── Header ── */
-        .site-header {
-            background: #000000;
-            backdrop-filter: none;
-            border-bottom: 1px solid var(--border);
-            padding: 0.8rem 1.5rem;
-            position: sticky;
-            top: 0;
-            z-index: 300;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 0.65rem;
-            text-decoration: none;
-            margin-right: auto;
-        }
-
-        .brand-logo {
-            height: 38px;
-            width: auto;
-            border-radius: 6px;
-        }
-
-        .brand-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .brand-name {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: var(--accent);
-            line-height: 1.1;
-        }
-
-        .brand-sub {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            letter-spacing: 0.03em;
-        }
-
-        /* ── Nav ── */
-        #main-nav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.35rem;
-            align-items: center;
-        }
-
-        .nav-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            padding: 0.4rem 0.85rem;
-            border-radius: 7px;
-            border: 1px solid transparent;
-            text-decoration: none;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--accent-link);
-            background: transparent;
-            transition: color 0.2s, text-shadow 0.2s, border-color 0.2s;
-        }
-
-        .nav-icon { width: 18px; height: 18px; flex-shrink: 0; }
-
-        .nav-btn.nav-gold     { border-color: rgba(255,215,0,0.25); color: var(--col-gold); }
-        .nav-btn.nav-sapphire { border-color: rgba(0,170,255,0.25); color: var(--accent-link); }
-        .nav-btn.nav-silver   { border-color: rgba(176,190,197,0.25); color: var(--col-silver); }
-        .nav-btn.nav-ruby     { border-color: rgba(229,115,115,0.25); color: var(--col-ruby); }
-        .nav-btn.nav-amethyst { border-color: rgba(0,255,102,0.25); color: var(--accent); }
-
-        .nav-btn.nav-gold:hover     { text-shadow: 0 0 6px var(--gold); border-color: var(--gold); }
-        .nav-btn.nav-sapphire:hover { color: var(--accent-link-h); text-shadow: 0 0 6px var(--accent-link-h); border-color: var(--accent-link); }
-        .nav-btn.nav-silver:hover   { text-shadow: 0 0 6px var(--col-silver); border-color: var(--col-silver); }
-        .nav-btn.nav-ruby:hover     { text-shadow: 0 0 6px var(--col-ruby); border-color: var(--col-ruby); }
-        .nav-btn.nav-amethyst:hover { text-shadow: 0 0 6px var(--accent); border-color: var(--accent); }
-
-        /* ── Main content ── */
-        main { flex: 1; }
-
-        /* ── Hero ── */
-        .hero {
-            text-align: center;
-            padding: 6rem 1.5rem 5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at 50% 55%, rgba(126,255,216,0.06) 0%, transparent 65%);
-            pointer-events: none;
-        }
-
-        .hero-eyebrow {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.72rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 1rem;
-            opacity: 0.8;
-        }
-
-        .hero h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.8rem, 5vw, 3.2rem);
-            font-weight: 900;
-            color: #fff;
-            text-shadow: 0 0 40px rgba(126,255,216,0.25);
-            margin-bottom: 1.25rem;
-            line-height: 1.15;
-        }
-
-        .hero-tagline {
-            font-size: clamp(1rem, 2.5vw, 1.2rem);
-            color: var(--text-muted);
-            max-width: 580px;
-            margin: 0 auto 2.5rem;
-            line-height: 1.75;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            display: inline-block;
-            padding: 0.85rem 2rem;
-            background: var(--accent);
-            color: #0a0a14;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 0.9rem;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: opacity 0.2s, transform 0.2s;
-        }
-
-        .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); }
-
-        .btn-secondary {
-            display: inline-block;
-            padding: 0.85rem 2rem;
-            background: transparent;
-            color: var(--accent);
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 0.9rem;
-            border: 1px solid var(--accent);
-            border-radius: 8px;
-            text-decoration: none;
-            transition: background 0.2s, transform 0.2s;
-        }
-
-        .btn-secondary:hover { background: var(--accent-dim); transform: translateY(-2px); }
-
-        /* ── Section shared ── */
-        .section {
-            padding: 5rem 1.5rem;
-        }
-
-        .section-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-header h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.4rem, 3.5vw, 2rem);
-            font-weight: 900;
-            color: var(--accent);
-            margin-bottom: 0.75rem;
-        }
-
-        .section-header p {
-            color: var(--text-muted);
-            max-width: 520px;
-            margin: 0 auto;
-            line-height: 1.7;
-        }
-
-        /* ── Listings ── */
-        #listings { background: var(--night-surface); }
-
-        .listings-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .listing-card {
-            background: var(--night-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 1.75rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            transition: border-color 0.2s, transform 0.2s;
-        }
-
-        .listing-card:hover { border-color: var(--accent); transform: translateY(-4px); }
-
-        .listing-thumb-wrap {
-            position: relative;
-            border-radius: calc(var(--radius) - 2px);
-            overflow: hidden;
-            border: 1px solid rgba(126,255,216,0.10);
-            background: rgba(0,0,0,0.45);
-        }
-
-        .listing-card-thumb {
-            width: 100%;
-            aspect-ratio: 4/3;
-            object-fit: cover;
-            border-radius: 0;
-            display: block;
-            filter: saturate(1.05) contrast(1.05);
-        }
-
-        .listing-price-badge {
-            position: absolute;
-            left: 0.75rem;
-            bottom: 0.75rem;
-            padding: 0.35rem 0.65rem;
-            border-radius: 999px;
-            font-weight: 800;
-            font-size: 0.85rem;
-            color: #0b1020;
-            background: linear-gradient(135deg, #ffd700, #ffb703);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-        }
-
-        .listing-badge-avail {
-            position: absolute;
-            top: 0.75rem;
-            right: 0.75rem;
-            padding: 0.35rem 0.6rem;
-            border-radius: 999px;
-            font-weight: 900;
-            font-size: 0.72rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: #052e1a;
-            background: rgba(74, 222, 128, 0.95);
-            border: 1px solid rgba(74, 222, 128, 0.9);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-        }
-
-        .listing-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.98rem;
-            color: var(--text);
-        }
-
-        .listing-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
-
-        .listing-location {
-            font-size: 0.85rem;
-            color: rgba(226,232,240,0.92);
-            padding: 0.35rem 0.6rem;
-            border-radius: 999px;
-            background: rgba(0,170,255,0.10);
-            border: 1px solid rgba(0,170,255,0.20);
-            width: fit-content;
-        }
-
-        .amenity-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.25rem;
-        }
-
-        .amenity-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.35rem 0.6rem;
-            border-radius: 999px;
-            font-weight: 700;
-            font-size: 0.78rem;
-            color: #e9d5ff;
-            background: rgba(124,58,237,0.18);
-            border: 1px solid rgba(124,58,237,0.25);
-        }
-
-        .listing-link {
-            margin-top: auto;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            color: var(--col-sapphire);
-            font-weight: 600;
-            font-size: 0.85rem;
-            text-decoration: none;
-        }
-
-        .listing-link:hover { text-decoration: underline; }
-
-        /* ── Pricing ── */
-        #pricing { background: var(--night); }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .pricing-card {
-            background: var(--night-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .pricing-card.featured {
-            border-color: var(--accent);
-            box-shadow: 0 0 30px rgba(126,255,216,0.12);
-        }
-
-        .pricing-label {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.72rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--accent);
-        }
-
-        .pricing-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.15rem;
-            color: var(--text);
-        }
-
-        .pricing-amount {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .pricing-amount span {
-            font-size: 0.85rem;
-            font-weight: 400;
-            color: var(--text-muted);
-        }
-
-        .pricing-features {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .pricing-features li {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .pricing-features li::before { content: '✦'; color: var(--accent); font-size: 0.65rem; }
-
-        /* ── Arcade game cards ── */
-        #arcade { background: var(--night-surface); }
-
-        .game-grid {
-            display: grid;
-            gap: 1.25rem;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        }
-
-        a.game-card {
-            display: flex;
-            flex-direction: column;
-            background: var(--night-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 1.25rem;
-            transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
-            color: var(--text);
-            text-decoration: none;
-        }
-
-        a.game-card:hover {
-            border-color: var(--col-amethyst);
-            box-shadow: 0 0 20px rgba(186,104,200,0.3);
-            transform: translateY(-2px);
-            text-decoration: none;
-        }
-
-        a.game-card:focus-visible {
-            outline: 3px solid var(--col-sapphire);
-            outline-offset: 2px;
-        }
-
-        .game-card-icon  { font-size: 2rem; margin-bottom: 0.5rem; line-height: 1; }
-        .game-card-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
-
-        .game-card-desc {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            line-height: 1.55;
-            flex: 1;
-            margin-bottom:
+        openNav();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event?.key !== 'Escape') return;
+        if (!mainNav.classList.contains('open')) return;
+        const focusedInsideNav = mainNav.contains(document.activeElement);
+        closeNav();
+        if (focusedInsideNav) menuToggle.focus();
+      });
+    }
+  </script>
+</body>
+</html>
