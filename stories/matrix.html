@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js" integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -113,7 +113,7 @@
 
         function initGame() {
             document.getElementById('start-screen').classList.add('hidden');
-            try { document.documentElement.requestFullscreen(); } catch (e) {}
+            try { document.documentElement.requestFullscreen(); } catch (e) { console.warn('Fullscreen request failed', e); }
             createBoard();
         }
 
@@ -133,9 +133,17 @@
                 let row = [];
                 for (let c = 0; c < GRID_SIZE; c++) {
                     let type;
+                    let attempts = 0;
                     do {
                         type = Math.floor(Math.random() * 7) + 1;
-                    } while ((c >= 2 && type === row[c-1] && type === row[c-2]) || (r >= 2 && type === board[r-1][c] && type === board[r-2][c]));
+                        attempts++;
+                    } while (
+                        attempts < 20 &&
+                        (
+                            (c >= 2 && type === row[c-1] && type === row[c-2]) ||
+                            (r >= 2 && type === board[r-1][c] && type === board[r-2][c])
+                        )
+                    );
                     
                     row.push(type);
                     
@@ -256,17 +264,20 @@
                 return;
             }
 
-            let uniquePoints = 0;
-            matches.forEach(m => {
-                if (board[m.r][m.c] !== 0) {
-                    board[m.r][m.c] = 0;
-                    uniquePoints += 10;
-                    const el = document.getElementById(`tile-${m.r}-${m.c}`);
+            const uniqueMatches = new Map();
+            matches.forEach(({ r, c }) => {
+                uniqueMatches.set(`${r}-${c}`, { r, c });
+            });
+
+            uniqueMatches.forEach(({ r, c }) => {
+                if (board[r][c] !== 0) {
+                    board[r][c] = 0;
+                    const el = document.getElementById(`tile-${r}-${c}`);
                     if (el) el.innerHTML = '';
                 }
             });
 
-            score += uniquePoints;
+            score += uniqueMatches.size * 10;
             updateHUD();
 
             setTimeout(() => {
