@@ -40,10 +40,13 @@ export default defineConfig({
         newsZykoLearn:     resolve(__dirname, "news/articles/zyko-learn.html"),
         newsFutureArticles: resolve(__dirname, "news/articles/future-articles.html"),
         support:           resolve(__dirname, "support/index.html"),
+        galleries:         resolve(__dirname, "galleries/index.html"),
         gallery1142:       resolve(__dirname, "galleries/1142-7th-street/index.html"),
         gallery1144:       resolve(__dirname, "galleries/1144-7th-street/index.html"),
         gallery926Tampa:   resolve(__dirname, "galleries/926-poinsettia/index.html"),
+        galleryTampaArchive: resolve(__dirname, "galleries/tampa-property/index.html"),
         galleryMinistry:   resolve(__dirname, "galleries/ministry/index.html"),
+        galleryMinistryOutreach: resolve(__dirname, "galleries/ministry-outreach/index.html"),
         privacy:           resolve(__dirname, "privacy.html"),
         arcadeRedirect:    resolve(__dirname, "arcade.html"),
       }
