@@ -55,6 +55,7 @@ jobs:
             local src="$1" dest="$2"
             if [ -d "$src" ]; then
               mkdir -p "$dest"
+              # Keep already-generated files in dist when names overlap with copied static assets.
               cp -rn "$src/." "$dest/"
               echo "Copied $src -> $dest"
             else

@@ -236,7 +236,13 @@ const CHAPTERS = [
 const SAVE_KEY = 'matrix-act1-progress';
 
 function loadProgress() {
-  try { return JSON.parse(localStorage.getItem(SAVE_KEY) || '{"completed":[]}'); }
+  try {
+    const parsed = JSON.parse(localStorage.getItem(SAVE_KEY) || '{"completed":[]}');
+    const completed = Array.isArray(parsed?.completed)
+      ? parsed.completed.filter((id) => Number.isInteger(id))
+      : [];
+    return { completed };
+  }
   catch (err) { console.warn('[matrix-act1] Could not load progress:', err); return { completed: [] }; }
 }
 function saveProgress(data) {
