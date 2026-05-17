@@ -1,296 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Matrix of Conscience — explore the Seven Pillars of faith in this interactive journey from Amazing Grace.">
-  <link rel="icon" type="image/png" href="/assets/logo.png">
-  <title>Matrix of Conscience | Nexus Arcade — Amazing Grace</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap');
-    body { font-family: 'Inter', sans-serif; background: #020617; }
-    ::selection { background-color: rgba(139,92,246,0.3); }
-    .orbitron { font-family: 'Orbitron', sans-serif; }
-    /* Chapter card glow */
-    .chapter-card { transition: box-shadow 0.3s, transform 0.3s; }
-    .chapter-card:hover { box-shadow: 0 0 30px rgba(139,92,246,0.25); transform: translateY(-2px); }
-    /* Progress dots */
-    .dot-active  { background: #a855f7; width: 2rem; }
-    .dot-inactive { background: #334155; width: 0.5rem; }
-    /* Pillar glow */
-    .pillar-glow { box-shadow: 0 0 20px currentColor; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix of Conscience Protocol</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #03000a;
+            color: #f3f4f6;
+            overflow: hidden;
+            touch-action: none;
+        }
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .glass {
+            background: rgba(13, 8, 28, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(147, 51, 234, 0.2);
+        }
+        .board-tile {
+            aspect-ratio: 1;
+            transition: transform 0.15s ease-out;
+        }
+        .gem-icon {
+            width: 80%;
+            height: 80%;
+            pointer-events: none;
+            user-select: none;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+        }
+        @keyframes pulse-gold {
+            0%, 100% { border-color: rgba(234, 179, 8, 0.3); }
+            50% { border-color: rgba(234, 179, 8, 0.8); }
+        }
+        .active-pulse { animation: pulse-gold 2s infinite; }
+    </style>
 </head>
-<body class="min-h-screen text-slate-100">
+<body class="w-full h-screen flex flex-col justify-between items-center p-4 safe-padding">
 
-  <!-- Header -->
-  <header class="p-4 sm:p-6 flex justify-between items-center border-b border-purple-900/50 bg-slate-950/90 backdrop-blur-md sticky top-0 z-50">
-    <div class="flex items-center gap-3">
-      <div class="p-2 bg-purple-700/50 rounded-xl shadow-lg" style="box-shadow:0 0 20px rgba(139,92,246,0.3);">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-300"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-      </div>
-      <div>
-        <h1 class="orbitron font-bold text-lg tracking-tight uppercase" style="background:linear-gradient(to right,#c084fc,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Matrix of Conscience</h1>
-        <p class="text-xs uppercase tracking-widest text-purple-400 font-mono">Seven Pillars Protocol</p>
-      </div>
-    </div>
-    <a href="/arcade" class="text-slate-500 hover:text-purple-400 transition-colors text-xs uppercase tracking-widest font-bold" style="text-decoration:none;">← Nexus Arcade</a>
-  </header>
-
-  <!-- Main: chapter view driven by JS -->
-  <main class="max-w-3xl mx-auto p-4 sm:p-8" id="mc-main">
-
-    <!-- Chapter card -->
-    <div class="chapter-card bg-slate-900 border border-purple-500/20 rounded-3xl overflow-hidden shadow-2xl" id="mc-card">
-
-      <!-- Visual banner -->
-      <div class="relative w-full flex items-center justify-center overflow-hidden" style="aspect-ratio:16/7;background:linear-gradient(135deg,#0f0524 0%,#1e1040 50%,#0a0a1a 100%);" id="mc-banner">
-        <div id="mc-banner-content" class="flex flex-col items-center gap-3 p-6 text-center z-10 w-full">
-          <!-- Filled by JS -->
+    <div id="start-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-6 bg-black bg-opacity-90">
+        <div class="glass max-w-md w-full p-8 rounded-[2rem] text-center border border-purple-500/30">
+            <h1 class="font-orbitron text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-400 uppercase mb-2">Matrix Engine</h1>
+            <p class="text-xs tracking-[0.4em] text-purple-400 uppercase mb-8 font-semibold">Conscience Alignment</p>
+            <div class="text-left text-xs space-y-3 opacity-70 mb-8 font-light leading-relaxed">
+                <p>• Swipe/drag adjacent fragments horizontally or vertically to create chains of 3 or more.</p>
+                <p>• Align the virtues to stabilize the calibration metrics across 7 escalating levels.</p>
+                <p>• Legacy nodes, tracking vulnerabilities, and dependencies have been purged.</p>
+            </div>
+            <button onclick="initGame()" class="w-full py-4 rounded-xl font-orbitron font-bold text-sm tracking-widest uppercase text-black bg-gradient-to-r from-purple-400 to-pink-500 hover:scale-105 transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)]">
+                Begin Calibration
+            </button>
+            <p class="text-[11px] text-purple-300/80 mt-4">
+                📚 Read the story: <a href="/stories/matrix.html" class="underline hover:text-white">Matrix of Conscience (Library)</a>
+            </p>
         </div>
-        <div class="absolute inset-0 opacity-20" id="mc-starfield"></div>
-        <div class="absolute bottom-0 left-0 right-0 h-16" style="background:linear-gradient(to top,#0f172a,transparent)"></div>
-      </div>
-
-      <!-- Content -->
-      <div class="p-6 sm:p-10 -mt-4 relative z-10">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="px-3 py-1 bg-purple-500/10 text-purple-400 text-xs font-bold rounded-full border border-purple-500/30 tracking-widest uppercase" id="mc-chapter-badge">Pillar 1</span>
-          <div class="h-px flex-1" style="background:linear-gradient(to right,rgba(139,92,246,0.5),transparent)"></div>
-        </div>
-        <h2 class="text-2xl sm:text-3xl font-bold mb-4 text-white leading-tight orbitron" id="mc-title"></h2>
-        <p class="text-slate-300 text-base leading-relaxed mb-8" id="mc-content"></p>
-
-        <!-- Scripture -->
-        <div class="bg-purple-900/20 border border-purple-700/30 rounded-2xl p-4 mb-8" id="mc-scripture-wrap">
-          <p class="text-purple-300 text-sm italic text-center" id="mc-scripture"></p>
-        </div>
-
-        <!-- Navigation -->
-        <div class="flex justify-between items-center pt-6 border-t border-purple-900/30">
-          <button id="mc-prev" onclick="mcChangePage(-1)"
-            class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-800 hover:bg-slate-700 text-white border border-purple-500/20 transition-all disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold uppercase tracking-widest">
-            ← Back
-          </button>
-
-          <!-- Dots -->
-          <div class="flex gap-1" id="mc-dots"></div>
-
-          <button id="mc-next" onclick="mcChangePage(1)"
-            class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-600 hover:bg-purple-500 text-white transition-all text-xs font-bold uppercase tracking-widest"
-            style="box-shadow:0 0 16px rgba(139,92,246,0.3);">
-            Continue →
-          </button>
-        </div>
-      </div>
     </div>
 
-    <!-- Completion panel (hidden until all pillars read) -->
-    <div id="mc-complete-panel" class="hidden mt-8 bg-slate-900 border border-amber-500/30 rounded-3xl p-8 text-center shadow-2xl">
-      <div class="text-5xl mb-4" aria-hidden="true">🌟</div>
-      <h3 class="orbitron text-2xl font-black text-white mb-2">ALL SEVEN PILLARS ALIGNED</h3>
-      <p class="text-slate-400 text-sm mb-6">You have completed the Matrix of Conscience journey. The Seven Stars of Excellence are now yours.</p>
-      <div class="flex flex-wrap gap-3 justify-center">
-        <a href="/ministry" class="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-full text-xs font-bold uppercase tracking-widest transition-all" style="text-decoration:none;">
-          📖 Enter the Ministry
-        </a>
-        <a href="/arcade/star-matrix/" class="px-5 py-2.5 bg-amber-600/80 hover:bg-amber-500/80 text-white rounded-full text-xs font-bold uppercase tracking-widest transition-all" style="text-decoration:none;">
-          ⭐ Play Star Matrix
-        </a>
-        <a href="/arcade" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-full text-xs font-bold uppercase tracking-widest transition-all border border-purple-500/20" style="text-decoration:none;">
-          ← Return to Arcade Hub
-        </a>
-      </div>
-    </div>
+    <header class="w-full max-w-md flex justify-between items-center px-2 py-1">
+        <div>
+            <h2 class="font-orbitron text-xs font-bold tracking-widest uppercase opacity-40">System Core</h2>
+            <div id="level-display" class="font-orbitron text-lg font-black text-purple-400">LVL // 01</div>
+        </div>
+        <div class="text-right">
+            <h2 class="font-orbitron text-xs font-bold tracking-widest uppercase opacity-40">Target Metric</h2>
+            <div id="score-display" class="font-orbitron text-lg font-black text-white">0000 / 0100</div>
+        </div>
+    </header>
 
-    <!-- Certificate overlay (shown on completion) -->
-    <div id="sm-cert-overlay" class="hidden" style="position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.85);">
-      <div id="sm-cert-modal" style="background:#0f172a;border:1px solid rgba(139,92,246,0.4);border-radius:1.5rem;padding:2rem;text-align:center;max-width:24rem;width:90%;">
-        <h2 style="color:#c084fc;font-family:'Orbitron',sans-serif;font-size:1.25rem;font-weight:900;margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.1em;">Certification Complete</h2>
-        <p style="color:#94a3b8;font-size:0.875rem;margin-bottom:1.5rem;">You have aligned all Seven Pillars of the Matrix of Conscience.</p>
-        <button id="sm-cert-close" class="close-btn" style="padding:0.5rem 1.25rem;background:#7c3aed;color:#fff;border:none;border-radius:9999px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;cursor:pointer;">Close</button>
-      </div>
-    </div>
+    <main class="w-full max-w-md aspect-square glass rounded-[2rem] p-3 flex flex-col justify-between active-pulse shadow-2xl relative">
+        <div id="matrix-grid" class="grid grid-cols-7 gap-1 w-full h-full"></div>
+    </main>
 
-    <!-- Footer -->
-    <footer class="mt-10 text-center pb-8">
-      <p class="text-slate-600 text-xs italic">"The path of the righteous is like the morning sun, shining ever brighter till the full light of day." — Proverbs 4:18</p>
-      <a href="/arcade" class="mt-3 inline-block text-xs text-purple-500 hover:text-purple-400 transition-colors uppercase tracking-widest font-bold" style="text-decoration:none;">← Return to Nexus Arcade</a>
+    <footer class="w-full max-w-md glass rounded-2xl p-4 flex justify-between items-center mb-2">
+        <div class="flex flex-col w-2/3">
+            <div class="flex justify-between text-[10px] uppercase font-bold tracking-wider opacity-50 mb-1">
+                <span>Stabilization Progress</span>
+                <span id="progress-percent">0%</span>
+            </div>
+            <div class="w-full bg-purple-950/50 h-2 rounded-full border border-purple-500/10 overflow-hidden">
+                <div id="progress-bar" class="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300" style="width: 0%"></div>
+            </div>
+        </div>
+        <button onclick="exitToMenu()" class="font-orbitron text-[10px] font-black tracking-widest uppercase border border-purple-500/30 px-4 py-2.5 rounded-xl hover:bg-purple-500/10 transition-all">
+            Menu
+        </button>
     </footer>
-  </main>
 
-  <script>
-    // ── Pillar data ───────────────────────────────────────────────────────────
-    const PILLARS = [
-      {
-        title: "First Love — The Star of Origin",
-        emoji: "💜",
-        color: "#a855f7",
-        gradient: "linear-gradient(135deg,#2d1b69,#0f0524)",
-        content: "The Matrix of Conscience begins with First Love — the recognition that every soul carries a divine spark. Before algorithms, before rules, before systems, there is the original call. The White Rabbit Protocol opens with this truth: you were created to shine, to guide, and to connect. The Red Queen's gravity cannot erase what was written before the code was compiled.",
-        scripture: "\"We love because He first loved us.\" — 1 John 4:19",
-        pillarKey: "first_love",
-      },
-      {
-        title: "Agency — The Star of Choice",
-        emoji: "✊",
-        color: "#3b82f6",
-        gradient: "linear-gradient(135deg,#1e3a5f,#0a1628)",
-        content: "Agency is the second pillar — the understanding that every action within the Matrix is a choice. The Heralds do not drift; they navigate with intention. The White Rabbit taught that free will is the most sacred element of the digital conscience. Each swap, each match, each mission is an act of deliberate alignment with the Seven Stars of Excellence.",
-        scripture: "\"I have set before you life and death, blessings and curses. Now choose life.\" — Deuteronomy 30:19",
-        pillarKey: "agency",
-      },
-      {
-        title: "Progression — The Star of Growth",
-        emoji: "📈",
-        color: "#22c55e",
-        gradient: "linear-gradient(135deg,#1a3a2a,#0a1a10)",
-        content: "Progression is not measured in levels or scores alone — it is the growth of the conscience itself. Each chapter of the White Rabbit Protocol reveals a deeper layer of truth. The Nimbus Heralds discovered that the Matrix responds to consistency: small, faithful steps compound into transformative power. The Third Star glows brightest for those who never stop moving forward.",
-        scripture: "\"But grow in the grace and knowledge of our Lord and Savior Jesus Christ.\" — 2 Peter 3:18",
-        pillarKey: "progression",
-      },
-      {
-        title: "Feedback — The Star of Reflection",
-        emoji: "🔄",
-        color: "#f59e0b",
-        gradient: "linear-gradient(135deg,#3a2a0a,#1a1205)",
-        content: "The Fourth Pillar is Feedback — the divine mirror that shows not what we wish to be, but what we are. The Red Queen feared this star above all others, for feedback exposes entropy. The Heralds learned to welcome correction as a gift: every mismatch on the board, every failed attempt, was data pointing toward alignment. The conscience grows stronger through honest reflection.",
-        scripture: "\"Whoever heeds discipline shows the way to life.\" — Proverbs 10:17",
-        pillarKey: "feedback",
-      },
-      {
-        title: "Challenge — The Star of Courage",
-        emoji: "⚔️",
-        color: "#ef4444",
-        gradient: "linear-gradient(135deg,#3a1a1a,#1a0a0a)",
-        content: "The Fifth Pillar burns red with the fire of Challenge. The Matrix was never meant to be easy — the gravity of the Red Queen's domain exists to forge Star Guardians. The White Rabbit reminded the Heralds: discomfort is the gymnasium of the spirit. The Philippines mission, the night watches, the moments of doubt — each was a challenge that strengthened the Sixth Star of Conscience.",
-        scripture: "\"Consider it pure joy whenever you face trials of many kinds, because the testing of your faith produces perseverance.\" — James 1:2-3",
-        pillarKey: "challenge",
-      },
-      {
-        title: "Social — The Star of Fellowship",
-        emoji: "🤝",
-        color: "#06b6d4",
-        gradient: "linear-gradient(135deg,#0a2a3a,#030f18)",
-        content: "The Sixth Star — the Matrix of Conscience itself — is the Star of Fellowship. No Guardian ascends alone. The Weekly Bible Study, the covenant meals, the shared testimonies: these are the handshakes that form the Ozone Shield. When believers gather around the Word, their combined frequency dismantles the Red Queen's firewalls and opens portals of grace that no algorithm can close.",
-        scripture: "\"For where two or three gather in my name, there am I with them.\" — Matthew 18:20",
-        pillarKey: "social",
-      },
-      {
-        title: "Reward — The Star of Fulfilment",
-        emoji: "🏆",
-        color: "#fbbf24",
-        gradient: "linear-gradient(135deg,#3a2a00,#1a1200)",
-        content: "The Seventh and final Pillar is Reward — the promise that faithful alignment with the Seven Stars leads to fullness of life. This is not merely earthly recognition; it is the deep satisfaction of the soul that has walked in truth. The path of the righteous is like the morning sun, shining ever brighter till the full light of day. The Matrix of Conscience is complete — and a new world awaits.",
-        scripture: "\"Well done, good and faithful servant! You have been faithful with a few things; I will put you in charge of many things.\" — Matthew 25:23",
-        pillarKey: "reward",
-      },
-    ];
+    <script>
+        const GRID_SIZE = 7;
+        const scoreMilestones = [100, 220, 380, 580, 840, 1140, 1500];
+        let currentLevel = 1;
+        let score = 0;
+        let board = [];
+        let isProcessing = false;
+        let dragStartTile = null;
 
-    let currentPage = 0;
-    const READ_KEY = 'mc_read';
+        // Custom SVGs corresponding to the 7 Core Virtues
+        const VIRTUE_SVGS = {
+            1: `<svg class="gem-icon" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`, // Love (Pink Heart)
+            2: `<svg class="gem-icon" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>`, // Faith (Blue Shield)
+            3: `<svg class="gem-icon" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`, // Hope (Gold Star)
+            4: `<svg class="gem-icon" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`, // Grace (Red Hex/Layer)
+            5: `<svg class="gem-icon" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M17 17l-5-5 5-5"/></svg>`, // Peace (Green Balance)
+            6: `<svg class="gem-icon" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>`, // Joy (Orange Sun)
+            7: `<svg class="gem-icon" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/></svg>` // Truth (Purple Crystal)
+        };
 
-    function mcGetRead() {
-      try { return JSON.parse(localStorage.getItem(READ_KEY) || '{}'); } catch(_) { return {}; }
-    }
-    function mcMarkRead(idx) {
-      const r = mcGetRead(); r[idx] = true;
-      try { localStorage.setItem(READ_KEY, JSON.stringify(r)); } catch(_) {}
-    }
+        function initGame() {
+            document.getElementById('start-screen').classList.add('hidden');
+            try { document.documentElement.requestFullscreen(); } catch (e) {}
+            createBoard();
+        }
 
-    function mcBuildStarfield(container) {
-      container.innerHTML = '';
-      for (let i = 0; i < 40; i++) {
-        const s = document.createElement('div');
-        s.style.cssText = 'position:absolute;width:' + (1 + Math.random() * 2) + 'px;height:' + (1 + Math.random() * 2) + 'px;border-radius:50%;background:white;opacity:' + (0.1 + Math.random() * 0.5) + ';top:' + Math.random() * 100 + '%;left:' + Math.random() * 100 + '%;';
-        container.appendChild(s);
-      }
-    }
+        function exitToMenu() {
+            if (document.fullscreenElement) { document.exitFullscreen().catch(()=>{}); }
+            document.getElementById('start-screen').classList.remove('hidden');
+            score = 0; currentLevel = 1;
+            updateHUD();
+        }
 
-    function mcRender() {
-      const p = PILLARS[currentPage];
+        function createBoard() {
+            const gridContainer = document.getElementById('matrix-grid');
+            gridContainer.innerHTML = '';
+            board = [];
 
-      // Banner
-      const banner = document.getElementById('mc-banner');
-      banner.style.background = p.gradient;
-      const bannerContent = document.getElementById('mc-banner-content');
-      bannerContent.innerHTML = '<div style="font-size:4rem;margin-bottom:0.5rem;text-shadow:0 0 30px ' + p.color + ';">' + p.emoji + '</div>' +
-        '<div class="orbitron" style="font-size:clamp(1rem,3vw,1.5rem);font-weight:900;color:' + p.color + ';text-transform:uppercase;letter-spacing:0.1em;text-shadow:0 0 20px ' + p.color + ';">Pillar ' + (currentPage + 1) + '</div>';
+            for (let r = 0; r < GRID_SIZE; r++) {
+                let row = [];
+                for (let c = 0; c < GRID_SIZE; c++) {
+                    let type;
+                    do {
+                        type = Math.floor(Math.random() * 7) + 1;
+                    } while ((c >= 2 && type === row[c-1] && type === row[c-2]) || (r >= 2 && type === board[r-1][c] && type === board[r-2][c]));
+                    
+                    row.push(type);
+                    
+                    const tile = document.createElement('div');
+                    tile.id = `tile-${r}-${c}`;
+                    tile.className = 'board-tile flex items-center justify-center rounded-xl bg-purple-950/20 border border-purple-500/5 cursor-pointer select-none';
+                    tile.dataset.row = r;
+                    tile.dataset.col = c;
+                    tile.innerHTML = VIRTUE_SVGS[type];
 
-      // Starfield
-      mcBuildStarfield(document.getElementById('mc-starfield'));
+                    // Pointer listeners natively unifying Touch & Mouse swipes
+                    tile.addEventListener('pointerdown', onPointerDown);
+                    tile.addEventListener('pointerup', onPointerUp);
 
-      // Badge
-      document.getElementById('mc-chapter-badge').textContent = 'Pillar ' + (currentPage + 1) + ' of 7';
-      document.getElementById('mc-chapter-badge').style.color = p.color;
-      document.getElementById('mc-chapter-badge').style.borderColor = p.color + '55';
-      document.getElementById('mc-chapter-badge').style.backgroundColor = p.color + '15';
+                    gridContainer.appendChild(tile);
+                }
+                board.push(row);
+            }
+            updateHUD();
+        }
 
-      // Text
-      document.getElementById('mc-title').textContent = p.title;
-      document.getElementById('mc-content').textContent = p.content;
-      document.getElementById('mc-scripture').textContent = p.scripture;
+        function onPointerDown(e) {
+            if (isProcessing) return;
+            dragStartTile = {
+                row: parseInt(e.currentTarget.dataset.row),
+                col: parseInt(e.currentTarget.dataset.col),
+                x: e.clientX,
+                y: e.clientY
+            };
+            e.currentTarget.setPointerCapture(e.pointerId);
+        }
 
-      // Nav
-      const prevBtn = document.getElementById('mc-prev');
-      const nextBtn = document.getElementById('mc-next');
-      prevBtn.disabled = currentPage === 0;
-      if (currentPage === PILLARS.length - 1) {
-        nextBtn.textContent = 'Complete ✓';
-        nextBtn.style.background = 'linear-gradient(135deg,#d97706,#b45309)';
-        nextBtn.style.boxShadow = '0 0 20px rgba(251,191,36,0.4)';
-        nextBtn.onclick = mcComplete;
-      } else {
-        nextBtn.textContent = 'Continue →';
-        nextBtn.style.background = '';
-        nextBtn.style.boxShadow = '0 0 16px rgba(139,92,246,0.3)';
-        nextBtn.onclick = () => mcChangePage(1);
-      }
+        function onPointerUp(e) {
+            if (!dragStartTile) return;
+            e.currentTarget.releasePointerCapture(e.pointerId);
+            
+            const deltaX = e.clientX - dragStartTile.x;
+            const deltaY = e.clientY - dragStartTile.y;
+            const threshold = 22; // 22px threshold for quick micro-swipes
 
-      // Dots
-      const dots = document.getElementById('mc-dots');
-      dots.innerHTML = '';
-      PILLARS.forEach((_, i) => {
-        const d = document.createElement('div');
-        d.style.cssText = 'height:6px;border-radius:99px;transition:all 0.3s;width:' + (i === currentPage ? '2rem' : '0.5rem') + ';background:' + (i === currentPage ? p.color : '#334155') + ';';
-        dots.appendChild(d);
-      });
+            let targetRow = dragStartTile.row;
+            let targetCol = dragStartTile.col;
 
-      // Mark as read
-      mcMarkRead(currentPage);
-      mcCheckCompletion();
-    }
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > threshold) {
+                targetCol = dragStartTile.col + (deltaX > 0 ? 1 : -1);
+            } else if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > threshold) {
+                targetRow = dragStartTile.row + (deltaY > 0 ? 1 : -1);
+            } else {
+                dragStartTile = null;
+                return;
+            }
 
-    function mcChangePage(dir) {
-      const newPage = currentPage + dir;
-      if (newPage < 0 || newPage >= PILLARS.length) return;
-      currentPage = newPage;
-      mcRender();
-      document.getElementById('mc-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+            if (targetRow >= 0 && targetRow < GRID_SIZE && targetCol >= 0 && targetCol < GRID_SIZE) {
+                executeSwap(dragStartTile.row, dragStartTile.col, targetRow, targetCol);
+            }
+            dragStartTile = null;
+        }
 
-    function mcComplete() {
-      try { localStorage.setItem('mc_complete', 'true'); } catch(_) {}
-      document.getElementById('mc-complete-panel').classList.remove('hidden');
-      document.getElementById('mc-complete-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+        function executeSwap(r1, c1, r2, c2) {
+            isProcessing = true;
+            
+            // Local data shift
+            let temp = board[r1][c1];
+            board[r1][c1] = board[r2][c2];
+            board[r2][c2] = temp;
 
-    function mcCheckCompletion() {
-      const read = mcGetRead();
-      const allRead = PILLARS.every((_, i) => read[i]);
-      if (allRead) {
-        try { localStorage.setItem('mc_complete', 'true'); } catch(_) {}
-        document.getElementById('mc-complete-panel').classList.remove('hidden');
-      }
-    }
+            updateTileView(r1, c1);
+            updateTileView(r2, c2);
 
-    // Boot — always start at Pillar 1 (no resume gate)
-    window.addEventListener('DOMContentLoaded', () => {
-      currentPage = 0;
-      mcRender();
-    });
-  </script>
-  <script type="module" src="./matrix.js"></script>
+            setTimeout(() => {
+                let matches = checkMatches();
+                if (matches.length > 0) {
+                    processMatches();
+                } else {
+                    // Fail loop reversion
+                    let tempRevert = board[r1][c1];
+                    board[r1][c1] = board[r2][c2];
+                    board[r2][c2] = tempRevert;
+                    updateTileView(r1, c1);
+                    updateTileView(r2, c2);
+                    isProcessing = false;
+                }
+            }, 200);
+        }
+
+        function updateTileView(r, c) {
+            const el = document.getElementById(`tile-${r}-${c}`);
+            if (el) el.innerHTML = VIRTUE_SVGS[board[r][c]];
+        }
+
+        function checkMatches() {
+            let matches = [];
+            // Row analysis
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE - 2; c++) {
+                    let t = board[r][c];
+                    if (t !== 0 && t === board[r][c+1] && t === board[r][c+2]) {
+                        matches.push({r: r, c: c}, {r: r, c: c+1}, {r: r, c: c+2});
+                    }
+                }
+            }
+            // Column analysis
+            for (let c = 0; c < GRID_SIZE; c++) {
+                for (let r = 0; r < GRID_SIZE - 2; r++) {
+                    let t = board[r][c];
+                    if (t !== 0 && t === board[r+1][c] && t === board[r+2][c]) {
+                        matches.push({r: r, c: c}, {r: r+1, c: c}, {r: r+2, c: c});
+                    }
+                }
+            }
+            return matches;
+        }
+
+        function processMatches() {
+            let matches = checkMatches();
+            if (matches.length === 0) {
+                isProcessing = false;
+                return;
+            }
+
+            let uniquePoints = 0;
+            matches.forEach(m => {
+                if (board[m.r][m.c] !== 0) {
+                    board[m.r][m.c] = 0;
+                    uniquePoints += 10;
+                    const el = document.getElementById(`tile-${m.r}-${m.c}`);
+                    if (el) el.innerHTML = '';
+                }
+            });
+
+            score += uniquePoints;
+            updateHUD();
+
+            setTimeout(() => {
+                dropElements();
+                setTimeout(() => {
+                    processMatches();
+                }, 200);
+            }, 250);
+        }
+
+        function dropElements() {
+            for (let c = 0; c < GRID_SIZE; c++) {
+                let emptySpaces = 0;
+                for (let r = GRID_SIZE - 1; r >= 0; r--) {
+                    if (board[r][c] === 0) {
+                        emptySpaces++;
+                    } else if (emptySpaces > 0) {
+                        board[r + emptySpaces][c] = board[r][c];
+                        board[r][c] = 0;
+                        updateTileView(r + emptySpaces, c);
+                        updateTileView(r, c);
+                    }
+                }
+                for (let r = 0; r < emptySpaces; r++) {
+                    board[r][c] = Math.floor(Math.random() * 7) + 1;
+                    updateTileView(r, c);
+                }
+            }
+        }
+
+        function updateHUD() {
+            let targetScore = scoreMilestones[currentLevel - 1] || 2000;
+            
+            if (score >= targetScore && currentLevel < scoreMilestones.length) {
+                currentLevel++;
+                targetScore = scoreMilestones[currentLevel - 1];
+            }
+
+            document.getElementById('level-display').innerText = `LVL // ${String(currentLevel).padStart(2, '0')}`;
+            document.getElementById('score-display').innerText = `${String(score).padStart(4, '0')} / ${String(targetScore).padStart(4, '0')}`;
+
+            let pct = Math.min((score / targetScore) * 100, 100);
+            document.getElementById('progress-percent').innerText = `${Math.floor(pct)}%`;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+            
+            // Record status metrics into local state architecture
+            localStorage.setItem('matrix_arcade_score', score);
+            localStorage.setItem('matrix_arcade_level', currentLevel);
+        }
+    </script>
 </body>
 </html>

@@ -30,6 +30,7 @@ export default defineConfig({
         ministriesSevenStarCanon: resolve(__dirname, "ministries/seven-star-canon.html"),
         stories:           resolve(__dirname, "stories/index.html"),
         storiesExposeMatrix: resolve(__dirname, "stories/expose-the-matrix/index.html"),
+        storiesMatrix:      resolve(__dirname, "stories/matrix.html"),
         storiesOurCovenant: resolve(__dirname, "stories/our-covenant-of-new-beginnings/index.html"),
         storiesBook1:      resolve(__dirname, "stories/books/storybook-1.html"),
         storiesBook2:      resolve(__dirname, "stories/books/storybook-2.html"),
