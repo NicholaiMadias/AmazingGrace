@@ -1008,6 +1008,15 @@
                     toggle.setAttribute('aria-expanded', 'true');
                 }
             });
+
+            document.addEventListener('keydown', (event) => {
+                if (event?.key !== 'Escape' || !nav.classList.contains('open')) return;
+                nav.classList.remove('open');
+                toggle.setAttribute('aria-expanded', 'false');
+                if (nav.contains(document.activeElement)) {
+                    toggle.focus();
+                }
+            });
         }
     </script>
     <script type="module" src="./constellation-nav.js"></script>
