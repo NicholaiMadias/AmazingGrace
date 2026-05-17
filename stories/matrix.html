@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix of Conscience Protocol</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #03000a;
+            color: #f3f4f6;
+            overflow: hidden;
+            touch-action: none;
+        }
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .glass {
+            background: rgba(13, 8, 28, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(147, 51, 234, 0.2);
+        }
+        .board-tile {
+            aspect-ratio: 1;
+            transition: transform 0.15s ease-out;
+        }
+        .gem-icon {
+            width: 80%;
+            height: 80%;
+            pointer-events: none;
+            user-select: none;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+        }
+        @keyframes pulse-gold {
+            0%, 100% { border-color: rgba(234, 179, 8, 0.3); }
+            50% { border-color: rgba(234, 179, 8, 0.8); }
+        }
+        .active-pulse { animation: pulse-gold 2s infinite; }
+    </style>
+</head>
+<body class="w-full h-screen flex flex-col justify-between items-center p-4 safe-padding">
+
+    <div id="start-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-6 bg-black bg-opacity-90">
+        <div class="glass max-w-md w-full p-8 rounded-[2rem] text-center border border-purple-500/30">
+            <h1 class="font-orbitron text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-400 uppercase mb-2">Matrix Engine</h1>
+            <p class="text-xs tracking-[0.4em] text-purple-400 uppercase mb-8 font-semibold">Conscience Alignment</p>
+            <div class="text-left text-xs space-y-3 opacity-70 mb-8 font-light leading-relaxed">
+                <p>• Swipe/drag adjacent fragments horizontally or vertically to create chains of 3 or more.</p>
+                <p>• Align the virtues to stabilize the calibration metrics across 7 escalating levels.</p>
+                <p>• Legacy nodes, tracking vulnerabilities, and dependencies have been purged.</p>
+            </div>
+            <button onclick="initGame()" class="w-full py-4 rounded-xl font-orbitron font-bold text-sm tracking-widest uppercase text-black bg-gradient-to-r from-purple-400 to-pink-500 hover:scale-105 transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)]">
+                Begin Calibration
+            </button>
+        </div>
+    </div>
+
+    <header class="w-full max-w-md flex justify-between items-center px-2 py-1">
+        <div>
+            <h2 class="font-orbitron text-xs font-bold tracking-widest uppercase opacity-40">System Core</h2>
+            <div id="level-display" class="font-orbitron text-lg font-black text-purple-400">LVL // 01</div>
+        </div>
+        <div class="text-right">
+            <h2 class="font-orbitron text-xs font-bold tracking-widest uppercase opacity-40">Target Metric</h2>
+            <div id="score-display" class="font-orbitron text-lg font-black text-white">0000 / 0100</div>
+        </div>
+    </header>
+
+    <main class="w-full max-w-md aspect-square glass rounded-[2rem] p-3 flex flex-col justify-between active-pulse shadow-2xl relative">
+        <div id="matrix-grid" class="grid grid-cols-7 gap-1 w-full h-full"></div>
+    </main>
+
+    <footer class="w-full max-w-md glass rounded-2xl p-4 flex justify-between items-center mb-2">
+        <div class="flex flex-col w-2/3">
+            <div class="flex justify-between text-[10px] uppercase font-bold tracking-wider opacity-50 mb-1">
+                <span>Stabilization Progress</span>
+                <span id="progress-percent">0%</span>
+            </div>
+            <div class="w-full bg-purple-950/50 h-2 rounded-full border border-purple-500/10 overflow-hidden">
+                <div id="progress-bar" class="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300" style="width: 0%"></div>
+            </div>
+        </div>
+        <button onclick="exitToMenu()" class="font-orbitron text-[10px] font-black tracking-widest uppercase border border-purple-500/30 px-4 py-2.5 rounded-xl hover:bg-purple-500/10 transition-all">
+            Menu
+        </button>
+    </footer>
+
+    <script>
+        const GRID_SIZE = 7;
+        const scoreMilestones = [100, 220, 380, 580, 840, 1140, 1500];
+        let currentLevel = 1;
+        let score = 0;
+        let board = [];
+        let isProcessing = false;
+        let dragStartTile = null;
+
+        // Custom SVGs corresponding to the 7 Core Virtues
+        const VIRTUE_SVGS = {
+            1: `<svg class="gem-icon" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`, // Love (Pink Heart)
+            2: `<svg class="gem-icon" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>`, // Faith (Blue Shield)
+            3: `<svg class="gem-icon" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`, // Hope (Gold Star)
+            4: `<svg class="gem-icon" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`, // Grace (Red Hex/Layer)
+            5: `<svg class="gem-icon" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M17 17l-5-5 5-5"/></svg>`, // Peace (Green Balance)
+            6: `<svg class="gem-icon" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>`, // Joy (Orange Sun)
+            7: `<svg class="gem-icon" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/></svg>` // Truth (Purple Crystal)
+        };
+
+        function initGame() {
+            document.getElementById('start-screen').classList.add('hidden');
+            try { document.documentElement.requestFullscreen(); } catch (e) {}
+            createBoard();
+        }
+
+        function exitToMenu() {
+            if (document.fullscreenElement) { document.exitFullscreen().catch(()=>{}); }
+            document.getElementById('start-screen').classList.remove('hidden');
+            score = 0; currentLevel = 1;
+            updateHUD();
+        }
+
+        function createBoard() {
+            const gridContainer = document.getElementById('matrix-grid');
+            gridContainer.innerHTML = '';
+            board = [];
+
+            for (let r = 0; r < GRID_SIZE; r++) {
+                let row = [];
+                for (let c = 0; c < GRID_SIZE; c++) {
+                    let type;
+                    do {
+                        type = Math.floor(Math.random() * 7) + 1;
+                    } while ((c >= 2 && type === row[c-1] && type === row[c-2]) || (r >= 2 && type === board[r-1][c] && type === board[r-2][c]));
+                    
+                    row.push(type);
+                    
+                    const tile = document.createElement('div');
+                    tile.id = `tile-${r}-${c}`;
+                    tile.className = 'board-tile flex items-center justify-center rounded-xl bg-purple-950/20 border border-purple-500/5 cursor-pointer select-none';
+                    tile.dataset.row = r;
+                    tile.dataset.col = c;
+                    tile.innerHTML = VIRTUE_SVGS[type];
+
+                    // Pointer listeners natively unifying Touch & Mouse swipes
+                    tile.addEventListener('pointerdown', onPointerDown);
+                    tile.addEventListener('pointerup', onPointerUp);
+
+                    gridContainer.appendChild(tile);
+                }
+                board.push(row);
+            }
+            updateHUD();
+        }
+
+        function onPointerDown(e) {
+            if (isProcessing) return;
+            dragStartTile = {
+                row: parseInt(e.currentTarget.dataset.row),
+                col: parseInt(e.currentTarget.dataset.col),
+                x: e.clientX,
+                y: e.clientY
+            };
+            e.currentTarget.setPointerCapture(e.pointerId);
+        }
+
+        function onPointerUp(e) {
+            if (!dragStartTile) return;
+            e.currentTarget.releasePointerCapture(e.pointerId);
+            
+            const deltaX = e.clientX - dragStartTile.x;
+            const deltaY = e.clientY - dragStartTile.y;
+            const threshold = 22; // 22px threshold for quick micro-swipes
+
+            let targetRow = dragStartTile.row;
+            let targetCol = dragStartTile.col;
+
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > threshold) {
+                targetCol = dragStartTile.col + (deltaX > 0 ? 1 : -1);
+            } else if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > threshold) {
+                targetRow = dragStartTile.row + (deltaY > 0 ? 1 : -1);
+            } else {
+                dragStartTile = null;
+                return;
+            }
+
+            if (targetRow >= 0 && targetRow < GRID_SIZE && targetCol >= 0 && targetCol < GRID_SIZE) {
+                executeSwap(dragStartTile.row, dragStartTile.col, targetRow, targetCol);
+            }
+            dragStartTile = null;
+        }
+
+        function executeSwap(r1, c1, r2, c2) {
+            isProcessing = true;
+            
+            // Local data shift
+            let temp = board[r1][c1];
+            board[r1][c1] = board[r2][c2];
+            board[r2][c2] = temp;
+
+            updateTileView(r1, c1);
+            updateTileView(r2, c2);
+
+            setTimeout(() => {
+                let matches = checkMatches();
+                if (matches.length > 0) {
+                    processMatches();
+                } else {
+                    // Fail loop reversion
+                    let tempRevert = board[r1][c1];
+                    board[r1][c1] = board[r2][c2];
+                    board[r2][c2] = tempRevert;
+                    updateTileView(r1, c1);
+                    updateTileView(r2, c2);
+                    isProcessing = false;
+                }
+            }, 200);
+        }
+
+        function updateTileView(r, c) {
+            const el = document.getElementById(`tile-${r}-${c}`);
+            if (el) el.innerHTML = VIRTUE_SVGS[board[r][c]];
+        }
+
+        function checkMatches() {
+            let matches = [];
+            // Row analysis
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE - 2; c++) {
+                    let t = board[r][c];
+                    if (t !== 0 && t === board[r][c+1] && t === board[r][c+2]) {
+                        matches.push({r: r, c: c}, {r: r, c: c+1}, {r: r, c: c+2});
+                    }
+                }
+            }
+            // Column analysis
+            for (let c = 0; c < GRID_SIZE; c++) {
+                for (let r = 0; r < GRID_SIZE - 2; r++) {
+                    let t = board[r][c];
+                    if (t !== 0 && t === board[r+1][c] && t === board[r+2][c]) {
+                        matches.push({r: r, c: c}, {r: r+1, c: c}, {r: r+2, c: c});
+                    }
+                }
+            }
+            return matches;
+        }
+
+        function processMatches() {
+            let matches = checkMatches();
+            if (matches.length === 0) {
+                isProcessing = false;
+                return;
+            }
+
+            let uniquePoints = 0;
+            matches.forEach(m => {
+                if (board[m.r][m.c] !== 0) {
+                    board[m.r][m.c] = 0;
+                    uniquePoints += 10;
+                    const el = document.getElementById(`tile-${m.r}-${m.c}`);
+                    if (el) el.innerHTML = '';
+                }
+            });
+
+            score += uniquePoints;
+            updateHUD();
+
+            setTimeout(() => {
+                dropElements();
+                setTimeout(() => {
+                    processMatches();
+                }, 200);
+            }, 250);
+        }
+
+        function dropElements() {
+            for (let c = 0; c < GRID_SIZE; c++) {
+                let emptySpaces = 0;
+                for (let r = GRID_SIZE - 1; r >= 0; r--) {
+                    if (board[r][c] === 0) {
+                        emptySpaces++;
+                    } else if (emptySpaces > 0) {
+                        board[r + emptySpaces][c] = board[r][c];
+                        board[r][c] = 0;
+                        updateTileView(r + emptySpaces, c);
+                        updateTileView(r, c);
+                    }
+                }
+                for (let r = 0; r < emptySpaces; r++) {
+                    board[r][c] = Math.floor(Math.random() * 7) + 1;
+                    updateTileView(r, c);
+                }
+            }
+        }
+
+        function updateHUD() {
+            let targetScore = scoreMilestones[currentLevel - 1] || 2000;
+            
+            if (score >= targetScore && currentLevel < scoreMilestones.length) {
+                currentLevel++;
+                targetScore = scoreMilestones[currentLevel - 1];
+            }
+
+            document.getElementById('level-display').innerText = `LVL // ${String(currentLevel).padStart(2, '0')}`;
+            document.getElementById('score-display').innerText = `${String(score).padStart(4, '0')} / ${String(targetScore).padStart(4, '0')}`;
+
+            let pct = Math.min((score / targetScore) * 100, 100);
+            document.getElementById('progress-percent').innerText = `${Math.floor(pct)}%`;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+            
+            // Record status metrics into local state architecture
+            localStorage.setItem('matrix_arcade_score', score);
+            localStorage.setItem('matrix_arcade_level', currentLevel);
+        }
+    </script>
+</body>
+</html>
