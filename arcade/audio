@@ -1,0 +1,7 @@
+<audio id="bg-music" loop src="4-29 - Ending.mp3"></audio>
+<audio id="sfx-success" src="kinetic_surge.mp3"></audio>
+<audio id="sfx-error" src="4-25 - Player Down.mp3"></audio>
+
+<audio id="bg-music" loop src="./audio/4-29 - Ending.mp3"></audio>
+<audio id="sfx-success" src="./audio/kinetic_surge.mp3"></audio>
+<audio id="sfx-error" src="./audio/4-25 - Player Down.mp3"></audio>
