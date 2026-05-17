@@ -201,7 +201,7 @@
       });
 
       document.addEventListener('keydown', (event) => {
-        if (event?.key !== 'Escape') return;
+        if (event.key !== 'Escape') return;
         if (!mainNav.classList.contains('open')) return;
         const focusedInsideNav = mainNav.contains(document.activeElement);
         closeNav();
