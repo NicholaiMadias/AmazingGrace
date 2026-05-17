@@ -1,0 +1,30 @@
+name: Enforce CNAME
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  enforce:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate CNAME
+        shell: bash
+        run: |
+          EXPECTED="amazinggracehl.org"
+          if [ ! -f CNAME ]; then
+            echo "::error::CNAME missing"
+            exit 1
+          fi
+
+          ACTUAL="$(cat CNAME | tr -d '\r' | tr -d '\n')"
+          if [ "$ACTUAL" != "$EXPECTED" ]; then
+            echo "::error::CNAME must be exactly ${EXPECTED} (found: ${ACTUAL})"
+            exit 1
+          fi
+
+          echo "CNAME OK: ${ACTUAL}"
