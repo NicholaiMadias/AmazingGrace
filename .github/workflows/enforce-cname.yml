@@ -1,0 +1,39 @@
+name: Enforce CNAME
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - CNAME
+      - .github/workflows/enforce-cname.yml
+  pull_request:
+    paths:
+      - CNAME
+      - .github/workflows/enforce-cname.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate CNAME
+        shell: bash
+        run: |
+          EXPECTED="amazinggracehl.org"
+
+          if [[ ! -f CNAME ]]; then
+            echo "::error::CNAME missing"
+            exit 1
+          fi
+
+          ACTUAL="$(tr -d '\r\n' < CNAME)"
+          if [[ "$ACTUAL" != "$EXPECTED" ]]; then
+            echo "::error::CNAME must be exactly '${EXPECTED}', got '${ACTUAL}'"
+            exit 1
+          fi
