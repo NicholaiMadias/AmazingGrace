@@ -30,10 +30,15 @@ import GuardianScreen from "../temple-guardians/GuardianScreen";
 import TempleHologram from "../temple3d/TempleHologram";
 // @ts-ignore
 import CelestialLadderScreen from "../ascension/CelestialLadderScreen";
+// @ts-ignore
 import PreOriginField from "../ascension/PreOriginField";
+// @ts-ignore
 import UnutterableConstant from "../ascension/UnutterableConstant";
+// @ts-ignore
 import SheilaPathScreen from "../dual-ascent/SheilaPathScreen";
+// @ts-ignore
 import YiPathScreen from "../dual-ascent/YiPathScreen";
+// @ts-ignore
 import MirrorLayerScreen from "../dual-ascent/MirrorLayerScreen";
 // @ts-ignore
 import AeonEngineScreen from "../aeon/AeonEngineScreen";

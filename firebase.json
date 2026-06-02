@@ -40,10 +40,11 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "cleanUrls": true,
     "rewrites": [
       {
-        "source": "**",
-        "destination": "/index.html"
+        "source": "/arcade/matrix-of-conscience/**",
+        "destination": "/arcade/matrix-of-conscience/index.html"
       }
     ]
   },
