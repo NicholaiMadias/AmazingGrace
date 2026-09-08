@@ -24,13 +24,13 @@
     "nodemailer": "^9.0.5",
     "postprocessing": "^6.39.4",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7",
+    "react-dom": "^19.2.8",
     "three": "^0.185.1"
   },
   "devDependencies": {
     "@types/node": "^26.2.0",
     "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
+    "@types/react-dom": "^19.2.7",
     "@types/three": "^0.184.1",
     "@vitejs/plugin-react": "^6.0.3",
     "typescript": "^7.0.2",
