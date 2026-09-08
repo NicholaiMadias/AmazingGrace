@@ -18,7 +18,7 @@
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
     "@react-three/postprocessing": "^3.0.4",
-    "firebase": "^12.17.1",
+    "firebase": "^12.18.0",
     "framer-motion": "^13.1.1",
     "lucide-react": "^1.35.0",
     "nodemailer": "^9.0.5",
