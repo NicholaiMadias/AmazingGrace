@@ -10,16 +10,18 @@ afterEach(() => {
   delete (globalThis as { window?: unknown }).window;
 });
 
-function treeContainsType(node: unknown, target: unknown): boolean {
-  if (!React.isValidElement(node)) {
-    return false;
+function resolveMountedAppType(node: unknown): unknown {
+  let current = node;
+
+  while (React.isValidElement(current)) {
+    const children = React.Children.toArray(current.props.children).filter(React.isValidElement);
+    if (children.length !== 1) {
+      return current.type;
+    }
+    current = children[0];
   }
 
-  if (node.type === target) {
-    return true;
-  }
-
-  return React.Children.toArray(node.props.children).some((child) => treeContainsType(child, target));
+  return current;
 }
 
 describe('matrix root entrypoint', () => {
@@ -56,7 +58,7 @@ describe('matrix root entrypoint', () => {
     expect(render).toHaveBeenCalledTimes(1);
     const renderedTree = render.mock.calls[0][0];
     expect(React.isValidElement(renderedTree)).toBe(true);
-    expect(treeContainsType(renderedTree, matrixApp)).toBe(true);
+    expect(resolveMountedAppType(renderedTree)).toBe(matrixApp);
     expect(addEventListener).toHaveBeenCalledWith('error', expect.any(Function));
   });
 });
