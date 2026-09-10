@@ -1,0 +1,68 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-validate:
+    name: Build, Lint, and Type-Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          # Turborepo needs fetch-depth: 2 to compare against the previous commit
+          fetch-depth: 2 
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Cache Turborepo
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
+      - name: Run Linting
+        run: npm run lint
+
+      - name: Run Build & Type-Check
+        run: npm run build
+
+  notify-failure:
+    name: Route Failure Alert
+    needs: [build-and-validate]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Email Alert
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          # You will need to configure these in your GitHub Repository Secrets
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "❌ Build Failed: amazing-grace-platform"
+          to: admin@amazinggracehl.org
+          from: GitHub Actions System
+          body: |
+            The CI/CD pipeline failed for the Amazing Grace platform monorepo.
+            
+            Triggered by: ${{ github.actor }}
+            Commit: ${{ github.sha }}
+            
+            Review the build logs here:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
