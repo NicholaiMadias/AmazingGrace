@@ -1,25 +1,18 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { EmergenceDataProvider } from '../src/components/EmergenceSimulation/EmergenceDataContext';
-import { EmergenceScene } from '../src/components/EmergenceSimulation/EmergenceScene';
-import { ConscienceProvider } from '../src/components/ConscienceProvider';
+import MatrixOfConscience from '../src/components/MatrixOfConscience';
 
-// Standalone root entry point for matrix.amazinggracehl.org
 const rootElement = document.getElementById('matrix-root');
 
 if (rootElement) {
   try {
     createRoot(rootElement).render(
       <StrictMode>
-        <ConscienceProvider>
-          <EmergenceDataProvider>
-            <EmergenceScene />
-          </EmergenceDataProvider>
-        </ConscienceProvider>
+        <MatrixOfConscience />
       </StrictMode>
     );
   } catch (err) {
-    console.error('Failed to render Standalone Matrix:', err);
+    console.error('Failed to render Matrix of Conscience:', err);
     rootElement.innerHTML = `<div style="padding: 20px; color: #00f0ff; font-family: monospace; background: #05050c; height: 100vh;">
       <h2>SYSTEM_ERROR: Matrix initialization failure.</h2>
       <p>The neural link could not be established.</p>
