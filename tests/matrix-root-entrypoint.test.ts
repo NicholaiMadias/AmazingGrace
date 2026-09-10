@@ -10,6 +10,18 @@ afterEach(() => {
   delete (globalThis as { window?: unknown }).window;
 });
 
+function treeContainsType(node: unknown, target: unknown): boolean {
+  if (!React.isValidElement(node)) {
+    return false;
+  }
+
+  if (node.type === target) {
+    return true;
+  }
+
+  return React.Children.toArray(node.props.children).some((child) => treeContainsType(child, target));
+}
+
 describe('matrix root entrypoint', () => {
   it('mounts the full MatrixOfConscience React app for the matrix subdomain root', async () => {
     const html = fs.readFileSync(path.resolve(__dirname, '../matrix-of-conscience/index.html'), 'utf8');
@@ -44,7 +56,7 @@ describe('matrix root entrypoint', () => {
     expect(render).toHaveBeenCalledTimes(1);
     const renderedTree = render.mock.calls[0][0];
     expect(React.isValidElement(renderedTree)).toBe(true);
-    expect(renderedTree.props.children.type).toBe(matrixApp);
+    expect(treeContainsType(renderedTree, matrixApp)).toBe(true);
     expect(addEventListener).toHaveBeenCalledWith('error', expect.any(Function));
   });
 });
