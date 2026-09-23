@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentation | Amazing Grace</title>
+  <meta name="description" content="Documentation index for the Amazing Grace repository." />
+  <style>
+    :root {
+      --bg: #020617;
+      --panel: #0f172a;
+      --panel-strong: #111827;
+      --border: #1e293b;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-strong: #7dd3fc;
+      --success: #a7f3d0;
+      --warning: #fcd34d;
+      --shadow: rgba(15, 23, 42, 0.7);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0b1120 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: var(--accent); }
+    a:hover { color: var(--accent-strong); }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 1.25rem 4rem;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .crumbs {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    h1 {
+      margin: 0 0 0.75rem;
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.1;
+    }
+
+    .subtitle {
+      margin: 0 0 2rem;
+      color: var(--muted);
+      max-width: 70ch;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      box-shadow: 0 10px 28px var(--shadow);
+    }
+
+    .card h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.1rem;
+      color: #fff;
+    }
+
+    .card p {
+      margin: 0 0 1rem;
+      color: var(--muted);
+    }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 0.85rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+    }
+
+    .tag.public { background: rgba(56, 189, 248, 0.12); color: var(--accent-strong); }
+    .tag.lore { background: rgba(167, 243, 208, 0.1); color: var(--success); }
+    .tag.internal { background: rgba(252, 211, 77, 0.1); color: var(--warning); }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      margin: 0.5rem 0;
+    }
+
+    .note {
+      margin-top: 2rem;
+      border-left: 3px solid var(--accent);
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 0 0.75rem 0.75rem 0;
+      padding: 1rem 1.1rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 640px) {
+      .page { padding-top: 2rem; }
+      .topbar { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a class="brand" href="../">Amazing Grace</a>
+      <div class="crumbs">Docs / Index</div>
+    </div>
+
+    <h1>Repository documentation</h1>
+    <p class="subtitle">
+      This documentation index separates public-facing guidance from internal or legacy material so the site stays clear,
+      organized, and easier to maintain.
+    </p>
+
+    <div class="grid">
+      <section class="card">
+        <span class="tag public">Public</span>
+        <h2>Current operating docs</h2>
+        <p>These files are intended to be easy to navigate and safe to reference from the public-facing project.</p>
+        <ul>
+          <li><a href="./Electra-Content-Engine.md">Electra Content Engine</a></li>
+          <li><a href="./Electra.md">Electra</a></li>
+          <li><a href="./color-theme-guidelines.md">Color theme guidelines</a></li>
+          <li><a href="./key-master-sync.md">Key Master sync notes</a></li>
+          <li><a href="./powershell-toolkit.md">PowerShell toolkit</a></li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <span class="tag lore">Lore</span>
+        <h2>Story and lore references</h2>
+        <p>These are narrative references tied to the Matrix of Conscience universe and story world.</p>
+        <ul>
+          <li><a href="./lore/appendix-ii.md">Appendix II</a></li>
+          <li><a href="./lore/janus-continuum.md">Janus Continuum</a></li>
+          <li><a href="./lore/two-blueprints.md">Two Blueprints</a></li>
+          <li><a href="./nicholai/index.html">Nicholai archive</a></li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <span class="tag internal">Internal / archive</span>
+        <h2>Legacy and internal materials</h2>
+        <p>These files remain available for historical or internal review but are not surfaced as top-level public docs.</p>
+        <ul>
+          <li><a href="./archive/README.md">Archive notes</a></li>
+          <li><a href="./internal/README.md">Internal docs notes</a></li>
+          <li><a href="./CA Lease.html">CA Lease</a> (legacy)</li>
+          <li><a href="./Suicide.html">Suicide</a> (legacy, restricted use)</li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="note">
+      Note: Public-facing pages and docs should only link to current, relevant content. Legacy or sensitive materials are retained in the archive and internal sections instead of being promoted in the main navigation.
+    </div>
+  </main>
+</body>
+</html>
