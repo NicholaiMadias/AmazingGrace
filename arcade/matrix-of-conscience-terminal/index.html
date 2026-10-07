@@ -1,470 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Trinity Terminal — The Matrix of Conscience. A terminal-based interface to the match-3 simulation.">
-  <title>Trinity Terminal | Matrix of Conscience</title>
-  <link rel="icon" type="image/png" href="../../assets/logo.png">
-  <style>
-    :root {
-      --bg: #0a0e27;
-      --surface: #0f1425;
-      --border: #1a2847;
-      --text: #d0d9e8;
-      --muted: #8a94a6;
-      --green: #00ff00;
-      --accent: #00d9ff;
-    }
-
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; width: 100%; height: 100%; }
-    
-    body {
-      font-family: 'Courier New', monospace;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 1rem;
-      overflow: hidden;
-    }
-
-    .terminal-container {
-      width: 100%;
-      max-width: 600px;
-      height: 100vh;
-      max-height: 700px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-      overflow: hidden;
-    }
-
-    .terminal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid var(--border);
-      background: rgba(15, 20, 37, 0.8);
-      font-size: 0.75rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-    }
-
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .header-icon {
-      width: 16px;
-      height: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.875rem;
-    }
-
-    .kill-button {
-      background: none;
-      border: none;
-      color: #ff3d3d;
-      cursor: pointer;
-      font-size: 0.75rem;
-      font-weight: bold;
-      padding: 0.25rem 0.5rem;
-      transition: color 150ms;
-    }
-
-    .kill-button:hover {
-      color: #ff5555;
-    }
-
-    .terminal-content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      font-size: 0.875rem;
-      line-height: 1.5;
-    }
-
-    .terminal-line {
-      font-family: 'Courier New', monospace;
-      color: var(--text);
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .terminal-line.command {
-      color: var(--accent);
-      font-weight: bold;
-    }
-
-    .terminal-line.prompt {
-      color: var(--green);
-      font-weight: bold;
-    }
-
-    .terminal-line.system {
-      color: var(--accent);
-    }
-
-    .terminal-line.oracle {
-      color: #ffa500;
-    }
-
-    .terminal-line.image {
-      color: #00aaff;
-      animation: pulse 1s infinite;
-    }
-
-    .terminal-unlocks {
-      margin: 0.75rem 1rem 0;
-      padding: 0.65rem 0.75rem;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      background: rgba(0, 217, 255, 0.08);
-      font-size: 0.8rem;
-      line-height: 1.4;
-    }
-
-    .terminal-unlocks a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .terminal-unlocks a:hover {
-      text-decoration: underline;
-    }
-
-    .rt-muted {
-      color: var(--muted);
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
-    }
-
-    .game-view {
-      display: none;
-      flex: 1;
-      overflow-y: auto;
-      padding: 1rem;
-    }
-
-    .game-view.active {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .game-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      padding: 1rem;
-      background: rgba(26, 40, 71, 0.5);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 1rem;
-    }
-
-    .game-tile {
-      aspect-ratio: 1;
-      border: 1px solid var(--border);
-      background: rgba(26, 40, 71, 0.8);
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      transition: all 150ms;
-      user-select: none;
-    }
-
-    .game-tile:hover {
-      background: rgba(26, 40, 71, 1);
-      border-color: var(--accent);
-      transform: translateY(-2px);
-    }
-
-    .game-tile.active {
-      background: rgba(0, 217, 255, 0.2);
-      border-color: var(--accent);
-    }
-
-    .terminal-input {
-      display: flex;
-      gap: 0.5rem;
-      padding: 1rem;
-      border-top: 1px solid var(--border);
-      background: rgba(15, 20, 37, 0.8);
-    }
-
-    .terminal-input input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      color: var(--text);
-      font-family: 'Courier New', monospace;
-      font-size: 0.875rem;
-      outline: none;
-      padding: 0.25rem 0;
-    }
-
-    .terminal-input input::placeholder {
-      color: var(--muted);
-    }
-
-    .terminal-input button {
-      background: none;
-      border: none;
-      color: var(--accent);
-      cursor: pointer;
-      font-size: 1rem;
-      padding: 0;
-      transition: color 150ms;
-    }
-
-    .terminal-input button:hover {
-      color: var(--text);
-    }
-
-    #backBtn {
-      padding: 0.5rem 1rem;
-      background: rgba(0, 217, 255, 0.2);
-      border: 1px solid var(--border);
-      color: var(--accent);
-      cursor: pointer;
-      border-radius: 4px;
-      font-family: 'Courier New', monospace;
-      font-size: 0.875rem;
-      transition: all 150ms;
-    }
-
-    #backBtn:hover {
-      background: rgba(0, 217, 255, 0.3);
-    }
-
-    /* Scrollbar styling */
-    .terminal-content::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    .terminal-content::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .terminal-content::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 4px;
-    }
-
-    .terminal-content::-webkit-scrollbar-thumb:hover {
-      background: var(--muted);
-    }
-
-    @media (max-width: 480px) {
-      .terminal-container {
-        max-width: 100%;
-        border-radius: 8px;
-      }
-
-      .terminal-content {
-        font-size: 0.8rem;
-      }
-
-      .game-grid {
-        gap: 8px;
-        padding: 0.75rem;
-      }
-
-      .game-tile {
-        font-size: 1.25rem;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="terminal-container">
-    <!-- Header -->
-    <div class="terminal-header">
-      <div class="header-left">
-        <div class="header-icon">⚙️</div>
-        <span>TRINITY_PS_SESSION</span>
-      </div>
-      <button class="kill-button" id="killBtn" style="display: none;">KILL_TASK</button>
-    </div>
-
-    <!-- Content Area -->
-    <div class="terminal-content" id="terminalContent">
-      <div class="terminal-line prompt">PS C:\Trinity> System online.</div>
-      <div class="terminal-line prompt">PS C:\Trinity> Commands: Start, Oracle &lt;query&gt;, Generate &lt;desc&gt;</div>
-    </div>
-    <div class="terminal-unlocks" id="terminalUnlocks"></div>
-
-    <!-- Game View -->
-    <div class="game-view" id="gameView">
-      <div class="game-grid" id="gameGrid"></div>
-      <button id="backBtn">Return to Terminal</button>
-    </div>
-
-    <!-- Input -->
-    <div class="terminal-input">
-      <input 
-        type="text" 
-        id="commandInput" 
-        placeholder="PS C:\Trinity>" 
-        autocomplete="off"
-      >
-      <button id="sendBtn">⏎</button>
-    </div>
-  </div>
-
-  <script src="../js/rebellion-core.js"></script>
-  <script>
-    const terminalContent = document.getElementById('terminalContent');
-    const commandInput = document.getElementById('commandInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const killBtn = document.getElementById('killBtn');
-    const gameView = document.getElementById('gameView');
-    const gameGrid = document.getElementById('gameGrid');
-    const backBtn = document.getElementById('backBtn');
-    const terminalUnlocks = document.getElementById('terminalUnlocks');
-
-    let isGameMode = false;
-    const GRID_SIZE = 16;
-    const SYMBOL_COUNT = 4;
-    const ORACLE_CMD = 'oracle';
-    const GENERATE_CMD = 'generate';
-    let gridState = Array.from({ length: GRID_SIZE }, () => Math.floor(Math.random() * SYMBOL_COUNT));
-    const symbols = ['✓', '◆', '○', '★'];
-    const QUANTUM_RENDER_DELAY_MS = 2000;
-
-    loadRebellionState();
-    renderResistanceUnlocks();
-
-    function addLine(text, className = 'terminal-line') {
-      const line = document.createElement('div');
-      line.className = className;
-      line.textContent = text;
-      terminalContent.appendChild(line);
-      terminalContent.scrollTop = terminalContent.scrollHeight;
-    }
-
-    function handleCommand(cmd) {
-      const lower = cmd.toLowerCase().trim();
-      
-      addLine(`PS C:\\Trinity> ${cmd}`, 'terminal-line command');
-
-      if (lower === 'start') {
-        isGameMode = true;
-        killBtn.style.display = 'block';
-        gameView.classList.add('active');
-        terminalContent.style.display = 'none';
-        addLine('SYSTEM: Launching Match-3 Matrix...', 'terminal-line system');
-        renderGame();
-      } else if (lower.startsWith(ORACLE_CMD)) {
-        const query = lower.substring(ORACLE_CMD.length).trim();
-        const response = query 
-          ? `ORACLE: The answer to "${query}" lies in the balance of the grid.`
-          : 'ORACLE: Seek the balance within the grid.';
-        addLine(response, 'terminal-line oracle');
-      } else if (lower.startsWith(GENERATE_CMD)) {
-        const desc = lower.substring(GENERATE_CMD.length).trim();
-        const prompt = desc || 'quantum artifact';
-        addLine('SYSTEM: Quantum rendering...', 'terminal-line image');
-        setTimeout(() => {
-          addLine(`IMAGE: ${prompt} rendered successfully.`, 'terminal-line image');
-        }, QUANTUM_RENDER_DELAY_MS);
-      } else {
-        addLine('ERROR: Command not found.', 'terminal-line');
-      }
-    }
-
-    function renderGame() {
-      gameGrid.innerHTML = '';
-      for (let i = 0; i < GRID_SIZE; i++) {
-        const tile = document.createElement('div');
-        tile.className = 'game-tile';
-        tile.textContent = symbols[gridState[i]];
-        tile.dataset.index = i;
-        tile.addEventListener('click', () => {
-          gridState[i] = (gridState[i] + 1) % SYMBOL_COUNT;
-          tile.textContent = symbols[gridState[i]];
-        });
-        gameGrid.appendChild(tile);
-      }
-    }
-
-    function renderResistanceUnlocks() {
-      const state = window.rebellionState || {};
-      terminalUnlocks.textContent = '';
-      const line = document.createElement('div');
-      const unlocked = typeof window.isLoreArchiveUnlocked === 'function'
-        ? window.isLoreArchiveUnlocked(state)
-        : false;
-
-      if (unlocked) {
-        line.textContent = '📜 ';
-        const link = document.createElement('a');
-        link.href = '../lore-archive/';
-        link.textContent = 'Lore Archive Unlocked';
-        line.appendChild(link);
-      } else {
-        line.className = 'rt-muted';
-        line.textContent = 'Lore Archive: Requires ★★ in Star Matrix, Looking Glass, and Quantum Shift';
-      }
-
-      terminalUnlocks.appendChild(line);
-    }
-
-    function exitGame() {
-      isGameMode = false;
-      killBtn.style.display = 'none';
-      gameView.classList.remove('active');
-      terminalContent.style.display = 'flex';
-      addLine('SYSTEM: Matrix simulation terminated.', 'terminal-line system');
-    }
-
-    sendBtn.addEventListener('click', () => {
-      const cmd = commandInput.value;
-      if (cmd.trim()) {
-        handleCommand(cmd);
-        commandInput.value = '';
-      }
-    });
-
-    commandInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const cmd = commandInput.value;
-        if (cmd.trim()) {
-          handleCommand(cmd);
-          commandInput.value = '';
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nicholai Madias | Digital Architect & Arcade Matrix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #050811;
+            --panel-bg: rgba(10, 16, 30, 0.85);
+            --gold-primary: #f0c05a;
+            --gold-glow: rgba(240, 192, 90, 0.3);
+            --cyan-accent: #00f3ff;
+            --text-main: #e2e8f0;
+            --text-dim: #94a3b8;
+            --font-title: 'Cinzel', serif;
+            --font-code: 'Fira Code', monospace;
         }
-      }
-    });
 
-    killBtn.addEventListener('click', exitGame);
-    backBtn.addEventListener('click', exitGame);
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
 
-    // Focus input on page load
-    commandInput.focus();
-  </script>
-</body>
-</html>
+        body, html {
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-code);
+            overflow: hidden;
+        }
+
+        /* Fullscreen Layout */
+        .viewport {
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 50% 20%, #101c38 0%, var(--bg-dark) 80%);
+        }
+
+        /* Top Bar & Gamification Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background: rgba(5, 8, 17, 0.95);
+            border-bottom: 1px solid var(--gold-primary);
+            box-shadow: 0 0 15px var(--gold-glow);
+            z-index: 10;
+        }
+
+        .brand-title {
+            font-family: var(--font-title);
+            font-size: 1.25rem;
+            color: var(--gold-primary);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-link {
+            background: transparent;
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-primary);
+            padding: 6px 12px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-link:hover {
+            background: var(--gold-primary);
+            color: var(--bg-dark);
+            box-shadow: 0 0 10px var(--gold-primary);
+        }
+
+        .xp-badge {
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid var(--cyan-accent);
+            color: var(--cyan-accent);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Main Workspace Navigation */
+        .tab-bar {
+            display: flex;
+            background: rgba(10, 16, 30, 0.8);
+            border-bottom: 1px solid rgba(240, 192, 90, 0.2);
+            padding: 0 16px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            padding: 12px 20px;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--gold-primary);
+            border-bottom-color: var(--gold-primary);
+            background: rgba(240, 192, 90, 0.05);
+        }
+
+        /* Dynamic View Container */
+        .content-area {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .view-panel {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: none;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .view-panel.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Arcade Cabinet View */
+        .cabinet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding-bottom: 20px;
+        }
+
+        .cabinet-card {
+            background: var(--panel-bg);
+            border: 1px solid rgba(240, 192, 90, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .cabinet-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 4px 20px rgba(240, 192, 90, 0.15);
+        }
+
+        .cabinet-title {
+            font-family: var(--font-title);
+            color: var(--gold-primary);
+            font-size: 1.1
