@@ -1,174 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mystery of the Seven Stars</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            background: transparent;
-            color: white;
-            font-family: 'Inter', sans-serif;
-        }
-        .game-wrapper {
-            width: 100%;
-            max-width: 700px;
-            background: #1a1a2e;
-            border-radius: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            margin: 0 auto;
-        }
-        .game-header-bar {
-            background-color: #0f0f1e;
-            color: #ffd700;
-            padding: 1.25rem;
-            text-align: center;
-            font-size: 1.4rem;
-            font-family: 'Playfair Display', serif;
-            letter-spacing: 2px;
-            border-bottom: 2px solid #4e4e6a;
-        }
-        .game-content {
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        .game-btn {
-            padding: 0.75rem 1.5rem;
-            background-color: #ffd700;
-            color: #1a1a2e;
-            border-radius: 0.75rem;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .game-btn:hover { background-color: #e6c200; }
-        .map-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 1rem;
-            width: 100%;
-            margin-top: 1.5rem;
-        }
-        .map-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 1rem;
-            background: rgba(255,255,255,0.08);
-            border: 2px solid #4e4e6a;
-            border-radius: 1rem;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .map-item:hover { transform: translateY(-3px); box-shadow: 0 0 10px #ffd700; border-color: #ffd700; }
-        .map-item.completed { background: rgba(255,215,0,0.15); border-color: #ffd700; }
-        .star-svg { width: 28px; height: 28px; margin-bottom: 0.4rem; stroke: #ffd700; }
-        .map-item.completed .star-svg polygon { fill: #ffd700; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Mystery of the Seven Stars — a Match-3 puzzle game. Swap adjacent virtue gems, chain combos, and ascend through levels inspired by the seven churches of Revelation." />
+  <meta name="theme-color" content="#020617" />
+  <link rel="icon" type="image/png" href="../../assets/logo-S7NXL_ug.png" />
+  <title>Mystery of the Seven Stars | Amazing Grace Arcade</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #020617; }
+    button { font-family: inherit; }
+    button:focus:not(:focus-visible) { outline: none; }
+    button:focus-visible { outline: 2px solid #00f2ff; outline-offset: 2px; }
+    .topbar {
+      width: 100%;
+      padding: 0.875rem 1.25rem;
+      border-bottom: 1px solid #1e293b;
+      background: rgba(5, 6, 16, 0.85);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar a {
+      color: #00f2ff;
+      text-decoration: none;
+      font-weight: 700;
+      font-family: 'Fira Code', monospace, system-ui;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+    }
+    .topbar a:hover { text-decoration: underline; }
+  </style>
+  <script type="module" crossorigin src="../../assets/arcadeSevenStars-BkI_ucoX.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/rolldown-runtime-hePW80VL.js">
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-P2Xu9kJm.js">
+  <link rel="modulepreload" crossorigin href="../../assets/firebase-auth-C3IUN0KP.js">
+  <link rel="modulepreload" crossorigin href="../../assets/framer-motion-DPV1ZFwo.js">
+  <link rel="modulepreload" crossorigin href="../../assets/react-Cwo-IJN2.js">
 </head>
 <body>
-    <audio id="bg-music" loop>
-        <source src="../../assets/ending-DgGUomTE.mp3" type="audio/mpeg">
-    </audio>
-    <div id="sevenstars-root" class="game-wrapper"></div>
-    <script>
-        const root = document.getElementById('sevenstars-root');
-        const churches = [
-            { name: 'Ephesus', message: 'The church in Ephesus was known for its hard work and perseverance. However, Jesus warned them that they had abandoned their first love.', question: 'What had the church in Ephesus abandoned?', options: ['Their generosity', 'Their first love', 'Their church building', 'Their daily prayers'], answer: 'Their first love' },
-            { name: 'Smyrna', message: 'The church in Smyrna faced tribulation and poverty, yet Jesus praised their faithfulness and told them not to fear suffering.', question: 'What did Jesus tell Smyrna not to fear?', options: ['False prophets', 'Poverty', 'Suffering', 'Travel'], answer: 'Suffering' },
-            { name: 'Pergamum', message: 'Pergamum held fast to Jesus’ name in a difficult city, but some there were tolerating false teaching.', question: 'What problem did Pergamum tolerate?', options: ['False teaching', 'Silence', 'No worship songs', 'Lack of elders'], answer: 'False teaching' },
-            { name: 'Thyatira', message: 'Thyatira was praised for love, faith, service, and perseverance, but rebuked for tolerating corruption.', question: 'What was Thyatira praised for?', options: ['Military power', 'Love and service', 'Wealth alone', 'Temple size'], answer: 'Love and service' },
-            { name: 'Sardis', message: 'Sardis had a reputation for being alive, but Jesus said they were dead and needed to wake up.', question: 'What did Sardis need to do?', options: ['Build larger walls', 'Wake up', 'Move cities', 'Collect offerings'], answer: 'Wake up' },
-            { name: 'Philadelphia', message: 'Philadelphia had little strength, but kept Jesus’ word and did not deny His name. An open door was set before them.', question: 'What was set before Philadelphia?', options: ['A closed gate', 'A golden crown', 'An open door', 'A mountain path'], answer: 'An open door' },
-            { name: 'Laodicea', message: 'Laodicea was called lukewarm—neither hot nor cold—and was warned against complacency.', question: 'How was Laodicea described?', options: ['Faithful', 'Bold', 'Lukewarm', 'Joyful'], answer: 'Lukewarm' }
-        ];
-
-        let completed = JSON.parse(localStorage.getItem('aghl_sevenStarsCompleted') || '[]');
-
-        function playMusic() {
-            const bgm = document.getElementById('bg-music');
-            if (bgm && bgm.paused) {
-                bgm.volume = 0.3;
-                bgm.play().catch(e => console.log('Audio autoplay blocked'));
-            }
-            document.body.removeEventListener('click', playMusic);
-        }
-        document.body.addEventListener('click', playMusic);
-
-        function renderTitle() {
-            root.innerHTML = `
-                <div class="game-header-bar">MYSTERY OF THE SEVEN STARS</div>
-                <div class="game-content">
-                    <div style="font-size:4rem;margin:1rem 0">🌟</div>
-                    <p style="margin-bottom:2rem;font-size:1.1rem;max-width:500px">"The mystery of the seven stars which you saw in My right hand... The seven stars are the angels of the seven churches."</p>
-                    <button class="game-btn" onclick="window.sevenStarsRenderMap()">Begin Journey</button>
-                </div>`;
-        }
-
-        window.sevenStarsRenderMap = function() {
-            root.innerHTML = `
-                <div class="game-header-bar">SELECT A CHURCH</div>
-                <div class="game-content">
-                    <div class="map-grid">
-                        ${churches.map((c, i) => `
-                            <div class="map-item ${completed.includes(c.name) ? 'completed' : ''}" onclick="window.sevenStarsShowChurch(${i})">
-                                <svg class="star-svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                <span style="font-size:0.8rem;font-weight:bold">${c.name.toUpperCase()}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                    ${completed.length === 7 ? `<button class="game-btn" style="margin-top:2rem" onclick="window.sevenStarsFinish()">Claim Your Certificate</button>` : ''}
-                </div>`;
-        }
-
-        window.sevenStarsShowChurch = function(index) {
-            const c = churches[index];
-            root.innerHTML = `
-                <div class="game-header-bar">${c.name.toUpperCase()}</div>
-                <div class="game-content">
-                    <p style="margin-bottom:1.5rem;line-height:1.7;background:rgba(0,0,0,0.2);padding:1rem;border-radius:0.5rem">${c.message}</p>
-                    <div style="text-align:left;width:100%">
-                        <p style="font-weight:bold;margin-bottom:1rem;color:#ffd700">${c.question}</p>
-                        ${c.options.map(opt => `
-                            <button class="game-btn" style="display:block;width:100%;margin-bottom:0.5rem;text-align:left;background:#334155;color:white" onclick="window.sevenStarsCheckAnswer('${c.name}', '${opt}', '${c.answer}')">${opt}</button>
-                        `).join('')}
-                    </div>
-                </div>`;
-        }
-
-        window.sevenStarsCheckAnswer = function(name, selected, correct) {
-            if (selected === correct) {
-                if (!completed.includes(name)) {
-                    completed.push(name);
-                    localStorage.setItem('aghl_sevenStarsCompleted', JSON.stringify(completed));
-                }
-                alert("Correct! You have collected a star.");
-                window.sevenStarsRenderMap();
-            } else {
-                alert("Incorrect. Reflect on the message and try again.");
-            }
-        }
-
-        window.sevenStarsFinish = function() {
-            root.innerHTML = `
-                <div class="game-header-bar">JOURNEY COMPLETE</div>
-                <div class="game-content">
-                    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.3rem);color:#FFD700;margin:0">Alignment Verified</h2>
-                    <p style="color:#94a3b8;line-height:1.7;margin-top:1rem">You have successfully navigated the seven churches and collected all stars.</p>
-                    <a class="game-btn" href="../certificates/" target="_top" style="margin-top:2rem;text-decoration:none;display:inline-block">View Certificates</a>
-                </div>`;
-        }
-
-        renderTitle();
-    </script>
+  <header class="topbar">
+    <a href="../" aria-label="Back to Arcade">← Arcade</a>
+    <a href="../../" aria-label="Amazing Grace Home Living">amazinggracehl.org</a>
+  </header>
+  <div id="seven-stars-root"></div>
 </body>
 </html>

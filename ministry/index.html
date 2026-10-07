@@ -1,703 +1,867 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-  (function () {
-    const allowedHosts = new Set([
-      "amazinggracehl.org",
-      "www.amazinggracehl.org",
-      "nicholaimadias.github.io",
-    ]);
-    const isHosted =
-      window.location.protocol === "https:" && allowedHosts.has(window.location.hostname);
-    if (!isHosted) return;
+  <script>
+    (function () {
+      const allowedHosts = new Set([
+        "amazinggracehl.org",
+        "www.amazinggracehl.org",
+        "nicholaimadias.github.io",
+      ]);
+      const isHosted =
+        window.location.protocol === "https:" && allowedHosts.has(window.location.hostname);
+      if (!isHosted) return;
 
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = "https://www.googletagmanager.com/gtag/js?id=G-HKZ2G2VN78";
-    document.head.appendChild(script);
+      const script = document.createElement("script");
+      script.async = true;
+      script.src = "https://www.googletagmanager.com/gtag/js?id=G-HKZ2G2VN78";
+      document.head.appendChild(script);
 
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () {
-      window.dataLayer.push(arguments);
-    };
-    window.gtag("js", new Date());
-    window.gtag("config", "G-HKZ2G2VN78");
-  })();
-</script>
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () {
+        window.dataLayer.push(arguments);
+      };
+      window.gtag("js", new Date());
+      window.gtag("config", "G-HKZ2G2VN78");
+    })();
+  </script>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Voice of Jesus Ministry — Seven-Star Ministry outreach, stories, mission support, and faith-based community.">
-    <meta name="theme-color" content="#0d0115">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Voice of Jesus Ministry — Comprehensive Strategic Framework, mission updates, and support channels.">
+  <meta name="theme-color" content="#0d0115">
 
-    <link rel="icon" type="image/png" href="../assets/logo-S7NXL_ug.png">
-    <title>Ministry | Amazing Grace Home Living</title>
+  <link rel="icon" type="image/png" href="../assets/logo-S7NXL_ug.png">
+  <title>Ministry Strategic Framework | Amazing Grace Home Living</title>
 
-    <script src="../assets/vendor/hosted-only.js"></script>
-    <script>
-        window.AmazingGraceHostedOnly?.loadStylesheet("https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap");
-    </script>
-    <style>
-        :root {
-            --deep-purple: #4a235a;
-            --gold:        #ffd700;
-            --gold-dim:    rgba(255,215,0,0.75);
-            --bg:          #0d0115;
-            --surface:     rgba(74,35,90,0.55);
-            --border:      rgba(255,215,0,0.22);
-            --text:        #f0e6ff;
-            --text-muted:  #b89dc8;
-            --accent:      #c084fc;
-            --radius:      14px;
-        }
+  <script src="../assets/vendor/hosted-only.js"></script>
+  <script>
+    window.AmazingGraceHostedOnly?.loadStylesheet("https://fonts.googleapis.com/css2?family=Orbitron:wght=700;900&family=Inter:wght=400;600;700&family=Playfair+Display:wght=700&display=swap");
+  </script>
+  <style>
+    :root {
+      --deep-purple: #4a235a;
+      --gold:        #ffd700;
+      --gold-dim:    rgba(255,215,0,0.75);
+      --bg:          #0d0115;
+      --surface:     rgba(74,35,90,0.55);
+      --border:      rgba(255,215,0,0.22);
+      --text:        #f0e6ff;
+      --text-muted:  #b89dc8;
+      --accent:      #c084fc;
+      --radius:      14px;
+    }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        @media (prefers-reduced-motion: no-preference) {
-            html { scroll-behavior: smooth; }
-        }
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
 
-        /* ── Ministry Starfield Background (CSS-only) ── */
-        .ministry-stars {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: -2;
-            background-image:
-                radial-gradient(2px 2px at 20% 30%, #ffffffaa, transparent),
-                radial-gradient(1.5px 1.5px at 70% 80%, #ffffff88, transparent),
-                radial-gradient(1px 1px at 40% 60%, #ffffff55, transparent),
-                radial-gradient(2px 2px at 80% 20%, #ffffffaa, transparent),
-                radial-gradient(1px 1px at 10% 90%, #ffffff55, transparent);
-            background-repeat: no-repeat;
-            animation: twinkle 6s infinite alternate ease-in-out;
-        }
+    /* ── Ministry Starfield Background (CSS-only) ── */
+    .ministry-stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+      background-image:
+        radial-gradient(2px 2px at 20% 30%, #ffffffaa, transparent),
+        radial-gradient(1.5px 1.5px at 70% 80%, #ffffff88, transparent),
+        radial-gradient(1px 1px at 40% 60%, #ffffff55, transparent),
+        radial-gradient(2px 2px at 80% 20%, #ffffffaa, transparent),
+        radial-gradient(1px 1px at 10% 90%, #ffffff55, transparent);
+      background-repeat: no-repeat;
+      animation: twinkle 6s infinite alternate ease-in-out;
+    }
 
-        @keyframes twinkle {
-            from { opacity: 0.6; }
-            to { opacity: 1; }
-        }
+    @keyframes twinkle {
+      from { opacity: 0.6; }
+      to { opacity: 1; }
+    }
 
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background:
-                radial-gradient(ellipse at 15% 25%, rgba(107,55,128,0.35) 0%, transparent 55%),
-                radial-gradient(ellipse at 85% 70%, rgba(74,35,90,0.45) 0%, transparent 55%),
-                var(--bg);
-            z-index: -1;
-            pointer-events: none;
-        }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 25%, rgba(107,55,128,0.35) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 70%, rgba(74,35,90,0.45) 0%, transparent 55%),
+        var(--bg);
+      z-index: -1;
+      pointer-events: none;
+    }
 
-        *:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+    *:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 
-        /* ── Header ── */
-        .site-header {
-            background: rgba(20,5,32,0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            padding: 0.85rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-            position: sticky;
-            top: 0;
-            z-index: 200;
-        }
+    /* ── Header ── */
+    .site-header {
+      background: rgba(20,5,32,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.65rem;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            text-decoration: none;
-            color: var(--gold);
-        }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--gold);
+    }
 
-        .logo img { height: 36px; width: auto; border-radius: 4px; }
+    .logo img { height: 36px; width: auto; border-radius: 4px; }
+    .nav-links { display: flex; gap: 0.5rem; flex-wrap: nowrap; white-space: nowrap; }
 
-        .nav-links { display: flex; gap: 0.5rem; flex-wrap: nowrap; white-space: nowrap; }
+    .nav-btn {
+      background: rgba(255,215,0,0.07);
+      border: 1px solid var(--border);
+      padding: 0.45rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
 
-        .nav-btn {
-            background: rgba(255,215,0,0.07);
-            border: 1px solid var(--border);
-            padding: 0.45rem 1rem;
-            border-radius: 6px;
-            text-decoration: none;
-            color: var(--text);
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: background 0.2s, color 0.2s, border-color 0.2s;
-        }
+    .nav-btn:hover { background: rgba(255,215,0,0.18); border-color: var(--gold); color: var(--gold); }
+    .nav-btn.active { background: rgba(192,132,252,0.2); border-color: var(--accent); color: var(--accent); }
 
-        .nav-btn:hover { background: rgba(255,215,0,0.18); border-color: var(--gold); color: var(--gold); }
-        .nav-btn.active { background: rgba(192,132,252,0.2); border-color: var(--accent); color: var(--accent); }
+    @media (max-width: 640px) {
+      .site-header { padding-inline: 1rem; }
+      .nav-links { width: 100%; }
+      .nav-btn { flex: 1 1 140px; text-align: center; }
+    }
 
-        @media (max-width: 640px) {
-            .site-header { padding-inline: 1rem; }
-            .nav-links { width: 100%; }
-            .nav-btn { flex: 1 1 140px; text-align: center; }
-        }
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 5rem 1.5rem 4rem;
+      position: relative;
+    }
 
-        /* ── Hero ── */
-        .hero {
-            text-align: center;
-            padding: 5rem 1.5rem 4rem;
-            position: relative;
-        }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 60%, rgba(192,132,252,0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at 50% 60%, rgba(192,132,252,0.12) 0%, transparent 65%);
-            pointer-events: none;
-        }
+    .hero-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 0 18px rgba(255,215,0,0.5));
+    }
 
-        .hero-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            filter: drop-shadow(0 0 18px rgba(255,215,0,0.5));
-        }
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.6rem, 4.5vw, 2.75rem);
+      font-weight: 900;
+      color: var(--gold);
+      text-shadow: 0 0 30px rgba(255,215,0,0.35);
+      margin-bottom: 1rem;
+      letter-spacing: 0.04em;
+    }
 
-        .hero h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.6rem, 4.5vw, 2.75rem);
-            font-weight: 900;
-            color: var(--gold);
-            text-shadow: 0 0 30px rgba(255,215,0,0.35);
-            margin-bottom: 1rem;
-            letter-spacing: 0.04em;
-        }
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
 
-        .hero p {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            max-width: 560px;
-            margin: 0 auto;
-            line-height: 1.7;
-        }
+    /* ── Main Framework Content ── */
+    .framework-content {
+      max-width: 1040px;
+      margin: 0 auto 4rem;
+      padding: 0 1.5rem;
+    }
 
-        /* ── Ministry grid ── */
-        .ministry-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
-            max-width: 940px;
-            margin: 3rem auto 4rem;
-            padding: 0 1.5rem;
-        }
+    .framework-section {
+      background: rgba(20, 5, 32, 0.75);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(8px);
+    }
 
-        .ministry-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            background: rgba(74,35,90,0.4);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 2.5rem 2rem;
-            text-decoration: none;
-            color: var(--text);
-            font-weight: 700;
-            font-size: 1rem;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background 0.2s;
-            cursor: pointer;
-            min-height: 160px;
-            backdrop-filter: blur(8px);
-        }
+    .framework-section h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+      letter-spacing: 0.03em;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
 
-        .ministry-btn:hover, .ministry-btn:focus-visible {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 32px rgba(255,215,0,0.18);
-            border-color: var(--gold);
-            background: rgba(74,35,90,0.65);
-            text-decoration: none;
-        }
+    .framework-section h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.15rem;
+      color: var(--accent);
+      margin: 1.5rem 0 0.5rem;
+    }
 
-        .ministry-btn-icon { font-size: 2.5rem; filter: drop-shadow(0 0 8px rgba(255,215,0,0.3)); }
+    .framework-section p {
+      margin-bottom: 1rem;
+      color: var(--text);
+      text-align: justify;
+    }
 
-        .ministry-btn-label {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--gold);
-            letter-spacing: 0.04em;
-        }
+    /* ── Donation Request Callout Block ── */
+    .donation-callout {
+      background: rgba(192, 132, 252, 0.08);
+      border-left: 4px solid var(--accent);
+      padding: 2rem;
+      margin: 1.5rem 0;
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
 
-        .ministry-btn-desc { font-size: 0.825rem; font-weight: 400; color: var(--text-muted); text-align: center; line-height: 1.5; }
+    .donation-callout h3 {
+      color: var(--gold) !important;
+      margin-top: 0 !important;
+      font-size: 1.25rem !important;
+    }
 
-        .ministry-btn.btn-stories  { border-top: 3px solid #c084fc; }
-        .ministry-btn.btn-support  { border-top: 3px solid #34d399; }
-        .ministry-btn.btn-games    { border-top: 3px solid var(--gold); }
-        .ministry-btn.btn-gallery  { border-top: 3px solid #60a5fa; }
-	        .ministry-btn.btn-sevenstars { border-top: 3px solid #c084fc; }
+    .donation-callout ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
 
-	        .fundraiser-block {
-	            max-width: 1040px;
-	            margin: -1rem auto 3.5rem;
-	            padding: 0 1.5rem;
-	        }
+    .donation-callout li {
+      margin-bottom: 0.5rem;
+    }
 
-	        .fundraiser-actions {
-	            display: flex;
-	            justify-content: center;
-	            gap: 0.9rem;
-	            flex-wrap: wrap;
-	            margin-top: 1.1rem;
-	        }
+    /* ── Fundraiser Banner Block ── */
+    .fundraiser-block {
+      max-width: 1040px;
+      margin: -1rem auto 3.5rem;
+      padding: 0 1.5rem;
+    }
 
-	        .fundraiser-btn {
-	            display: inline-flex;
-	            align-items: center;
-	            justify-content: center;
-	            gap: 0.5rem;
-	            padding: 0.75rem 1.25rem;
-	            border-radius: 12px;
-	            border: 1px solid rgba(255,215,0,0.24);
-	            text-decoration: none;
-	            font-weight: 700;
-	            color: var(--text);
-	            background: rgba(255,215,0,0.08);
-	            transition: transform 0.15s, background 0.2s, border-color 0.2s;
-	        }
+    .fundraiser-actions {
+      display: flex;
+      justify-content: center;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+      margin-top: 1.1rem;
+    }
 
-	        .fundraiser-btn:hover { transform: translateY(-2px); background: rgba(255,215,0,0.16); border-color: var(--gold); }
+    .fundraiser-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255,215,0,0.24);
+      text-decoration: none;
+      font-weight: 700;
+      color: var(--text);
+      background: rgba(255,215,0,0.08);
+      transition: transform 0.15s, background 0.2s, border-color 0.2s;
+    }
 
-	        .fundraiser-btn.primary {
-	            background: rgba(34,197,94,0.92);
-	            border-color: rgba(34,197,94,0.6);
-	            color: #04120b;
-	        }
+    .fundraiser-btn:hover { transform: translateY(-2px); background: rgba(255,215,0,0.16); border-color: var(--gold); }
+    .fundraiser-btn.primary { background: rgba(34,197,94,0.92); border-color: rgba(34,197,94,0.6); color: #04120b; }
+    .fundraiser-btn.primary:hover { background: rgba(34,197,94,1); border-color: rgba(34,197,94,0.85); }
 
-	        .fundraiser-btn.primary:hover { background: rgba(34,197,94,1); border-color: rgba(34,197,94,0.85); }
+    /* ── Strategy Matrix Table ── */
+    .strategy-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      background: rgba(13, 1, 21, 0.6);
+      border-radius: 8px;
+      overflow: hidden;
+    }
 
-	        .media-library {
-	            max-width: 1040px;
-	            margin: 0 auto 4rem;
-	            padding: 0 1.5rem;
-        }
+    .strategy-table th, .strategy-table td {
+      border: 1px solid var(--border);
+      padding: 0.85rem;
+      text-align: left;
+    }
 
-        .media-library h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.2rem, 3vw, 1.7rem);
-            color: var(--gold);
-            margin-bottom: 0.75rem;
-            text-align: center;
-            letter-spacing: 0.04em;
-        }
+    .strategy-table th {
+      background: rgba(74, 35, 90, 0.8);
+      color: var(--gold);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+    }
 
-        .media-library-intro {
-            max-width: 720px;
-            margin: 0 auto 2rem;
-            text-align: center;
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
+    /* ── Ministry Grid ── */
+    .ministry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      max-width: 1040px;
+      margin: 0 auto 4rem;
+      padding: 0 1.5rem;
+    }
 
-        .media-section {
-            background: rgba(74,35,90,0.32);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            backdrop-filter: blur(8px);
-        }
+    .ministry-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      background: rgba(74,35,90,0.4);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 1rem;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background 0.2s;
+      cursor: pointer;
+      min-height: 160px;
+      backdrop-filter: blur(8px);
+    }
 
-        .media-section h3 {
-            color: var(--gold);
-            margin-bottom: 0.5rem;
-            font-size: 1.05rem;
-        }
+    .ministry-btn:hover, .ministry-btn:focus-visible {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 32px rgba(255,215,0,0.18);
+      border-color: var(--gold);
+      background: rgba(74,35,90,0.65);
+    }
 
-        .media-section p {
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
+    .ministry-btn-icon { font-size: 2.5rem; filter: drop-shadow(0 0 8px rgba(255,215,0,0.3)); }
+    .ministry-btn-label { font-family: 'Orbitron', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--gold); letter-spacing: 0.04em; }
+    .ministry-btn-desc { font-size: 0.825rem; font-weight: 400; color: var(--text-muted); text-align: center; line-height: 1.5; }
 
-        .audio-library-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
+    .ministry-btn.btn-stories  { border-top: 3px solid #c084fc; }
+    .ministry-btn.btn-support  { border-top: 3px solid #34d399; }
+    .ministry-btn.btn-games    { border-top: 3px solid var(--gold); }
+    .ministry-btn.btn-gallery  { border-top: 3px solid #60a5fa; }
+    .ministry-btn.btn-sevenstars { border-top: 3px solid #c084fc; }
 
-        .media-gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
+    /* ── Media Library ── */
+    .media-library {
+      max-width: 1040px;
+      margin: 0 auto 4rem;
+      padding: 0 1.5rem;
+    }
 
-        .media-video-card {
-            background: rgba(13,1,21,0.72);
-            border: 1px solid rgba(255,215,0,0.16);
-            border-radius: 12px;
-            padding: 1rem;
-        }
+    .media-library h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.2rem, 3vw, 1.7rem);
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+      text-align: center;
+      letter-spacing: 0.04em;
+    }
 
-        .media-video-card h4 {
-            color: var(--text);
-            margin-bottom: 0.25rem;
-            font-size: 0.98rem;
-        }
+    .media-library-intro { max-width: 720px; margin: 0 auto 2rem; text-align: center; color: var(--text-muted); line-height: 1.7; }
+    .media-section { background: rgba(74,35,90,0.32); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; backdrop-filter: blur(8px); }
+    .media-section h3 { color: var(--gold); margin-bottom: 0.5rem; font-size: 1.05rem; }
+    .media-section p { color: var(--text-muted); line-height: 1.6; }
 
-        .media-video-card p {
-            font-size: 0.85rem;
-            margin-bottom: 0.85rem;
-        }
+    .audio-library-grid, .media-gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .media-video-card, .audio-card { background: rgba(13,1,21,0.72); border: 1px solid rgba(255,215,0,0.16); border-radius: 12px; padding: 1rem; }
+    .media-video-card h4, .audio-card h4 { color: var(--text); margin-bottom: 0.25rem; font-size: 0.98rem; }
+    .media-video-card p, .audio-card p { font-size: 0.85rem; margin-bottom: 0.85rem; }
+    .media-video-card video { width: 100%; display: block; border-radius: 10px; border: 1px solid rgba(255,215,0,0.14); background: #020617; margin-bottom: 0.75rem; }
+    .audio-card audio { width: 100%; margin-bottom: 0.75rem; }
+    .media-download { display: inline-block; color: var(--gold); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .media-download:hover { text-decoration: underline; }
 
-        .media-video-card video {
-            width: 100%;
-            display: block;
-            border-radius: 10px;
-            border: 1px solid rgba(255,215,0,0.14);
-            background: #020617;
-            margin-bottom: 0.75rem;
-        }
+    .media-file-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem 1.5rem; margin-top: 1rem; padding: 0; }
+    .media-file-list a { color: var(--text); text-decoration: none; }
+    .media-file-list a:hover { color: var(--gold); text-decoration: underline; }
 
-        .audio-card {
-            background: rgba(13,1,21,0.72);
-            border: 1px solid rgba(255,215,0,0.16);
-            border-radius: 12px;
-            padding: 1rem;
-        }
-
-        .audio-card h4 {
-            color: var(--text);
-            margin-bottom: 0.25rem;
-            font-size: 0.98rem;
-        }
-
-        .audio-card p {
-            font-size: 0.85rem;
-            margin-bottom: 0.85rem;
-        }
-
-        .audio-card audio {
-            width: 100%;
-            margin-bottom: 0.75rem;
-        }
-
-        .media-download {
-            display: inline-block;
-            color: var(--gold);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .media-download:hover { text-decoration: underline; }
-
-        .media-file-list {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 0.75rem 1.5rem;
-            margin-top: 1rem;
-            padding: 0;
-        }
-
-        .media-file-list a {
-            color: var(--text);
-            text-decoration: none;
-        }
-
-        .media-file-list a:hover {
-            color: var(--gold);
-            text-decoration: underline;
-        }
-
-        main { flex: 1; }
-
-        /* ── Footer ── */
-        .site-footer {
-            background: rgba(10,2,18,0.9);
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            text-align: center;
-            padding: 1.5rem;
-            font-size: 0.875rem;
-        }
-
-        .site-footer a { color: var(--gold-dim); text-decoration: none; }
-        .site-footer a:hover { color: var(--gold); text-decoration: underline; }
-    </style>
+    main { flex: 1; }
+    .site-footer { background: rgba(10,2,18,0.9); border-top: 1px solid var(--border); color: var(--text-muted); text-align: center; padding: 1.5rem; font-size: 0.875rem; }
+    .site-footer a { color: var(--gold-dim); text-decoration: none; }
+    .site-footer a:hover { color: var(--gold); text-decoration: underline; }
+  </style>
   <link rel="stylesheet" crossorigin href="../assets/unified-nav-D2-vpU-a.css">
 </head>
 <body>
-    <div class="ministry-stars" aria-hidden="true"></div>
+  <div class="ministry-stars" aria-hidden="true"></div>
 
-    <header class="site-header">
-        <div class="nav-container">
-            <a href="../" class="logo" aria-label="Amazing Grace Home Living — Home">
-                <img src="../assets/logo-S7NXL_ug.png" alt="Amazing Grace Home Living">
-            </a>
-            <nav id="main-nav" class="nav-links" aria-label="Main navigation">
-                <a href="../#properties">Listings</a>
-                <a href="../library/">Library</a>
-                <a href="../arcade/">Arcade</a>
-                <a href="./" class="active" aria-current="page">Ministry</a>
-                <a href="../contact/">Contact</a>
-            </nav>
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="../" class="logo" aria-label="Amazing Grace Home Living — Home">
+        <img src="../assets/logo-S7NXL_ug.png" alt="Amazing Grace Home Living">
+      </a>
+      <nav id="main-nav" class="nav-links" aria-label="Main navigation">
+        <a href="../#properties">Listings</a>
+        <a href="../library/">Library</a>
+        <a href="../arcade/">Arcade</a>
+        <a href="./" class="active" aria-current="page">Ministry</a>
+        <a href="../contact/">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div class="hero-icon">🕊️</div>
+      <h1>Voice of Jesus Ministry</h1>
+      <p>Strategic Stabilization & Global Mission Expansion Framework</p>
+    </div>
+
+    <!-- Quick Funding CTA Block -->
+    <section class="fundraiser-block" aria-labelledby="fundraiser-title">
+      <div class="media-section" style="border: 1px solid rgba(34,197,94,0.4); background: rgba(22,101,52,0.15);">
+        <h3 id="fundraiser-title" style="color: #4ade80;">Partner With Our Mission</h3>
+        <p>
+          We are directly raising emergency capital and foundational partnerships to back remote coastal villages with three key needs: a critical lifeline boat engine, secure water filtration systems, and upcoming youth camps.
+        </p>
+        <div class="fundraiser-actions" aria-label="Fundraiser actions">
+          <a class="fundraiser-btn primary" href="https://amazinggracehl.org/support/" target="_blank" rel="noopener">
+            🤝 Give Directly on Our Support Page
+          </a>
+          <a class="fundraiser-btn" href="https://gofund.me/90bb6b695" target="_blank" rel="noopener">
+            ❤️ Visit GoFundMe Campaign
+          </a>
         </div>
-    </header>
+      </div>
+    </section>
 
-	    <main>
-	        <div class="hero">
-	            <div class="hero-icon">🕊️</div>
-	            <h1>Voice of Jesus Ministry</h1>
-	            <p>Faith, hope, and community — bringing the love of Jesus Christ to those who need it most.</p>
-	        </div>
+    <!-- Full Strategic Framework Article Content -->
+    <div class="framework-content">
+      
+      <article class="framework-section">
+        <h2>1. Executive Summary</h2>
+        <p>
+          The transition of a self-funded, localized philanthropic effort into a sustainable, recognized international mission represents a complex organizational evolution. This process requires a fundamental shift from a model of sole personal patronage to one of structured, institutional resilience. The Voice of Jesus Ministry, currently operating as a vital lifeline for physical and spiritual sustenance in island communities, is facing a severe inflection point driven by the primary benefactor’s recent loss of employment. Prior to April 2026, the mission relied on a monthly subsidy of one to three hundred dollars drawn from the benefactor's salary to fund basic food supplies and medicine. The cessation of this income has triggered an escalating cycle of personal debt, credit exhaustion, and a perceived plateau in professional and spiritual progression.
+        </p>
+        <p>
+          This exhaustive research report is generated to provide a multi-dimensional roadmap designed to stabilize the immediate financial crisis, formalize the Voice of Jesus Ministry as a legal 501(c)(3) entity, and identify the "best hope" for generating the capital required for the mission's larger infrastructure goals. These goals include the establishment of a summer camp, the acquisition of a water treatment plant and plumbing system for the island, and the procurement of an engine for the ministry’s fishing boat. By synthesizing advanced non-profit operational strategies, targeted grant acquisition models, digital monetization frameworks derived from existing software repositories, and profound theological alignments drawn from the ministry’s foundational texts, this report outlines the precise mechanisms required to execute the mission "correctly."
+        </p>
+        <p>
+          A deep analysis of the provided primary source materials—including visual evidence of the physical mission, the digital architecture of the "Matrix of Conscience" application, the strategic analytics for the YouTube channel, and the legal constraints of the current financial situation—indicates that the perceived silence from divine providence is not a mandate for abandonment. Rather, it represents a structural necessity. The cessation of personal funding mechanisms is the catalyst required to force the transition of the Voice of Jesus Ministry from a highly vulnerable, privately subsidized effort into a resilient, legally recognized, and community-integrated institution capable of receiving large-scale philanthropic capital.
+        </p>
 
-	        <section class="fundraiser-block" aria-labelledby="fundraiser-title">
-	            <div class="media-section">
-	                <h3 id="fundraiser-title">Keeping Hope Afloat: Lifeline Boat &amp; Village Camp</h3>
-	                <p>
-	                    We’re raising funds to support a remote coastal ministry village with three urgent needs:
-	                    a reliable lifeline boat engine, solar power for summer camp, and a clean water supply.
-	                </p>
-	                <p style="margin-top:0.85rem">
-	                    <strong>Sponsorship examples:</strong> $5/month (Bible Study Partner), $20/month (Student Sponsor), $40 one-time (Chromebook Sponsor).
-	                </p>
-	                <div class="fundraiser-actions" aria-label="Fundraiser actions">
-	                    <a class="fundraiser-btn primary" href="https://gofund.me/90bb6b695" target="_blank" rel="noopener">
-	                        ❤️ Donate on GoFundMe
-	                    </a>
-	                    <a class="fundraiser-btn" href="../support/">
-	                        🤝 More ways to support
-	                    </a>
-	                </div>
-	            </div>
-	        </section>
-
-	        <div class="ministry-grid" role="navigation" aria-label="Ministry sections">
-
-            <a href="../library/" class="ministry-btn btn-stories" aria-label="Read Ministry Stories">
-                <span class="ministry-btn-icon">📖</span>
-                <span class="ministry-btn-label">Library</span>
-                <span class="ministry-btn-desc">Testimonies of faith, hope, and transformation</span>
-            </a>
-
-            <a href="../support/" class="ministry-btn btn-support" aria-label="Mission Support">
-                <span class="ministry-btn-icon">🤝</span>
-                <span class="ministry-btn-label">Mission Support</span>
-                <span class="ministry-btn-desc">Partner with us to expand our reach</span>
-            </a>
-
-            <a href="../arcade/" class="ministry-btn btn-games" aria-label="Play Faith-Based Games">
-                <span class="ministry-btn-icon">🎮</span>
-                <span class="ministry-btn-label">Games</span>
-                <span class="ministry-btn-desc">Interactive faith-based learning through play</span>
-            </a>
-
-            <a href="#ministry-media-library" class="ministry-btn btn-gallery" aria-label="Ministry media library">
-                <span class="ministry-btn-icon">🖼️</span>
-                <span class="ministry-btn-label">Media Library</span>
-                <span class="ministry-btn-desc">Audio and shared media preserved directly on the site</span>
-            </a>
-
-            <a href="../ministries/" class="ministry-btn btn-sevenstars" aria-label="Play the Seven Stars Journey">
-                <span class="ministry-btn-icon">✨</span>
-                <span class="ministry-btn-label">Seven Stars Journey</span>
-                <span class="ministry-btn-desc">A branched narrative &amp; puzzle adventure into Revelation's seven mysteries</span>
-            </a>
-
-            <a href="./bible-journey.html" class="ministry-btn" style="border-top:4px solid #9b59b6;" aria-label="Bible Journey — Story viewer and Bible Quiz">
-                <span class="ministry-btn-icon">✝</span>
-                <span class="ministry-btn-label">Bible Journey</span>
-                <span class="ministry-btn-desc">Seven Stars Lore story viewer and Bible quiz — faith through interactive learning</span>
-            </a>
-
+        <!-- Embedded Donation Request Document -->
+        <div class="donation-callout">
+          <h3>Empowering Hope: Join the Voice of Jesus Ministry in Serving Our Island Community</h3>
+          <p>
+            At the heart of the Voice of Jesus Ministry, led by Pastor Allen and Sister Layla, is a deep commitment to the physical and spiritual well-being of our island communities. We believe that by providing nutrition, healthcare, and safe spaces for education, we can create an environment where families are empowered and where God’s teachings are shared in action.
+          </p>
+          <p><strong>Our Mission in Action:</strong> For years, our ministry has served as a vital lifeline, offering food programs and community gatherings that bring neighbors together. We have seen firsthand how simple acts of service—distributing rice, offering a hot meal, and providing spiritual fellowship—can transform a difficult day into a moment of hope and connection.</p>
+          <p><strong>Moving Toward a Brighter Future:</strong> We are currently in a season of growth. To ensure our ministry has the stability to serve our community for years to come, we are in the process of formalizing Voice of Jesus Ministry as an official 501(c)(3) nonprofit organization. This step is critical; it will allow us to operate with complete transparency, build lasting partnerships, and ensure that every contribution we receive is managed with the highest level of stewardship.</p>
+          <p><strong>How You Can Help:</strong> To expand our reach and better serve those who rely on us, we have three immediate goals for our community:</p>
+          <ul>
+            <li><strong>The Lifeline Engine:</strong> Our boat is our most essential tool for reaching isolated areas. It is our primary means of transporting medical supplies, food, and ministry leaders to families who otherwise have limited access to resources. We are seeking support to acquire a reliable, efficient engine to keep this vital connection running.</li>
+            <li><strong>Summer Camp for Our Youth:</strong> We are dedicated to providing a safe, encouraging environment for our children. Our upcoming summer camp will focus on education, moral growth, and building a strong foundation for the next generation. Your donations will go directly toward camp supplies, educational materials, and creating a safe space for learning and play.</li>
+            <li><strong>Formalizing Our Foundation:</strong> Establishing our nonprofit status is a significant step forward. This process involves legal and administrative requirements that will allow us to receive grants and institutional support. Your contributions toward our registration costs are an investment in the long-term sustainability of this mission.</li>
+          </ul>
+          <p>Every donation, regardless of size, is a direct contribution to the physical and spiritual health of our community. We invite you to partner with Pastor Allen and Sister Layla as we continue this important work. Together, we can provide the freedom, support, and hope that our island families deserve.</p>
         </div>
+      </article>
 
-        <section class="media-library" aria-labelledby="ministry-media-library">
-            <h2 id="ministry-media-library">Media Library</h2>
-            <p class="media-library-intro">
-                Shared ministry audio and music now live under the main assets folders so they stay discoverable,
-                reusable, and protected during repository cleanup.
-            </p>
+      <article class="framework-section">
+        <h2>2. Phenomenological Analysis: Reconciling the Physical Mission and Digital Architecture</h2>
+        <p>
+          A critical component of identifying the optimal path forward involves analyzing the distinct spheres in which the founder operates. The primary source images reveal a stark dichotomy between the physical reality of the island mission and the highly advanced digital architecture being developed by the founder. Understanding how these two spheres intersect provides the foundation for the organization's ultimate funding strategy.
+        </p>
+        <h3>2.1 The Physical Reality of the Island Mission</h3>
+        <p>
+          The visual evidence provided establishes the authentic, grassroots nature of the Voice of Jesus Ministry's current operations. The imagery depicts an outdoor, community-centric feeding program taking place on a sandy, shaded terrain, indicative of the island environment referenced in the operational goals. These gatherings feature local families, children, and ministry leaders distributing essential food supplies, specifically rice and locally sourced fish. The atmosphere is deeply communal, underscoring the vital role the ministry plays in basic physical sustenance, which was previously funded by the modest monthly allocations from the founder's salary.
+        </p>
+        <p>
+          Furthermore, the physical establishment of the "Immanuel Joyful Christian Assembly Church" is documented in the visual records. The structure is a modest, open-air, covered pavilion where the community congregates. The presence of children holding balloons and a banner proclaiming "Living by Grace: Walking by Faith and Abounding in Love" confirms the existence of the youth outreach and foundational elements of the proposed summer camp. This visual data authenticates the mission's footprint and provides the essential narrative evidence required for future institutional grant applications.
+        </p>
+        <h3>2.2 The Digital Vision: The Matrix of Conscience</h3>
+        <p>
+          In stark contrast to the physical island environment is the sophisticated digital ecosystem being constructed within the founder's GitHub repository. The visual and architectural data outlines a comprehensive, gamified educational platform titled "Star Guardians: Heroes of the Conscience Matrix" and "Matrix of Conscience: A Cyberpunk Tale". This application is not merely a game; it is a highly developed interactive curriculum designed to merge spiritual alignment with technological engagement.
+        </p>
+        <p>
+          The architecture of the game centers on the protagonist, Electra, navigating a neon-drenched megacity to defeat "algorithmic entropy" by securing the "Seven Stars of Excellence." The mechanics involve "Revelation Quizzes," match-3 challenges, and the powering of four moral pillars: Wisdom, Justice, Empathy, and Growth. Notably, the game incorporates an angelic guide named "Ella," explicitly identified parenthetically as "Sheila," which aligns directly with the founder's wife and collaborative partner. The integration of the wife's persona into the software architecture suggests a pathway for advancing her career simultaneously with the ministry's goals, utilizing the digital platform as a shared enterprise.
+        </p>
+      </article>
 
-            <div class="media-section">
-                <h3 id="ministry-gallery-heading">Ministry Gallery</h3>
-                <p>Recent ministry recordings now live under <code>assets/images/ministry/</code> so the outreach archive stays local to the repository.</p>
+      <article class="framework-section">
+        <h2>3. Theological and Missiological Alignment: Defining "Correct" Execution</h2>
+        <p>
+          A core component of the present crisis is the profound psychological and spiritual distress stemming from unmet expectations of divine support. The founder notes that previous guidance affirmed the mission, acknowledged that the founder had "stopped sinning" as predicted, and promised support provided the mission was executed "correctly." Yet, no further explicit directives were supplied, leading to a crisis of morale as debts mount and career prospects stall.
+        </p>
+        <h3>3.1 The "Empty Pocket" Principle and the Crucible of Provision</h3>
+        <p>
+          According to the ministry's internal Bible study transcripts, a central tenet of authentic missionary work is the "empty pocket" principle. As articulated in a January 2025 study session regarding the Book of Daniel, a missionary must eventually reach the absolute end of their own financial capacities to fully rely on divine provision. The transcript explicitly records the pastoral teaching: "if you don't empty Your Pet [pocket], okay how God replace and fill your pet. That's is principle as missionary".
+        </p>
+        <p>
+          Viewed through this specific theological lens, the current layoff and the subsequent depletion of the $100 to $300 monthly personal subsidy should not be interpreted as a failure, a punishment, or an abandonment by divine forces. Rather, it represents the necessary, albeit painful, fulfillment of this exact theological principle. As long as the founder was capable of subsidizing the mission out of personal surplus, the ministry remained a private charity rather than an institution entirely dependent on community and divine provision.
+        </p>
+        <h3>3.2 Endurance in the Face of Weakness (The Church of Philadelphia)</h3>
+        <p>
+          The ministry’s curriculum regarding the "Seven Stars" and the churches of Asia Minor provides direct, applicable guidance for the current predicament, simultaneously mirroring the mechanics of the "Matrix of Conscience" application. The teaching highlights the Church of Philadelphia, which was uniquely praised by Christ for keeping the faith and maintaining moral alignment despite explicitly "having little strength".
+        </p>
+        <p>
+          The founder's current lack of financial strength, rising personal debt, and career stagnation perfectly mirror this precise biblical condition. Doing the mission "correctly" inherently involves enduring this protracted period of "little strength" without compromising the core objectives, abandoning the mandate, or reverting to previous detrimental behaviors.
+        </p>
+        <h3>3.3 The Kingdom Framework vs. The Human Wisdom Framework</h3>
+        <p>
+          The human wisdom framework attempts to force outcomes through sheer individual will, aggressive debt-leveraging, and singular, centralized financial control. Conversely, the Kingdom framework operates on community interconnectedness, radical transparency, and the intentional uplifting of the "poor in spirit". Therefore, "doing it correctly" fundamentally means moving the mission out of the founder's private bank account and establishing a transparent, legally recognized non-profit organization that actively invites the broader global community into the work.
+        </p>
+      </article>
 
-                <div class="media-gallery-grid" role="region" aria-labelledby="ministry-gallery-heading">
-                    <article class="media-video-card">
-                        <h4>Portrait archive recording 1 · 4 sec · 720 × 1280</h4>
-                        <p>First preserved MP4 issue upload, kept as a 720 × 1280 portrait clip in the local ministry archive.</p>
-                        <video controls preload="metadata" playsinline aria-label="Portrait archive recording 1, 4 second video" title="Portrait archive recording 1, 4 second video">
-                            <source src="../assets/f848d75b-7d0a-459d-9f8f-4023ac7b4f46-D7jBxgpz.mp4" type="video/mp4">
-                            Your browser does not support the video element.
-                        </video>
-                        <a class="media-download" href="../assets/images/ministry/f848d75b-7d0a-459d-9f8f-4023ac7b4f46.mp4" target="_blank" rel="noopener">Open full video</a>
-                    </article>
+      <article class="framework-section">
+        <h2>4. Immediate Financial Triage and Household Stabilization</h2>
+        <p>
+          Before the formal Voice of Jesus Ministry entity can be sustainably scaled to acquire infrastructure grants, the founder’s personal financial hemorrhage must be aggressively triaged. The loss of employment in April from a position yielding a gross hourly rate of $26.44 requires the immediate mobilization of state and non-profit resources.
+        </p>
+        <h3>4.1 State and County Assistance Programs (California / Kern County)</h3>
+        <p>
+          The primary mechanism for stabilization is Unemployment Insurance (UI) administered by the California Employment Development Department (EDD), providing weekly safety allocations. Furthermore, the EDD offers "Training Extensions" under the California Training Benefits (CTB) program, which extends the duration of benefits if the applicant is acquiring new, approved job skills, potentially providing a longer runway for the founder to pivot his career toward full-time non-profit management or independent software development.
+        </p>
+        <p>
+          Simultaneously, localized nutritional and housing support should be accessed via BenefitsCal portal (CalWORKs and CalFresh programs) to reduce out-of-pocket overhead while navigating health insurance registration milestones via Covered California.
+        </p>
+        <h3>4.2 Non-Profit Debt Management and Restructuring</h3>
+        <p>
+          Organizations such as GreenPath Financial Wellness or InCharge Debt Solutions provide structured Debt Management Programs (DMPs). They interface directly with creditors to dramatically lower active interest percentages, eliminate penalty fees, and compress unsecured lines into structured monthly allocations, freeing focus for administrative scaling.
+        </p>
+        <h3>4.3 Legal Rehabilitation: The Expungement Process</h3>
+        <p>
+          Fulfilling an Application for Certification of Eligibility for Expunction with the Florida Department of Law Enforcement (FDLE) regarding historical records in Pinellas County ensures immaculate legal status. This process clears unnecessary friction from high-tier operational corporate employment sectors and protects institutional trust thresholds on major global philanthropy applications.
+        </p>
+      </article>
 
-                    <article class="media-video-card">
-                        <h4>Portrait archive recording 2 · 4 sec · 720 × 1280</h4>
-                        <p>Second preserved MP4 issue upload, kept as another 720 × 1280 portrait clip in the local ministry archive.</p>
-                        <video controls preload="metadata" playsinline aria-label="Portrait archive recording 2, 4 second video" title="Portrait archive recording 2, 4 second video">
-                            <source src="../assets/images/ministry/7a65ebf3-4f2b-4fbf-9fd9-174859d47a1f.mp4" type="video/mp4">
-                            Your browser does not support the video element.
-                        </video>
-                        <a class="media-download" href="../assets/images/ministry/7a65ebf3-4f2b-4fbf-9fd9-174859d47a1f.mp4" target="_blank" rel="noopener">Open full video</a>
-                    </article>
+      <article class="framework-section">
+        <h2>5. Formalizing the Voice of Jesus Ministry as a 501(c)(3)</h2>
+        <p>
+          Major philanthropic organizations, high-net-worth Christian foundations, and corporate matching programs universally require a registered 501(c)(3) status to legally disburse funds. Operating without this structure forces the ministry to rely solely on retail, peer-to-peer donations, which are insufficient for heavy infrastructure projects.
+        </p>
+        <table class="strategy-table">
+          <thead>
+            <tr>
+              <th>Legal Filing</th>
+              <th>Agency</th>
+              <th>Form</th>
+              <th>Fee</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Articles of Incorporation</td>
+              <td>CA Secretary of State</td>
+              <td>Form ARTS-RE</td>
+              <td>$30</td>
+              <td>Legally forms the Nonprofit Religious Corporation in CA.</td>
+            </tr>
+            <tr>
+              <td>Statement of Information</td>
+              <td>CA Secretary of State</td>
+              <td>Form SI-100</td>
+              <td>$20</td>
+              <td>Registers the board of directors and officers (due in 90 days).</td>
+            </tr>
+            <tr>
+              <td>Federal Tax Exemption</td>
+              <td>Internal Revenue Service</td>
+              <td>Form 1023-EZ</td>
+              <td>$275</td>
+              <td>Grants official federal 501(c)(3) tax-exempt protection status.</td>
+            </tr>
+            <tr>
+              <td>State Tax Exemption</td>
+              <td>CA Franchise Tax Board</td>
+              <td>Form 3500A</td>
+              <td>$0</td>
+              <td>Exempts the entity from California's annual franchise tax.</td>
+            </tr>
+            <tr>
+              <td>Charity Registration</td>
+              <td>CA Attorney General</td>
+              <td>Form CT-1</td>
+              <td>$50</td>
+              <td>Registers the charity to legally solicit funds in the state.</td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align:right; font-weight:bold;">Total Legal Setup:</td>
+              <td colspan="2" style="font-weight:bold; color:var(--accent);">$375</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
 
-                    <article class="media-video-card">
-                        <h4>Portrait archive recording 3 · 10 sec · 720 × 1280</h4>
-                        <p>Original MP4 issue upload preserved as a 720 × 1280 portrait clip with a longer 10 second runtime.</p>
-                        <video controls preload="metadata" playsinline aria-label="Portrait archive recording 3, 10 second video" title="Portrait archive recording 3, 10 second video">
-                            <source src="../assets/82179453-3283-4aae-b0af-6b8caf68eb9b-5aZAu3Xg.mp4" type="video/mp4">
-                            Your browser does not support the video element.
-                        </video>
-                        <a class="media-download" href="../assets/images/ministry/82179453-3283-4aae-b0af-6b8caf68eb9b.mp4" target="_blank" rel="noopener">Open full video</a>
-                    </article>
+      <article class="framework-section">
+        <h2>6. The "Best Hope": Digital Asset Monetization and Freelance Deployment</h2>
+        <p>
+          An exhaustive analysis of active digital assets reveals that the "best hope" lies in aggressively deploying the founder's highly advanced, demonstrable software engineering skills to generate immediate capital and build a self-sustaining funding engine.
+        </p>
+        <h3>6.1 Leveraging the Developer Portfolio for Immediate Freelance Capital</h3>
+        <p>
+          The founder is highly proficient in C++, TypeScript/TSX, React, API bridging, and secure workflow automation architecture (n8n pipelines). Marketing these precise skills as an Automation Architect or Blockchain Integrator across Upwork or Web3 platforms commands high freelance revenue tiers capable of funding non-profit setup workflows instantly.
+        </p>
+        <h3>6.2 Monetizing the "Matrix of Conscience" Platform</h3>
+        <p>
+          Launching the gamified moral educational engine as a curriculum tool for youth ministries creates a unique financial channel. Linking automated transaction bridges like Cash App ($GulfNexus) handles frictionless micro-sponsorship inputs directly inside your custom web applications.
+        </p>
+      </article>
 
-                    <article class="media-video-card">
-                        <h4>QuickTime archive recording 4 · MOV upload</h4>
-                        <p>Original QuickTime issue upload preserved in the local ministry archive for download and playback.</p>
-                        <video controls preload="metadata" playsinline aria-label="QuickTime archive recording 4 video" title="QuickTime archive recording 4 video">
-                            <source src="../assets/images/ministry/4e5e0fe6-d627-44b3-9e07-b54346aefe5c.MOV" type="video/quicktime">
-                            Your browser does not support the video element.
-                        </video>
-                        <a class="media-download" href="../assets/images/ministry/4e5e0fe6-d627-44b3-9e07-b54346aefe5c.MOV" target="_blank" rel="noopener">Open full video</a>
-                    </article>
+      <article class="framework-section">
+        <h2>7. Audience Cultivation: Mastering the Specific YouTube Lane</h2>
+        <p>
+          Instead of chasing generic ministry vlogs, the channel should adopt a hyper-focused narrative documentary style: "Off-Grid Missionary Engineering". Mapping the exact process of logistics, topographical research, and machinery setups required to support isolated communities transforms regular updates into compelling stories that command high organic viewership and retention performance.
+        </p>
+      </article>
 
-                    <article class="media-video-card">
-                        <h4>Portrait archive recording 5 · 5 sec · 1080 × 1920</h4>
-                        <p>Original MP4 issue upload preserved as a 1080 × 1920 portrait clip with just over 5 seconds of runtime.</p>
-                        <video controls preload="metadata" playsinline aria-label="Portrait archive recording 5, 5 second video" title="Portrait archive recording 5, 5 second video">
-                            <source src="../assets/a2715c20-d753-48bb-9ae5-110f60991b75-BH-WgubW.mp4" type="video/mp4">
-                            Your browser does not support the video element.
-                        </video>
-                        <a class="media-download" href="../assets/images/ministry/a2715c20-d753-48bb-9ae5-110f60991b75.mp4" target="_blank" rel="noopener">Open full video</a>
-                    </article>
+      <article class="framework-section">
+        <h2>8. Strategic Capital Acquisition for Physical Infrastructure</h2>
+        <p>
+          Formal status unlocks alignment with massive international humanitarian networks. For water treatment grids, proposals should target specialized groups like <strong>Water Mission</strong>, <strong>Christian Relief Fund (CRF)</strong>, and the <strong>Birtcher Family Foundation</strong>. For maritime mission craft logistics, channels look toward asset liquidators such as <strong>Charity Boats &amp; Boat Angel</strong> to source efficient outboards without massive retail costs.
+        </p>
+      </article>
 
-                    <article class="media-video-card">
-                        <h4>Landscape archive recording 6 · 5 sec · 832 × 480</h4>
-                        <p>Original MP4 issue upload preserved as an 832 × 480 landscape clip with just over 5 seconds of runtime.</p>
-                        <video controls preload="metadata" playsinline aria-label="Landscape archive recording 6, 5 second video" title="Landscape archive recording 6, 5 second video">
-                            <source src="../assets/images/ministry/610a3d0c-68c5-49c7-b124-9727214036c2.mp4" type="video/mp4">
-                            Your browser does not support the video element.
-                        </video>
-                        <a class="media-download" href="../assets/images/ministry/610a3d0c-68c5-49c7-b124-9727214036c2.mp4" target="_blank" rel="noopener">Open full video</a>
-                    </article>
+      <article class="framework-section">
+        <h2>9. Long-Term Sustenance and the "Snowball" Strategy</h2>
+        <p>
+          To permanently replace individual payroll dependencies, residual funds can navigate into the "Snowball" asset framework outlined in personal archives. Utilizing focused, dividend-yielding positions paired with Dividend Reinvestment Plans (DRIP) compounds fractional expansion automatically, constructing a distinct, isolated endowment protecting the ministry from fluctuating economic variables.
+        </p>
+      </article>
 
-                    <article class="media-video-card">
-                        <h4>Portrait archive recording 7 · 4 sec · 1080 × 1920</h4>
-                        <p>Original MP4 issue upload preserved as a 1080 × 1920 portrait clip in the local ministry archive.</p>
-                        <video controls preload="metadata" playsinline aria-label="Portrait archive recording 7, 4 second video" title="Portrait archive recording 7, 4 second video">
-                            <source src="../assets/images/ministry/57466648-ccca-4c11-ae7f-9f61cf8490ea.mp4" type="video/mp4">
-                            Your browser does not support the video element.
-                        </video>
-                        <a class="media-download" href="../assets/images/ministry/57466648-ccca-4c11-ae7f-9f61cf8490ea.mp4" target="_blank" rel="noopener">Open full video</a>
-                    </article>
-                </div>
-            </div>
+      <article class="framework-section">
+        <h2>10. Conclusion</h2>
+        <p>
+          The present crisis facing the founder of the Voice of Jesus Ministry is neither an indicator of divine opposition nor a mandate for abandonment. Rather, it represents a structural necessity to transition the work out of private bank accounts and establish a transparent public trust. By implementing personal triage protocols, maximizing specialized developer skill sets, and activating proper non-profit channels, the mission scales far past the limits of a single personal salary, standing as a permanent, resilient beacon of provision for the island communities it serves.
+        </p>
+      </article>
 
-            <div class="media-section">
-                <h3>Music &amp; Audio Archive</h3>
-                <p>These tracks are now explicitly linked here so they remain part of the ministry and site media library.</p>
+    </div>
 
-                <div class="audio-library-grid">
-                    <article class="audio-card">
-                        <h4>Storm</h4>
-                        <p>Atmospheric arcade score for dramatic ministry and game moments.</p>
-                        <audio controls preload="none">
-                            <source src="../assets/storm-CpVkJXGp.mp3" type="audio/mpeg">
-                        </audio>
-                        <a class="media-download" href="../assets/audio/storm.mp3" download>Download MP3</a>
-                    </article>
+    <!-- Interactive Navigation Grid Section -->
+    <div class="ministry-grid" role="navigation" aria-label="Ministry sections">
+      <a href="../library/" class="ministry-btn btn-stories" aria-label="Read Ministry Stories">
+        <span class="ministry-btn-icon">📖</span>
+        <span class="ministry-btn-label">Library</span>
+        <span class="ministry-btn-desc">Testimonies of faith, hope, and transformation</span>
+      </a>
 
-                    <article class="audio-card">
-                        <h4>Victory</h4>
-                        <p>Celebration cue used for success and completion moments.</p>
-                        <audio controls preload="none">
-                            <source src="../assets/victory-tA01jxSg.mp3" type="audio/mpeg">
-                        </audio>
-                        <a class="media-download" href="../assets/audio/victory.mp3" download>Download MP3</a>
-                    </article>
+      <a href="https://amazinggracehl.org/support/" class="ministry-btn btn-support" aria-label="Mission Support">
+        <span class="ministry-btn-icon">🤝</span>
+        <span class="ministry-btn-label">Mission Support</span>
+        <span class="ministry-btn-desc">Partner with us to expand our reach</span>
+      </a>
 
-                    <article class="audio-card">
-                        <h4>Ending</h4>
-                        <p>Long-form ambient track preserved for story and ministry playback.</p>
-                        <audio controls preload="none">
-                            <source src="../assets/ending-DgGUomTE.mp3" type="audio/mpeg">
-                        </audio>
-                        <a class="media-download" href="../assets/audio/ending.mp3" download>Download MP3</a>
-                    </article>
+      <a href="../arcade/" class="ministry-btn btn-games" aria-label="Play Faith-Based Games">
+        <span class="ministry-btn-icon">🎮</span>
+        <span class="ministry-btn-label">Games</span>
+        <span class="ministry-btn-desc">Interactive faith-based learning through play</span>
+      </a>
 
-                    <article class="audio-card">
-                        <h4>Badge</h4>
-                        <p>Short reward stinger used across the arcade experience.</p>
-                        <audio controls preload="none">
-                            <source src="../assets/badge-DkimBBCL.mp3" type="audio/mpeg">
-                        </audio>
-                        <a class="media-download" href="../assets/audio/badge.mp3" download>Download MP3</a>
-                    </article>
+      <a href="#ministry-media-library" class="ministry-btn btn-gallery" aria-label="Ministry media library">
+        <span class="ministry-btn-icon">🖼️</span>
+        <span class="ministry-btn-label">Media Library</span>
+        <span class="ministry-btn-desc">Audio and shared media preserved directly on the site</span>
+      </a>
 
-                    <article class="audio-card">
-                        <h4>Course Clear Fanfare</h4>
-                        <p>Arcade completion fanfare preserved under the shared audio library.</p>
-                        <audio controls preload="none">
-                            <source src="../assets/course-clear-fanfare-BqHXpYJ5.mp3" type="audio/mpeg">
-                        </audio>
-                        <a class="media-download" href="../assets/audio/course-clear-fanfare.mp3" download>Download MP3</a>
-                    </article>
+      <a href="../ministries/" class="ministry-btn btn-sevenstars" aria-label="Play the Seven Stars Journey">
+        <span class="ministry-btn-icon">✨</span>
+        <span class="ministry-btn-label">Seven Stars Journey</span>
+        <span class="ministry-btn-desc">A branched narrative &amp; puzzle adventure into Revelation's seven mysteries</span>
+      </a>
 
-                    <article class="audio-card">
-                        <h4>Player Down</h4>
-                        <p>Game-over and warning cue retained as part of the ministry audio archive.</p>
-                        <audio controls preload="none">
-                            <source src="../assets/player-down-DY5VzlSB.mp3" type="audio/mpeg">
-                        </audio>
-                        <a class="media-download" href="../assets/audio/player-down.mp3" download>Download MP3</a>
-                    </article>
-                </div>
-            </div>
+      <a href="./bible-journey.html" class="ministry-btn" style="border-top:4px solid #9b59b6;" aria-label="Bible Journey — Story viewer and Bible Quiz">
+        <span class="ministry-btn-icon">✝</span>
+        <span class="ministry-btn-label">Bible Journey</span>
+        <span class="ministry-btn-desc">Seven Stars Lore story viewer and Bible quiz — faith through interactive learning</span>
+      </a>
+    </div>
 
-            <div class="media-section">
-                <h3>Downloadable MIDI Music</h3>
-                <p>Legacy Super Mario 64 MIDI tracks are now organized under <code>assets/music/</code> and linked here so they remain part of the repository library.</p>
-                <ul class="media-file-list">
-                    <li><a href="../assets/music/m64bomb.mid" download>m64bomb.mid</a></li>
-                    <li><a href="../assets/music/m64bowsr.mid" download>m64bowsr.mid</a></li>
-                    <li><a href="../assets/music/m64crs1.mid" download>m64crs1.mid</a></li>
-                    <li><a href="../assets/music/m64crse1.mid" download>m64crse1.mid</a></li>
-                    <li><a href="../assets/music/m64docks.mid" download>m64docks.mid</a></li>
-                    <li><a href="../assets/music/m64endin.mid" download>m64endin.mid</a></li>
-                    <li><a href="../assets/music/m64file.mid" download>m64file.mid</a></li>
-                    <li><a href="../assets/music/m64metal.mid" download>m64metal.mid</a></li>
-                    <li><a href="../assets/music/m64metlm.mid" download>m64metlm.mid</a></li>
-                    <li><a href="../assets/music/m64slide.mid" download>m64slide.mid</a></li>
-                    <li><a href="../assets/music/m64snow.mid" download>m64snow.mid</a></li>
-                    <li><a href="../assets/music/m64vansh.mid" download>m64vansh.mid</a></li>
-                    <li><a href="../assets/music/m64water.mid" download>m64water.mid</a></li>
-                    <li><a href="../assets/music/m64wings.mid" download>m64wings.mid</a></li>
-                </ul>
-            </div>
-        </section>
-    </main>
+    <!-- Media Library & Video Section -->
+    <section class="media-library" id="ministry-media-library">
+      <h2>Media Library</h2>
+      <p class="media-library-intro">
+        Shared ministry audio and music live under the main assets folders so they stay discoverable, reusable, and protected during repository updates.
+      </p>
 
-    <footer class="site-footer">
-        <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="../">amazinggracehl.org</a></p>
-    </footer>
+      <div class="media-section">
+        <h3 id="ministry-gallery-heading">Ministry Gallery</h3>
+        <p>Recent ministry recordings now live under <code>assets/images/ministry/</code> so the outreach archive stays local to the repository.</p>
+
+        <div class="media-gallery-grid" role="region" aria-labelledby="ministry-gallery-heading">
+          <article class="media-video-card">
+            <h4>Portrait archive recording 1 · 4 sec · 720 × 1280</h4>
+            <p>First preserved MP4 issue upload, kept as a 720 × 1280 portrait clip in the local ministry archive.</p>
+            <video controls preload="metadata" playsinline aria-label="Portrait archive recording 1, 4 second video" title="Portrait archive recording 1, 4 second video">
+              <source src="../assets/f848d75b-7d0a-459d-9f8f-4023ac7b4f46-D7jBxgpz.mp4" type="video/mp4">
+              Your browser does not support the video element.
+            </video>
+            <a class="media-download" href="../assets/images/ministry/f848d75b-7d0a-459d-9f8f-4023ac7b4f46.mp4" target="_blank" rel="noopener">Open full video</a>
+          </article>
+
+          <article class="media-video-card">
+            <h4>Portrait archive recording 2 · 4 sec · 720 × 1280</h4>
+            <p>Second preserved MP4 issue upload, kept as another 720 × 1280 portrait clip in the local ministry archive.</p>
+            <video controls preload="metadata" playsinline aria-label="Portrait archive recording 2, 4 second video" title="Portrait archive recording 2, 4 second video">
+              <source src="../assets/images/ministry/7a65ebf3-4f2b-4fbf-9fd9-174859d47a1f.mp4" type="video/mp4">
+              Your browser does not support the video element.
+            </video>
+            <a class="media-download" href="../assets/images/ministry/7a65ebf3-4f2b-4fbf-9fd9-174859d47a1f.mp4" target="_blank" rel="noopener">Open full video</a>
+          </article>
+
+          <article class="media-video-card">
+            <h4>Portrait archive recording 3 · 10 sec · 720 × 1280</h4>
+            <p>Original MP4 issue upload preserved as a 720 × 1280 portrait clip with a longer 10 second runtime.</p>
+            <video controls preload="metadata" playsinline aria-label="Portrait archive recording 3, 10 second video" title="Portrait archive recording 3, 10 second video">
+              <source src="../assets/82179453-3283-4aae-b0af-6b8caf68eb9b-5aZAu3Xg.mp4" type="video/mp4">
+              Your browser does not support the video element.
+            </video>
+            <a class="media-download" href="../assets/images/ministry/82179453-3283-4aae-b0af-6b8caf68eb9b.mp4" target="_blank" rel="noopener">Open full video</a>
+          </article>
+
+          <!-- Updated & Renamed Mission 24 Card -->
+          <article class="media-video-card">
+            <h4>Mission 24 · QuickTime archive recording 4</h4>
+            <p>Original QuickTime issue upload preserved in the local ministry archive for download and playback.</p>
+            <video controls preload="metadata" playsinline aria-label="Mission 24 QuickTime archive recording" title="Mission 24 QuickTime archive recording">
+              <source src="../assets/images/ministry/4e5e0fe6-d627-44b3-9e07-b54346aefe5c.MOV" type="video/quicktime">
+              Your browser does not support the video element.
+            </video>
+            <a class="media-download" href="../assets/images/ministry/4e5e0fe6-d627-44b3-9e07-b54346aefe5c.MOV" target="_blank" rel="noopener">Open full video</a>
+          </article>
+
+          <article class="media-video-card">
+            <h4>Portrait archive recording 5 · 5 sec · 1080 × 1920</h4>
+            <p>Original MP4 issue upload preserved as a 1080 × 1920 portrait clip with just over 5 seconds of runtime.</p>
+            <video controls preload="metadata" playsinline aria-label="Portrait archive recording 5, 5 second video" title="Portrait archive recording 5, 5 second video">
+              <source src="../assets/a2715c20-d753-48bb-9ae5-110f60991b75-BH-WgubW.mp4" type="video/mp4">
+              Your browser does not support the video element.
+            </video>
+            <a class="media-download" href="../assets/images/ministry/a2715c20-d753-48bb-9ae5-110f60991b75.mp4" target="_blank" rel="noopener">Open full video</a>
+          </article>
+
+          <article class="media-video-card">
+            <h4>Landscape archive recording 6 · 5 sec · 832 × 480</h4>
+            <p>Original MP4 issue upload preserved as an 832 × 480 landscape clip with just over 5 seconds of runtime.</p>
+            <video controls preload="metadata" playsinline aria-label="Landscape archive recording 6, 5 second video" title="Landscape archive recording 6, 5 second video">
+              <source src="../assets/images/ministry/610a3d0c-68c5-49c7-b124-9727214036c2.mp4" type="video/mp4">
+              Your browser does not support the video element.
+            </video>
+            <a class="media-download" href="../assets/images/ministry/610a3d0c-68c5-49c7-b124-9727214036c2.mp4" target="_blank" rel="noopener">Open full video</a>
+          </article>
+
+          <article class="media-video-card">
+            <h4>Portrait archive recording 7 · 4 sec · 1080 × 1920</h4>
+            <p>Original MP4 issue upload preserved as a 1080 × 1920 portrait clip in the local ministry archive.</p>
+            <video controls preload="metadata" playsinline aria-label="Portrait archive recording 7, 4 second video" title="Portrait archive recording 7, 4 second video">
+              <source src="../assets/images/ministry/57466648-ccca-4c11-ae7f-9f61cf8490ea.mp4" type="video/mp4">
+              Your browser does not support the video element.
+            </video>
+            <a class="media-download" href="../assets/images/ministry/57466648-ccca-4c11-ae7f-9f61cf8490ea.mp4" target="_blank" rel="noopener">Open full video</a>
+          </article>
+        </div>
+      </div>
+
+      <!-- Music & Audio Section -->
+      <div class="media-section">
+        <h3>Music &amp; Audio Archive</h3>
+        <p>These tracks are explicitly linked here so they remain part of the ministry and site media library.</p>
+
+        <div class="audio-library-grid">
+          <article class="audio-card">
+            <h4>Storm</h4>
+            <p>Atmospheric arcade score for dramatic ministry and game moments.</p>
+            <audio controls preload="none">
+              <source src="../assets/storm-CpVkJXGp.mp3" type="audio/mpeg">
+            </audio>
+            <a class="media-download" href="../assets/audio/storm.mp3" download>Download MP3</a>
+          </article>
+
+          <article class="audio-card">
+            <h4>Victory</h4>
+            <p>Celebration cue used for success and completion moments.</p>
+            <audio controls preload="none">
+              <source src="../assets/victory-tA01jxSg.mp3" type="audio/mpeg">
+            </audio>
+            <a class="media-download" href="../assets/audio/victory.mp3" download>Download MP3</a>
+          </article>
+
+          <article class="audio-card">
+            <h4>Ending</h4>
+            <p>Long-form ambient track preserved for story and ministry playback.</p>
+            <audio controls preload="none">
+              <source src="../assets/ending-DgGUomTE.mp3" type="audio/mpeg">
+            </audio>
+            <a class="media-download" href="../assets/audio/ending.mp3" download>Download MP3</a>
+          </article>
+
+          <article class="audio-card">
+            <h4>Badge</h4>
+            <p>Short reward stinger used across the arcade experience.</p>
+            <audio controls preload="none">
+              <source src="../assets/badge-DkimBBCL.mp3" type="audio/mpeg">
+            </audio>
+            <a class="media-download" href="../assets/audio/badge.mp3" download>Download MP3</a>
+          </article>
+
+          <article class="audio-card">
+            <h4>Course Clear Fanfare</h4>
+            <p>Arcade completion fanfare preserved under the shared audio library.</p>
+            <audio controls preload="none">
+              <source src="../assets/course-clear-fanfare-BqHXpYJ5.mp3" type="audio/mpeg">
+            </audio>
+            <a class="media-download" href="../assets/audio/course-clear-fanfare.mp3" download>Download MP3</a>
+          </article>
+
+          <article class="audio-card">
+            <h4>Player Down</h4>
+            <p>Game-over and warning cue retained as part of the ministry audio archive.</p>
+            <audio controls preload="none">
+              <source src="../assets/player-down-DY5VzlSB.mp3" type="audio/mpeg">
+            </audio>
+            <a class="media-download" href="../assets/audio/player-down.mp3" download>Download MP3</a>
+          </article>
+        </div>
+      </div>
+
+      <!-- MIDI Library Section -->
+      <div class="media-section">
+        <h3>Downloadable MIDI Music</h3>
+        <p>Legacy Super Mario 64 MIDI tracks are organized under <code>assets/music/</code> and linked here so they remain part of the repository library.</p>
+        <ul class="media-file-list">
+          <li><a href="../assets/music/m64bomb.mid" download>m64bomb.mid</a></li>
+          <li><a href="../assets/music/m64bowsr.mid" download>m64bowsr.mid</a></li>
+          <li><a href="../assets/music/m64crs1.mid" download>m64crs1.mid</a></li>
+          <li><a href="../assets/music/m64crse1.mid" download>m64crse1.mid</a></li>
+          <li><a href="../assets/music/m64docks.mid" download>m64docks.mid</a></li>
+          <li><a href="../assets/music/m64endin.mid" download>m64endin.mid</a></li>
+          <li><a href="../assets/music/m64file.mid" download>m64file.mid</a></li>
+          <li><a href="../assets/music/m64metal.mid" download>m64metal.mid</a></li>
+          <li><a href="../assets/music/m64metlm.mid" download>m64metlm.mid</a></li>
+          <li><a href="../assets/music/m64slide.mid" download>m64slide.mid</a></li>
+          <li><a href="../assets/music/m64snow.mid" download>m64snow.mid</a></li>
+          <li><a href="../assets/music/m64vansh.mid" download>m64vansh.mid</a></li>
+          <li><a href="../assets/music/m64water.mid" download>m64water.mid</a></li>
+          <li><a href="../assets/music/m64wings.mid" download>m64wings.mid</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="../">amazinggracehl.org</a></p>
+  </footer>
 </body>
 </html>
