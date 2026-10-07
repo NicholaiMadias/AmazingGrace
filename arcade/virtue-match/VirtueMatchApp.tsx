@@ -7,6 +7,8 @@ import {
     BOARD_SIZE, Board,
     generateBoard, findMatches, removeMatches, applyGravity, refillBoard, swapGems, isAdjacent,
 } from './engine';
+// @ts-ignore -- plain JS support module
+import { attachDragSwap } from '../../js/matchmaker.js';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type GamePhase = 'menu' | 'playing' | 'levelup' | 'gameover' | 'victory';
@@ -298,6 +300,33 @@ export default function VirtueMatchApp() {
         setTimeout(() => setMessage(''), 1500);
     }, []);
 
+    // ── Swap (shared by click-select-click and drag) ──────────────────────────
+    const attemptSwap = useCallback(async (sr: number, sc: number, r: number, c: number) => {
+        const swapped = swapGems(board, sr, sc, r, c);
+        if (findMatches(swapped).size === 0) {
+            setShaking(true);
+            setTimeout(() => setShaking(false), 300);
+            return;
+        }
+
+        playSound('swap');
+        setProcessing(true);
+        setBoard(swapped.map(r => [...r]));
+        await new Promise(res => setTimeout(res, 100));
+
+        const delta = await processChain(swapped);
+        applyScoreDelta(delta);
+        setProcessing(false);
+    }, [board, processChain, applyScoreDelta]);
+
+    const boardRef = useRef<HTMLDivElement>(null);
+    const processingRef = useRef(false);
+    const activePowerUpRef = useRef<PowerUpKey | null>(null);
+    const attemptSwapRef = useRef(attemptSwap);
+    processingRef.current = processing;
+    activePowerUpRef.current = activePowerUp;
+    attemptSwapRef.current = attemptSwap;
+
     // ── Cell Click ────────────────────────────────────────────────────────────
     const handleCellClick = useCallback(async (r: number, c: number) => {
         if (processing || phaseRef.current !== 'playing') return;
@@ -352,23 +381,22 @@ export default function VirtueMatchApp() {
         if (!isAdjacent(sr, sc, r, c)) { setSelected([r, c]); return; }
 
         setSelected(null);
+        await attemptSwap(sr, sc, r, c);
+    }, [processing, activePowerUp, board, selected, processChain, applyScoreDelta, attemptSwap]);
 
-        const swapped = swapGems(board, sr, sc, r, c);
-        if (findMatches(swapped).size === 0) {
-            setShaking(true);
-            setTimeout(() => setShaking(false), 300);
-            return;
-        }
-
-        playSound('swap');
-        setProcessing(true);
-        setBoard(swapped.map(r => [...r]));
-        await new Promise(res => setTimeout(res, 100));
-
-        const delta = await processChain(swapped);
-        applyScoreDelta(delta);
-        setProcessing(false);
-    }, [processing, activePowerUp, board, selected, processChain, applyScoreDelta]);
+    // Drag-and-drop swap (mouse + touch)
+    useEffect(() => {
+        const el = boardRef.current;
+        if (!el || phase !== 'playing') return;
+        return attachDragSwap(el, {
+            cellAt: (n: HTMLElement) => ({ r: Number(n.dataset.r), c: Number(n.dataset.c) }),
+            enabled: () => !processingRef.current && !activePowerUpRef.current && phaseRef.current === 'playing',
+            onSwap: (a: { r: number; c: number }, b: { r: number; c: number }) => {
+                setSelected(null);
+                void attemptSwapRef.current(a.r, a.c, b.r, b.c);
+            },
+        });
+    }, [phase]);
 
     const activatePowerUp = useCallback((key: PowerUpKey) => {
         if (processing || phaseRef.current !== 'playing') return;
@@ -554,7 +582,7 @@ export default function VirtueMatchApp() {
                     animation: shaking ? 'vm-shake 0.3s ease both' : 'none',
                     transition: 'border-color 0.2s, box-shadow 0.2s',
                 }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${BOARD_SIZE}, 1fr)`, gap: '4px' }}>
+                    <div ref={boardRef} style={{ display: 'grid', gridTemplateColumns: `repeat(${BOARD_SIZE}, 1fr)`, gap: '4px', touchAction: 'none' }}>
                         {board.map((row, r) =>
                             row.map((gemId, c) => {
                                 const gemDef = GEM_MAP[gemId];
@@ -563,6 +591,8 @@ export default function VirtueMatchApp() {
                                 return (
                                     <button
                                         key={`${r}-${c}`}
+                                        data-r={r}
+                                        data-c={c}
                                         onClick={() => handleCellClick(r, c)}
                                         disabled={processing}
                                         aria-label={gemDef?.label ?? 'empty'}
@@ -643,6 +673,11 @@ export default function VirtueMatchApp() {
                         <span style={{ fontSize: '0.58rem', fontFamily: 'monospace' }}>Reset</span>
                     </button>
                 </div>
+
+                {/* Instructions (below gameplay) */}
+                <p style={{ marginTop: '1rem', fontSize: '0.75rem', color: '#64748b', textAlign: 'center', lineHeight: 1.5 }}>
+                    Drag a gem onto a neighbor, or tap two adjacent gems, to swap and match 3 or more.
+                </p>
             </div>
         </div>
     );
