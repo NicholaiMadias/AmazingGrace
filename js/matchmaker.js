@@ -466,3 +466,103 @@ export function clearMatches(grid, matchCells, replacements = []) {
   });
   return next;
 }
+
+/**
+ * Attach mouse + touch drag-to-swap to a board container.
+ * Cells are located via `cellAt(el)` which must return `{ r, c }` or null for
+ * an element inside the container. A drag from one cell to an adjacent cell
+ * calls `onSwap(from, to)`; plain taps are left to the existing click handlers.
+ * Returns a function that detaches the listeners.
+ */
+export function attachDragSwap(container, { cellAt, onSwap, enabled = () => true }) {
+  let src = null;
+  let srcEl = null;
+  let tgtEl = null;
+
+  const resolve = (x, y) => {
+    const el = document.elementFromPoint(x, y);
+    const cellEl = el && container.contains(el) ? el.closest('[data-r][data-c]') : null;
+    const cell = cellEl ? cellAt(cellEl) : null;
+    return cell ? { cell, el: cellEl } : null;
+  };
+
+  const clearPreview = () => {
+    if (srcEl) { srcEl.style.transform = ''; srcEl.style.outline = ''; srcEl.style.zIndex = ''; }
+    if (tgtEl) { tgtEl.style.transform = ''; tgtEl.style.outline = ''; }
+    srcEl = null;
+    tgtEl = null;
+  };
+
+  const start = (x, y) => {
+    if (!enabled()) return;
+    const hit = resolve(x, y);
+    if (!hit) return;
+    src = hit.cell;
+    srcEl = hit.el;
+    srcEl.style.outline = '2px solid #00f2ff';
+    srcEl.style.zIndex = '2';
+  };
+
+  const move = (x, y) => {
+    if (!src) return;
+    const hit = resolve(x, y);
+    if (tgtEl) { tgtEl.style.transform = ''; tgtEl.style.outline = ''; tgtEl = null; }
+    srcEl.style.transform = '';
+    if (hit && isAdjacent(src.r, src.c, hit.cell.r, hit.cell.c)) {
+      tgtEl = hit.el;
+      tgtEl.style.outline = '2px dashed #facc15';
+      const dx = (hit.cell.c - src.c) * 30;
+      const dy = (hit.cell.r - src.r) * 30;
+      srcEl.style.transform = `translate(${dx}%, ${dy}%) scale(1.08)`;
+      tgtEl.style.transform = `translate(${-dx}%, ${-dy}%)`;
+    }
+  };
+
+  const end = (x, y) => {
+    if (!src) return;
+    const from = src;
+    const hit = resolve(x, y);
+    src = null;
+    clearPreview();
+    if (hit && isAdjacent(from.r, from.c, hit.cell.r, hit.cell.c) && enabled()) {
+      onSwap(from, hit.cell);
+    }
+  };
+
+  const onMouseDown = (e) => { if (e.button === 0) start(e.clientX, e.clientY); };
+  const onMouseMove = (e) => move(e.clientX, e.clientY);
+  const onMouseUp = (e) => end(e.clientX, e.clientY);
+  const onTouchStart = (e) => { const t = e.touches[0]; if (t) start(t.clientX, t.clientY); };
+  const onTouchMove = (e) => {
+    const t = e.touches[0];
+    if (t && src) { e.preventDefault(); move(t.clientX, t.clientY); }
+  };
+  const onTouchEnd = (e) => {
+    const t = e.changedTouches[0];
+    if (!t) return;
+    const wasDrag = !!src;
+    const moved = tgtEl !== null;
+    end(t.clientX, t.clientY);
+    if (wasDrag && moved && e.cancelable) e.preventDefault();
+  };
+  const onTouchCancel = () => { src = null; clearPreview(); };
+
+  container.style.touchAction = 'none';
+  container.addEventListener('mousedown', onMouseDown);
+  window.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('mouseup', onMouseUp);
+  container.addEventListener('touchstart', onTouchStart, { passive: true });
+  container.addEventListener('touchmove', onTouchMove, { passive: false });
+  container.addEventListener('touchend', onTouchEnd);
+  container.addEventListener('touchcancel', onTouchCancel);
+
+  return () => {
+    container.removeEventListener('mousedown', onMouseDown);
+    window.removeEventListener('mousemove', onMouseMove);
+    window.removeEventListener('mouseup', onMouseUp);
+    container.removeEventListener('touchstart', onTouchStart);
+    container.removeEventListener('touchmove', onTouchMove);
+    container.removeEventListener('touchend', onTouchEnd);
+    container.removeEventListener('touchcancel', onTouchCancel);
+  };
+}

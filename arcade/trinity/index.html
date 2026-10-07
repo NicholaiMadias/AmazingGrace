@@ -236,6 +236,17 @@
             transform: scale(1.05);
         }
 
+        .game-tile.drag-source {
+            border-color: rgba(0, 242, 255, 0.9);
+            background: rgba(0, 242, 255, 0.15);
+            z-index: 2;
+        }
+
+        .game-tile.drag-target {
+            border-color: rgba(250, 204, 21, 0.9);
+            border-style: dashed;
+        }
+
         .game-tile.matched {
             animation: match-pop 0.3s ease-out;
         }
@@ -464,6 +475,7 @@
                 <button onclick="nav('shop')" style="flex: 1;">Shop</button>
                 <button onclick="nav('leaderboard')" style="flex: 1;">Leaderboard</button>
             </div>
+            <p class="subtitle-text" style="margin-top: 1rem;">Drag a tile onto a neighbor, or tap two adjacent tiles, to swap and align 3 or more.</p>
         </div>
 
         <!-- COMPLETE VIEW -->
@@ -720,26 +732,94 @@
                 return;
             }
             
-            swapTiles(gameState.selected.r, gameState.selected.c, r, c);
+            const from = gameState.selected;
+            gameState.selected = null;
+            attemptSwap(from.r, from.c, r, c);
+        }
+
+        function attemptSwap(r1, c1, r2, c2) {
+            if (!gameState.gameActive || !isAdjacent(r1, c1, r2, c2)) return;
+
+            swapTiles(r1, c1, r2, c2);
             const matches = findMatches(gameState.grid);
-            
+
             if (matches.length === 0) {
-                swapTiles(gameState.selected.r, gameState.selected.c, r, c);
+                swapTiles(r1, c1, r2, c2);
                 document.getElementById('game-status').textContent = 'No alignment — try another swap.';
             } else {
                 const gained = processMatches();
                 gameState.currentScore += gained;
                 gameState.power += gained;
-                
+
                 if (gameState.currentScore >= gameState.goal) {
                     gameState.level++;
                     gameState.goal += 500;
                 }
             }
-            
+
             gameState.selected = null;
             renderBoard();
             saveGameState();
+        }
+
+        function setupDragSwap(boardEl) {
+            let src = null, srcEl = null, tgtEl = null;
+            const cellAt = (x, y) => {
+                const el = document.elementFromPoint(x, y);
+                const t = el && boardEl.contains(el) ? el.closest('.game-tile') : null;
+                return t ? { el: t, r: +t.dataset.r, c: +t.dataset.c } : null;
+            };
+            const clear = () => {
+                [srcEl, tgtEl].forEach(e => e && e.classList.remove('drag-source', 'drag-target'));
+                if (srcEl) srcEl.style.transform = '';
+                if (tgtEl) tgtEl.style.transform = '';
+                srcEl = tgtEl = null;
+            };
+            const start = (x, y) => {
+                if (!gameState.gameActive) return;
+                const h = cellAt(x, y);
+                if (!h) return;
+                src = h; srcEl = h.el; srcEl.classList.add('drag-source');
+            };
+            const move = (x, y) => {
+                if (!src) return;
+                if (tgtEl) { tgtEl.classList.remove('drag-target'); tgtEl.style.transform = ''; tgtEl = null; }
+                srcEl.style.transform = '';
+                const h = cellAt(x, y);
+                if (h && isAdjacent(src.r, src.c, h.r, h.c)) {
+                    tgtEl = h.el;
+                    tgtEl.classList.add('drag-target');
+                    const dx = (h.c - src.c) * 30, dy = (h.r - src.r) * 30;
+                    srcEl.style.transform = `translate(${dx}%, ${dy}%) scale(1.08)`;
+                    tgtEl.style.transform = `translate(${-dx}%, ${-dy}%)`;
+                }
+            };
+            const end = (x, y) => {
+                if (!src) return false;
+                const from = src, h = cellAt(x, y);
+                src = null;
+                clear();
+                if (h && isAdjacent(from.r, from.c, h.r, h.c)) {
+                    gameState.selected = null;
+                    attemptSwap(from.r, from.c, h.r, h.c);
+                    return true;
+                }
+                return false;
+            };
+            boardEl.style.touchAction = 'none';
+            boardEl.addEventListener('mousedown', e => { if (e.button === 0) start(e.clientX, e.clientY); });
+            window.addEventListener('mousemove', e => move(e.clientX, e.clientY));
+            window.addEventListener('mouseup', e => { end(e.clientX, e.clientY); });
+            boardEl.addEventListener('touchstart', e => { const t = e.touches[0]; if (t) start(t.clientX, t.clientY); }, { passive: true });
+            boardEl.addEventListener('touchmove', e => {
+                const t = e.touches[0];
+                if (t && src) { e.preventDefault(); move(t.clientX, t.clientY); }
+            }, { passive: false });
+            boardEl.addEventListener('touchend', e => {
+                const t = e.changedTouches[0];
+                if (t && end(t.clientX, t.clientY) && e.cancelable) e.preventDefault();
+            });
+            boardEl.addEventListener('touchcancel', () => { src = null; clear(); });
         }
 
         function updateHUD() {
@@ -833,6 +913,7 @@
         /* ==================== INITIALIZATION ==================== */
         window.addEventListener('DOMContentLoaded', () => {
             renderLeaderboard();
+            setupDragSwap(document.getElementById('game-board'));
             document.getElementById('name-in').focus();
         });
     </script>
