@@ -70,9 +70,10 @@ const TOWER_STATS: Record<TowerType, { cost: number; damage: number; range: numb
 interface Level2Props {
   onBack: () => void;
   onVictory: () => void;
+  sectorId?: number;
 }
 
-export default function Level2SyndicateSiege({ onBack, onVictory }: Level2Props) {
+export default function Level2SyndicateSiege({ onBack, onVictory, sectorId }: Level2Props) {
   const [state, setState] = useState<GameState>({
     credits: 600,
     xp: 0,
