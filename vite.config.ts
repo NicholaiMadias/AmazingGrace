@@ -67,6 +67,7 @@ export default defineConfig({
         arcadeNexusHud:    resolve(__dirname, "arcade/nexus-hud/index.html"),
         arcadeVirtueMatch: resolve(__dirname, "arcade/virtue-match/index.html"),
         arcadePortfolioCli: resolve(__dirname, "arcade/portfolio-cli.html"),
+        profile:           resolve(__dirname, "profile/index.html"),
       },
       output: {
         manualChunks(id) {
