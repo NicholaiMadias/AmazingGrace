@@ -32,6 +32,78 @@ body, html {
   background: radial-gradient(circle at 50% 50%, #0c0f24 0%, #03040a 100%);
 }
 
+.campaign-completion-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(3, 4, 10, 0.88);
+  backdrop-filter: blur(10px);
+}
+
+.campaign-completion {
+  width: min(100%, 34rem);
+  padding: clamp(1.25rem, 4vw, 2.25rem);
+  border: 1px solid rgba(0, 240, 255, 0.55);
+  border-radius: 1.25rem;
+  background: linear-gradient(145deg, #101a32, #080b18);
+  box-shadow: 0 0 3rem rgba(0, 240, 255, 0.16);
+  color: var(--text-main);
+  text-align: center;
+}
+
+.campaign-completion-kicker,
+.campaign-completion-badge span,
+.campaign-completion-badge small {
+  color: var(--neon-cyan);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.campaign-completion h2 {
+  margin: 0.8rem 0;
+  font-size: clamp(1.5rem, 5vw, 2.25rem);
+}
+
+.campaign-completion p {
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.campaign-completion-badge {
+  display: grid;
+  gap: 0.45rem;
+  margin: 1.25rem 0;
+  padding: 1rem;
+  border: 1px solid rgba(189, 0, 255, 0.45);
+  border-radius: 0.85rem;
+  background: rgba(189, 0, 255, 0.08);
+}
+
+.campaign-completion-badge strong {
+  color: #fff;
+  font-size: 1.25rem;
+}
+
+.campaign-completion .cyber-btn {
+  min-height: 2.75rem;
+  padding: 0.65rem 1rem;
+}
+
+.campaign-completion-sidebar {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.campaign-completion-sidebar strong {
+  color: var(--neon-cyan);
+}
+
 /* 3D Canvas Container */
 .canvas-container {
   flex: 1;
@@ -1001,4 +1073,3 @@ body, html {
   z-index: 100;
   animation: pulse-glow 2s infinite alternate;
 }
-
