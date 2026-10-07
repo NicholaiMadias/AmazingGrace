@@ -478,6 +478,7 @@ export function attachDragSwap(container, { cellAt, onSwap, enabled = () => true
   let src = null;
   let srcEl = null;
   let tgtEl = null;
+  const originalTouchAction = container.style.touchAction;
 
   const resolve = (x, y) => {
     const el = document.elementFromPoint(x, y);
@@ -564,5 +565,6 @@ export function attachDragSwap(container, { cellAt, onSwap, enabled = () => true
     container.removeEventListener('touchmove', onTouchMove);
     container.removeEventListener('touchend', onTouchEnd);
     container.removeEventListener('touchcancel', onTouchCancel);
+    container.style.touchAction = originalTouchAction;
   };
 }

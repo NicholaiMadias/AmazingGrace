@@ -14,7 +14,6 @@ export default defineConfig({
       input: {
         main:              resolve(__dirname, "index.html"),
         contact:           resolve(__dirname, "contact/index.html"),
-        profile:           resolve(__dirname, "profile/index.html"),
         matrix:            resolve(__dirname, "matrix.html"),
         arcade:            resolve(__dirname, "arcade/index.html"),
         arcadeMatrix:      resolve(__dirname, "arcade/matrix-of-conscience/index.html"),
@@ -28,6 +27,7 @@ export default defineConfig({
         arcadeSevenStars:  resolve(__dirname, "arcade/seven-stars/index.html"),
         arcadeTowerDefense: resolve(__dirname, "arcade/tower-defense/index.html"),
         arcadeStarMatrix:  resolve(__dirname, "arcade/star-matrix/index.html"),
+        arcadeStarMatch:   resolve(__dirname, "arcade/star-match/index.html"),
         arcadeTrinity:     resolve(__dirname, "arcade/trinity/index.html"),
         ministry:          resolve(__dirname, "ministry/index.html"),
         ministryBibleJourney: resolve(__dirname, "ministry/bible-journey.html"),

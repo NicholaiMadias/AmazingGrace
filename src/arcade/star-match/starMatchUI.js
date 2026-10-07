@@ -35,6 +35,7 @@ export function renderBoard(container, engine, onSwap) {
         if (first.x === x && first.y === y) {
           cell.classList.remove('selected');
         } else if (isAdjacent(first.y, first.x, y, x)) {
+          container.querySelectorAll('.selected').forEach((el) => el.classList.remove('selected'));
           onSwap(first, { x, y });
         } else {
           container.querySelectorAll('.selected').forEach((el) => el.classList.remove('selected'));
@@ -46,11 +47,14 @@ export function renderBoard(container, engine, onSwap) {
     });
   });
 
-  detachByContainer.set(container, attachDragSwap(container, {
+  const detach = attachDragSwap(container, {
     cellAt: (el) => ({ r: Number(el.dataset.r), c: Number(el.dataset.c) }),
     onSwap: (a, b) => {
       selected = null;
+      container.querySelectorAll('.selected').forEach((el) => el.classList.remove('selected'));
       onSwap({ x: a.c, y: a.r }, { x: b.c, y: b.r });
     },
-  }));
+  });
+  detachByContainer.set(container, detach);
+  return detach;
 }

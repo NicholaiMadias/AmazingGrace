@@ -11,6 +11,7 @@ export class StarMatchGame {
     this.targetScore = 1500;
     this.moves = 20;
     this.engine = new StarMatchEngine(8);
+    this.detachBoard = null;
   }
 
   start() {
@@ -37,7 +38,7 @@ export class StarMatchGame {
 
     this.ui.updateHUD(this.level, this.engine.score, this.targetScore, this.moves);
 
-    renderBoard(boardContainer, this.engine, (a, b) => {
+    this.detachBoard = renderBoard(boardContainer, this.engine, (a, b) => {
       if (this.moves <= 0) return;
 
       const moved = this.engine.swap(a, b);
@@ -56,5 +57,10 @@ export class StarMatchGame {
         }
       }
     });
+  }
+
+  destroy() {
+    this.detachBoard?.();
+    this.detachBoard = null;
   }
 }

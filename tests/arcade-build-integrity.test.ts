@@ -25,6 +25,8 @@ describe('Arcade build integrity', () => {
 
     // Matrix of Conscience must have entry
     expect(viteConfig).toContain('arcade/matrix-of-conscience/index.html');
+    expect(viteConfig).toContain('arcade/star-match/index.html');
+    expect(readFileSync(resolve(__dirname, '../arcade/star-match/index.html'), 'utf8'))
+      .toContain('<script type="module" src="./main.tsx"></script>');
   });
 });
-

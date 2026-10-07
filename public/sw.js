@@ -1,4 +1,4 @@
-const CACHE_NAME = 'amazing-grace-v10';
+const CACHE_NAME = 'amazing-grace-v11';
 
 // Core pages and game modules deployed at stable paths.
 // Use scope-relative URLs (./…) so the service worker works correctly
@@ -9,6 +9,7 @@ const ASSETS_TO_CACHE = [
     './',
     './index.html',
     './arcade/index.html',
+    './arcade/star-match/index.html',
     './arcade/matrix-of-conscience/index.html',
     './manifest.json',
 ];
@@ -20,6 +21,8 @@ const OFFLINE_PAGE_FALLBACKS = new Map([
     ['/index.html', './index.html'],
     ['/arcade/', './arcade/index.html'],
     ['/arcade/index.html', './arcade/index.html'],
+    ['/arcade/star-match/', './arcade/star-match/index.html'],
+    ['/arcade/star-match/index.html', './arcade/star-match/index.html'],
     ['/arcade/star-matrix/', './arcade/star-matrix/index.html'],
     ['/arcade/star-matrix/index.html', './arcade/star-matrix/index.html'],
     ['/arcade/matrix-of-conscience/', './arcade/matrix-of-conscience/index.html'],
