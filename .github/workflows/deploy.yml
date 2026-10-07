@@ -1,0 +1,52 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: source
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: source/.nvmrc
+          cache: npm
+          cache-dependency-path: source/package-lock.json
+
+      - name: Install dependencies
+        working-directory: source
+        run: npm ci
+
+      - name: Build site
+        working-directory: source
+        run: npm run build
+
+      - name: Check out Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
+
+      - name: Publish site
+        run: |
+          rsync --archive --delete --exclude='.git' --exclude='.nojekyll' source/dist/ pages/
+          git -C pages config user.name "github-actions[bot]"
+          git -C pages config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C pages add --all
+          if ! git -C pages diff --cached --quiet; then
+            git -C pages commit -m "Deploy site from ${GITHUB_SHA}"
+            git -C pages push origin HEAD:gh-pages
+          fi
