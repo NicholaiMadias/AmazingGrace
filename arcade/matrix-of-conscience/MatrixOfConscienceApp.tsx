@@ -20,6 +20,7 @@ export default function MatrixOfConscienceApp() {
         const parsed = parseInt(savedProgress, 10);
         if (!isNaN(parsed) && parsed >= 1 && parsed <= 3) {
           setUnlockedLevel(parsed);
+          setUserLevel(prev => Math.max(prev, parsed));
         }
       }
     } catch (e) {
