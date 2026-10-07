@@ -65,6 +65,7 @@ export default defineConfig({
         arcadeGeminiVanguard: resolve(__dirname, "arcade/gemini-vanguard/index.html"),
         arcadeNexusHud:    resolve(__dirname, "arcade/nexus-hud/index.html"),
         arcadeVirtueMatch: resolve(__dirname, "arcade/virtue-match/index.html"),
+        arcadePortfolioCli: resolve(__dirname, "arcade/portfolio-cli.html"),
       },
       output: {
         manualChunks(id) {
