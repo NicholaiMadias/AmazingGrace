@@ -24,4 +24,12 @@ describe('portfolio CLI arcade', () => {
     expect(html).toContain('This local demo does not send Gemini requests.');
     expect(html).toContain('textContent = text');
   });
+
+  it('preserves and uses the recovered accent-pill and tab-bar styles', () => {
+    expect(html).toContain('--cyan-accent: var(--cyan);');
+    expect(html).toContain('color: var(--cyan-accent);');
+    expect(html).toContain('gap: 6px;');
+    expect(html).toContain('<nav class="nav-list tab-bar"');
+    expect(html).toContain('class="tag accent-pill"');
+  });
 });

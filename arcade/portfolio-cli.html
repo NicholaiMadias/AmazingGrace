@@ -16,6 +16,7 @@
       --text: #edf4f8;
       --muted: #9aabb9;
       --cyan: #62e6dc;
+      --cyan-accent: var(--cyan);
       --gold: #f7c978;
       --violet: #b7a0ff;
       --green: #8ee0b2;
@@ -44,6 +45,21 @@
     .brand small { display: block; margin-top: .2rem; font-size: .7rem; }
     .nav-label { padding: 0 .7rem; color: #677889; font-size: .66rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
     .nav-list { display: grid; gap: .35rem; }
+    .accent-pill {
+      color: var(--cyan-accent);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tab-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-list.tab-bar { flex-direction: column; align-items: stretch; }
     .nav-button {
       display: flex; align-items: center; gap: .75rem; width: 100%; padding: .75rem .8rem;
       border: 1px solid transparent; border-radius: 9px; background: transparent; color: #b8c5d0;
@@ -143,6 +159,7 @@
     .cabinet-info { display: flex; flex-direction: column; justify-content: center; padding: clamp(1.2rem, 3vw, 2.3rem); }
     .tag-row, .profile-links { display: flex; flex-wrap: wrap; gap: .5rem; margin: .9rem 0 1.3rem; }
     .tag { padding: .35rem .6rem; border: 1px solid #334252; border-radius: 99px; color: #bbcbd6; font-size: .68rem; }
+    .tag.accent-pill { color: var(--cyan-accent); }
     .game-message { min-height: 2.6rem; margin: 1rem 0; padding: .7rem .8rem; border-left: 2px solid var(--gold); background: #1b1a16; color: #f4d9a7; font-size: .78rem; line-height: 1.5; }
     .game-controls { display: flex; flex-wrap: wrap; gap: .55rem; }
     .game-controls button:disabled { cursor: not-allowed; opacity: .45; }
@@ -183,6 +200,7 @@
       .brand { padding: 0 .2rem; }
       .brand-mark { width: 34px; height: 34px; }
       .sidebar .nav-label, .sidebar-bottom { display: none; }
+      .nav-list.tab-bar { flex-direction: row; align-items: center; }
       .nav-list { display: flex; gap: .35rem; overflow-x: auto; scrollbar-width: thin; }
       .nav-button { width: auto; flex: 0 0 auto; padding: .55rem .65rem; font-size: .72rem; }
       .nav-icon { width: auto; }
@@ -226,7 +244,7 @@
         <span><strong>NEXUS / PROFILE</strong><small>CREATOR ARCADE · v1.0</small></span>
       </a>
       <div class="nav-label">Workspace</div>
-      <nav class="nav-list" aria-label="Main sections">
+      <nav class="nav-list tab-bar" aria-label="Main sections">
         <button class="nav-button" type="button" data-view-link="overview" aria-current="page"><span class="nav-icon">⌂</span>Overview</button>
         <button class="nav-button" type="button" data-view-link="arcade"><span class="nav-icon">⌘</span>CLI Arcade</button>
         <button class="nav-button" type="button" data-view-link="cabinet"><span class="nav-icon">✦</span>Featured Game</button>
@@ -367,7 +385,7 @@
               <p class="eyebrow">Encounter protocol / 03 waves</p>
               <h2>When Fire Meets Timber</h2>
               <p class="lead">Noah’s ward staff holds the line while Norea channels Sunfire into the Gloom. Choose a move each wave, conserve your ward, and complete the encounter together.</p>
-              <div class="tag-row"><span class="tag">CO-OP STORY</span><span class="tag">WARD / SUNFIRE</span><span class="tag">GLOOM BREACH</span></div>
+              <div class="tag-row"><span class="tag accent-pill">CO-OP STORY</span><span class="tag accent-pill">WARD / SUNFIRE</span><span class="tag accent-pill">GLOOM BREACH</span></div>
               <div class="game-message" id="game-message" role="status" aria-live="polite">The Gloom is gathering. Choose a move to begin the encounter.</div>
               <div class="game-controls">
                 <button class="button" type="button" data-move="ward">Raise Noah’s ward</button>
