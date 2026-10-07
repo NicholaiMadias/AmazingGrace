@@ -25,6 +25,9 @@ const isWebGLSupported = () => {
   }
 };
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
 // ── 0. Moving Nebula Backdrop ──
 const MovingNebula = () => {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -473,7 +476,16 @@ const SovereignAgent: React.FC<{ sovereign: Sovereign; index: number; isSelected
 };
 
 // ── 7. Main Emergence Scene View Component ──
-export const EmergenceScene: React.FC<{ activeRules?: SandboxRule[], playerReputation?: PlayerReputation, adjustKarma?: (uid: string, delta: number, isBetrayal?: boolean) => void, uid?: string, sectorId?: number }> = ({ activeRules = [], playerReputation = { globalKarma: 10, historicalBetrayalsLogged: 0 }, adjustKarma, uid, sectorId }) => {
+interface EmergenceSceneProps {
+  activeRules?: SandboxRule[];
+  playerReputation?: PlayerReputation;
+  adjustKarma?: (uid: string, delta: number, isBetrayal?: boolean) => void;
+  uid?: string;
+  sectorId?: number;
+  onMissionComplete?: () => void;
+}
+
+export const EmergenceScene: React.FC<EmergenceSceneProps> = ({ activeRules = [], playerReputation = { globalKarma: 10, historicalBetrayalsLogged: 0 }, adjustKarma, uid, sectorId, onMissionComplete }) => {
   const { metrics, veilState, sovereigns, selectedSovereignName, selectSovereign, multiplayerLogs, addMultiplayerLog, transmitAgentMessage, applyAgentOverride, toggleTowerPlacementMode, getThreatLevel, slowedSovereigns, threatFlashes, agentConversations } = useEmergenceData();
 
   const [chatMessage, setChatMessage] = useState('');
@@ -502,8 +514,44 @@ export const EmergenceScene: React.FC<{ activeRules?: SandboxRule[], playerReput
   const { globalCollapseRisk } = useConscience();
   const tdEngine = useTowerDefenseEngine(activeRules, playerReputation, adjustKarma, uid);
   const { gameState, gameEntities, startGame, startWave, placeTower: placeTDTower, getTowerCost, damagePlayer, PATH } = tdEngine;
+  const campaignVictory = Boolean(onMissionComplete && gameState.active && !gameState.waveActive && gameState.wave > 3);
 
   const [tdSelectedTower, setTdSelectedTower] = useState<'purify' | 'contain' | 'sentinel' | 'genesis' | null>(null);
+
+  const saveCampaignRewards = () => {
+    try {
+      const rawBadges = localStorage.getItem('moc-campaign-badges-v1');
+      const badges: unknown = rawBadges ? JSON.parse(rawBadges) : [];
+      if (!Array.isArray(badges) || badges.some((badge) => typeof badge !== 'string')) {
+        throw new Error('Saved Matrix campaign badges are invalid.');
+      }
+      if (!badges.includes('Rift Peacemaker')) badges.push('Rift Peacemaker');
+      localStorage.setItem('moc-campaign-badges-v1', JSON.stringify(badges));
+    } catch (error) {
+      console.error('Could not save the Matrix campaign certification.', error);
+    }
+
+    try {
+      const rawScores = localStorage.getItem('moc-campaign-high-scores-v1');
+      const scores: unknown = rawScores ? JSON.parse(rawScores) : {};
+      if (!isRecord(scores)) {
+        throw new Error('Saved Matrix campaign scores are invalid.');
+      }
+      const previousScore = scores['3'];
+      if (previousScore !== undefined && (typeof previousScore !== 'number' || !Number.isFinite(previousScore) || previousScore < 0)) {
+        throw new Error('Saved score for campaign level 3 is invalid.');
+      }
+      scores['3'] = Math.max(
+        typeof previousScore === 'number' ? previousScore : 0,
+        gameState.score
+      );
+      localStorage.setItem('moc-campaign-high-scores-v1', JSON.stringify(scores));
+    } catch (error) {
+      console.error('Could not save the Matrix campaign high score.', error);
+    }
+
+    onMissionComplete?.();
+  };
 
   const handleTDGridPointerMove = (e: ThreeEvent<PointerEvent>) => {
     if (!tdSelectedTower) return;
@@ -989,7 +1037,12 @@ export const EmergenceScene: React.FC<{ activeRules?: SandboxRule[], playerReput
         <div className="panel-section" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}><div className="section-title">Multiplayer Operator Lobby</div><div className="log-display flex-grow-log">{multiplayerLogs.map((log) => (<div className={`log-entry ${log.type}`} key={log.id}><span className="log-entry-time">[{log.time}] {log.operator}:</span><span className="log-entry-text">{log.text}</span></div>))}</div></div>
         <div className="panel-section">
           <div className="section-title">NEXUS DEFENSE</div>
-          {!gameState.active ? (<button className="cyber-btn" onClick={startGame}>🛡️ Initialize War Feature</button>) : (
+          {!gameState.active ? (<button className="cyber-btn" onClick={startGame}>🛡️ Initialize War Feature</button>) : campaignVictory ? (
+            <div className="campaign-completion-sidebar">
+              <strong>RIFT STABILIZED</strong>
+              <span>Three waves held. The ceasefire can begin.</span>
+            </div>
+          ) : (
             <>
               <button className={`cyber-btn ${tdSelectedTower ? 'active-mode' : ''}`} onClick={() => toggleTowerPlacementMode && toggleTowerPlacementMode()} style={{ marginBottom: '10px', width: '100%' }}>🛡️ Toggle Towers (T)</button>
               <div style={{ display: 'flex', gap: '10px', fontSize: '0.8rem', marginBottom: '10px' }}>
@@ -1186,6 +1239,26 @@ export const EmergenceScene: React.FC<{ activeRules?: SandboxRule[], playerReput
       <button className="sidebar-toggle-btn" onClick={(e) => { e.stopPropagation(); setSidebarOpen(true); }} aria-label="Open telemetry sidebar">
         📊 Telemetry
       </button>
+      {campaignVictory && (
+        <div className="campaign-completion-backdrop">
+          <section className="campaign-completion" role="dialog" aria-modal="true" aria-labelledby="campaign-completion-title">
+            <span className="campaign-completion-kicker">SECTOR RESTORED · LEVEL 3 COMPLETE</span>
+            <h2 id="campaign-completion-title">The Rift remembers a different future</h2>
+            <p>
+              The gravity wound closes. Voidborn scouts and the settlements they once feared agree to keep the corridor open together.
+              The signal is no longer a warning; it is an invitation.
+            </p>
+            <div className="campaign-completion-badge">
+              <span>SEVEN-STAR GRID CERTIFICATION</span>
+              <strong>Rift Peacemaker</strong>
+              <small>HIGH SCORE · {gameState.score}</small>
+            </div>
+            <button className="cyber-btn" type="button" onClick={saveCampaignRewards}>
+              Save certification · continue
+            </button>
+          </section>
+        </div>
+      )}
       <AtariWingOverlay key={atariOverlayTrigger} unlocked={atariUnlocked} />
       <ChatOverlay />
     </div>

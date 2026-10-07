@@ -1,0 +1,152 @@
+name: GitHub Pages PR Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy-preview:
+    if: github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: source
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: source/.nvmrc
+          cache: npm
+          cache-dependency-path: source/package-lock.json
+
+      - name: Install dependencies
+        working-directory: source
+        run: npm ci
+
+      - name: Build site
+        working-directory: source
+        run: npm run build
+
+      - name: Check out Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
+
+      - name: Publish preview
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          if [[ ! "$PR_NUMBER" =~ ^[0-9]+$ ]]; then
+            echo "Invalid pull request number."
+            exit 1
+          fi
+
+          preview_dir="pr-${PR_NUMBER}"
+          rm -rf "pages/${preview_dir}"
+          mkdir -p "pages/${preview_dir}"
+          cp -a source/dist/. "pages/${preview_dir}/"
+
+          git -C pages config user.name "github-actions[bot]"
+          git -C pages config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C pages add --all -- "${preview_dir}"
+          if ! git -C pages diff --cached --quiet; then
+            git -C pages commit -m "Deploy preview for PR #${PR_NUMBER}"
+            git -C pages push origin HEAD:gh-pages
+          fi
+
+      - name: Comment with preview URL
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const marker = '<!-- github-pages-preview -->';
+            const url = `https://amazinggracehl.org/pr-${context.issue.number}/`;
+            const body = `${marker}\n### Preview ready\n\n${url}`;
+            const { owner, repo } = context.repo;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number: context.issue.number
+            });
+            const existing = comments.find(comment =>
+              comment.user?.type === 'Bot' && comment.body?.includes(marker)
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existing.id,
+                body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: context.issue.number,
+                body
+              });
+            }
+
+  remove-preview:
+    if: github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
+
+      - name: Remove preview
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          if [[ ! "$PR_NUMBER" =~ ^[0-9]+$ ]]; then
+            echo "Invalid pull request number."
+            exit 1
+          fi
+
+          preview_dir="pr-${PR_NUMBER}"
+          if [[ -d "pages/${preview_dir}" ]]; then
+            rm -rf "pages/${preview_dir}"
+            git -C pages config user.name "github-actions[bot]"
+            git -C pages config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git -C pages add --all -- "${preview_dir}"
+            git -C pages commit -m "Remove preview for PR #${PR_NUMBER}"
+            git -C pages push origin HEAD:gh-pages
+          fi
+
+      - name: Update preview comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const marker = '<!-- github-pages-preview -->';
+            const body = `${marker}\nThe preview for this pull request has been removed.`;
+            const { owner, repo } = context.repo;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number: context.issue.number
+            });
+            const existing = comments.find(comment =>
+              comment.user?.type === 'Bot' && comment.body?.includes(marker)
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existing.id,
+                body
+              });
+            }
