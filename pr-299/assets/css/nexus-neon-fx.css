@@ -1,0 +1,82 @@
+/* Multi-Layer Cosmic Depth */
+.cosmic-depth {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: -3;
+  pointer-events: none;
+}
+
+.cosmic-layer {
+  position: absolute;
+  inset: -20%;
+  background-repeat: repeat;
+  background-size: 200% 200%;
+  opacity: 0.35;
+  animation: cosmicDrift 60s linear infinite;
+}
+
+.cosmic-layer.mid {
+  opacity: 0.25;
+  animation-duration: 90s;
+}
+
+.cosmic-layer.deep {
+  opacity: 0.15;
+  animation-duration: 140s;
+}
+
+@keyframes cosmicDrift {
+  0% { transform: translate3d(0,0,0); }
+  100% { transform: translate3d(-20%, -20%, 0); }
+}
+
+/* Aura reacts to bass */
+.aura-ring::before {
+  transform: scale(calc(1 + var(--bass, 0) * 0.4));
+  opacity: calc(0.3 + var(--bass, 0) * 0.7);
+}
+
+/* Stars react to treble */
+.star {
+  filter: drop-shadow(0 0 calc(4px + var(--treble, 0) * 12px) currentColor);
+}
+
+/* Panels react to mid frequencies */
+.parallax-panel {
+  box-shadow: 0 0 calc(10px + var(--mid, 0) * 20px) rgba(0,0,0,0.4);
+}
+
+/* Theme Variants */
+/* BEGINNER — calm cyan */
+body[data-theme="beginner"] {
+  --theme-color: #38bdf8;
+  --theme-glow: rgba(56,189,248,0.6);
+}
+
+/* ADEPT — purple mystic */
+body[data-theme="adept"] {
+  --theme-color: #a855f7;
+  --theme-glow: rgba(168,85,247,0.6);
+}
+
+/* MASTER — golden ascension */
+body[data-theme="master"] {
+  --theme-color: #facc15;
+  --theme-glow: rgba(250,204,21,0.6);
+}
+
+/* ASCENDED — white‑blue divine */
+body[data-theme="ascended"] {
+  --theme-color: #e0f2fe;
+  --theme-glow: rgba(224,242,254,0.9);
+}
+
+/* Apply theme variables globally */
+.neon-pulse,
+.star,
+.aura-ring::before,
+.cursor-star {
+  color: var(--theme-color);
+  filter: drop-shadow(0 0 8px var(--theme-glow));
+}

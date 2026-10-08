@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Mystery of the Seven Stars — a Match-3 puzzle game. Swap adjacent virtue gems, chain combos, and ascend through levels inspired by the seven churches of Revelation." />
+  <meta name="theme-color" content="#020617" />
+  <link rel="icon" type="image/png" href="../../assets/logo-S7NXL_ug.png" />
+  <title>Mystery of the Seven Stars | Amazing Grace Arcade</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #020617; }
+    button { font-family: inherit; }
+    button:focus:not(:focus-visible) { outline: none; }
+    button:focus-visible { outline: 2px solid #00f2ff; outline-offset: 2px; }
+    .topbar {
+      width: 100%;
+      padding: 0.875rem 1.25rem;
+      border-bottom: 1px solid #1e293b;
+      background: rgba(5, 6, 16, 0.85);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar a {
+      color: #00f2ff;
+      text-decoration: none;
+      font-weight: 700;
+      font-family: 'Fira Code', monospace, system-ui;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+    }
+    .topbar a:hover { text-decoration: underline; }
+  </style>
+  <script type="module" crossorigin src="../../assets/arcadeSevenStars-fGZqoViW.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/rolldown-runtime-hePW80VL.js">
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-P2Xu9kJm.js">
+  <link rel="modulepreload" crossorigin href="../../assets/firebase-auth-C3IUN0KP.js">
+  <link rel="modulepreload" crossorigin href="../../assets/framer-motion-DPV1ZFwo.js">
+  <link rel="modulepreload" crossorigin href="../../assets/react-CVhlpfa9.js">
+</head>
+<body>
+  <header class="topbar">
+    <a href="../" aria-label="Back to Arcade">← Arcade</a>
+    <a href="../../" aria-label="Amazing Grace Home Living">amazinggracehl.org</a>
+  </header>
+  <div id="seven-stars-root"></div>
+</body>
+</html>

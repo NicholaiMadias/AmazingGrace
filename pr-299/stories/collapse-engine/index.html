@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Chapter 4 — The Collapse Engine story and boss structure package.">
+  <meta name="theme-color" content="#09040f">
+  <link rel="icon" type="image/png" href="../../assets/logo-S7NXL_ug.png">
+  <title>Chapter 4 — The Collapse Engine | Amazing Grace Story Library</title>
+  <style>
+    :root {
+      --bg: #09040f;
+      --surface: #170d25;
+      --surface-2: #201334;
+      --text: #f1f5f9;
+      --muted: #cbd5e1;
+      --violet: #a78bfa;
+      --blue: #93c5fd;
+      --border: rgba(167, 139, 250, 0.3);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      color: var(--text);
+      line-height: 1.7;
+      background: radial-gradient(circle at 50% 20%, #2a1550 0%, var(--bg) 55%, #040109 100%);
+      min-height: 100vh;
+    }
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(9, 4, 15, 0.95);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(9px);
+    }
+    .nav {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0.9rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .nav a { color: var(--text); text-decoration: none; font-weight: 600; }
+    .links { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+    main { max-width: 980px; margin: 0 auto; padding: 2.5rem 1.25rem 2rem; }
+    h1 {
+      margin: 0;
+      font-size: clamp(2.1rem, 4.7vw, 3.3rem);
+      text-shadow: 0 0 24px rgba(167, 139, 250, 0.45);
+    }
+    .subtitle { color: var(--muted); }
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+      background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+    }
+    h2 { margin-top: 0; color: #ddd6fe; }
+    h3 { color: #e9d5ff; }
+    blockquote {
+      margin: 0.7rem 0;
+      padding: 0.15rem 0 0.15rem 0.8rem;
+      border-left: 3px solid #c4b5fd;
+    }
+    .phase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 0.75rem;
+    }
+    .phase {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem;
+      background: rgba(12, 6, 20, 0.7);
+    }
+    .loop {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.7rem;
+    }
+    .loop-step {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.8rem;
+      background: rgba(12, 6, 20, 0.7);
+    }
+    .graphics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.7rem;
+      margin-top: 0.9rem;
+    }
+    .graphic-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem;
+      background: rgba(12, 6, 20, 0.75);
+    }
+    .swatch {
+      height: 9px;
+      width: 100%;
+      border-radius: 999px;
+      margin-bottom: 0.45rem;
+    }
+    .secondary-links {
+      margin-top: 1.6rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .secondary-links a { color: var(--blue); }
+    footer {
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.84rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav">
+      <a href="../../">✨ Amazing Grace</a>
+      <nav class="links" aria-label="Story navigation">
+        <a href="../">Stories</a>
+        <a href="../../library/">Library</a>
+        <a href="../../arcade/">Arcade</a>
+        <a href="../../ministry/">Ministry</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>Chapter 4 — The Collapse Engine</h1>
+    <p class="subtitle">Collapse Threshold boss chapter package with phase structure, encounter loop, and graphics concept.</p>
+
+    <section class="panel" aria-label="Scene 1 Edge of Entropy">
+      <h2>Scene 1 — “Edge of Entropy”</h2>
+      <p><strong>Location:</strong> Collapse Threshold — a vast void with fragments of both worlds spiraling toward a central storm.</p>
+      <h3>[Cinematic]</h3>
+      <ul>
+        <li>The Harmonic Continuum and Fractal Sanctuary are visible in the distance, being slowly pulled inward.</li>
+        <li>At the center: the Collapse Engine — a dark star of broken timelines.</li>
+      </ul>
+      <blockquote><strong>COLLAPSE ENGINE (static voice):</strong> “All paths end. All worlds fall. All choices fade.”</blockquote>
+      <blockquote><strong>YOU:</strong> “Not today.”</blockquote>
+      <blockquote><strong>NICHOLAI-ECHO:</strong> “Not while we stand together.”</blockquote>
+    </section>
+
+    <section class="panel" aria-label="Boss fight phases">
+      <h2>Boss Fight — Collapse Engine</h2>
+      <div class="phase-grid">
+        <article class="phase">
+          <h3>Phase 1: “Dissolution”</h3>
+          <p><strong>Arena:</strong> circular platform with harmonic and fractal segments.</p>
+          <ul>
+            <li><strong>Memory Fade:</strong> UI elements flicker, ability names blur.</li>
+            <li><strong>Entropy Pulse:</strong> drains both Stability and Paradox meters.</li>
+            <li><strong>Mechanic:</strong> Keep at least 50% of segments stable to avoid wipe.</li>
+          </ul>
+        </article>
+        <article class="phase">
+          <h3>Phase 2: “Fracture”</h3>
+          <p><strong>Arena:</strong> overlapping top harmonic and bottom fractal layers.</p>
+          <ul>
+            <li><strong>Recursive Collapse:</strong> clones of both Nicholais appear.</li>
+            <li><strong>Choice Overload:</strong> fake Collapse Engines appear.</li>
+            <li><strong>Mechanic:</strong> use Mirror Phase Shift to identify the real threat.</li>
+          </ul>
+        </article>
+        <article class="phase">
+          <h3>Phase 3: “Dual Resonance”</h3>
+          <p><strong>Arena:</strong> narrow bridge between both worlds.</p>
+          <ul>
+            <li><strong>Collapse Wave:</strong> full-screen wipe unless countered.</li>
+            <li><strong>Entropy Singularity:</strong> pulls both worlds toward the Engine.</li>
+            <li><strong>Mechanic:</strong> trigger Paradox-Harmony Sync and channel Dual Resonance Beam.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" aria-label="Prototype loop and graphics concept">
+      <h2>Prototype loop (with graphics + game concept)</h2>
+      <div class="loop">
+        <article class="loop-step"><strong>1) Enter world.</strong><br>Start in Harmonic or Fractal state.</article>
+        <article class="loop-step"><strong>2) Stabilize local nodes.</strong><br>Complete puzzle/combat objective for local meter gain.</article>
+        <article class="loop-step"><strong>3) Unlock Mirror Path segment.</strong><br>Dual node completion opens mirrored transition lane.</article>
+        <article class="loop-step"><strong>4) Traverse Mirror Path.</strong><br>Use phase shift + reflection jump to cross unstable shards.</article>
+        <article class="loop-step"><strong>5) Face test.</strong><br>Trial, mini-boss, or collapse pulse wave event.</article>
+        <article class="loop-step"><strong>6) Advance to Collapse Engine.</strong><br>Carry stability into the next chapter encounter layer.</article>
+      </div>
+
+      <h3>Graphics concept</h3>
+      <div class="graphics">
+        <article class="graphic-card">
+          <div class="swatch" style="background:linear-gradient(90deg,#fef3c7,#facc15,#f8fafc);"></div>
+          <strong>Harmonic world</strong>
+          <p>Soft gradients, rounded architecture, warm gold/white. UI uses circles and gentle glow lines.</p>
+        </article>
+        <article class="graphic-card">
+          <div class="swatch" style="background:linear-gradient(90deg,#60a5fa,#6366f1,#a78bfa);"></div>
+          <strong>Fractal world</strong>
+          <p>Sharp geometry, recursive patterns, cool blues/purples. UI uses angular crystalline frames.</p>
+        </article>
+        <article class="graphic-card">
+          <div class="swatch" style="background:linear-gradient(90deg,#94a3b8,#e2e8f0,#818cf8);"></div>
+          <strong>Mirror Layer</strong>
+          <p>Desaturated silver overlays with blended motifs from both sides for transition readability.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" aria-label="Scene 2 Two Worlds Saved">
+      <h2>Scene 2 — “Two Worlds Saved”</h2>
+      <p>The Collapse Engine becomes a quiet, silver star between both worlds. The Harmonic Continuum and Fractal Sanctuary stabilize.</p>
+      <blockquote><strong>YOU:</strong> “We did it.”</blockquote>
+      <blockquote><strong>NICHOLAI-ECHO:</strong> “Your world stands. Mine stands. That’s enough.”</blockquote>
+      <blockquote><strong>ORACLE:</strong> “Two paths, one light. Two worlds, one peace.”</blockquote>
+      <p>Fade to ending cinematics.</p>
+    </section>
+
+    <section class="secondary-links" aria-label="Related links and next steps">
+      <strong>Instructions & related links (kept below primary content):</strong>
+      <ul>
+        <li><a href="../mirror-path/">Previous story: Chapter 3 — The Mirror Path</a></li>
+        <li><a href="../chapter-34-package/package.json">Chapter package manifest (JSON)</a></li>
+        <li><a href="../../OST/">OST package folder</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>&copy; 2026 Amazing Grace Home Living — Collapse Engine package</footer>
+</body>
+</html>
