@@ -1,36 +1,1390 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Matrix of Conscience | Nexus Arcade</title>
-    <meta name="description" content="The Matrix of Conscience — a living 3D simulation engine for Emergence, Tower Defense, and Sovereign AI telemetry. Enter the Nexus." />
-    <meta name="theme-color" content="#05050c" />
-    <link rel="icon" type="image/png" href="../assets/logo-S7NXL_ug.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Outfit:wght@400;700;800&display=swap" rel="stylesheet" />
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix of Conscience — Multiverse Arcade & AI Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
     <style>
-      * { box-sizing: border-box; margin: 0; padding: 0; }
-      html, body, #matrix-root { height: 100%; width: 100%; }
-      body { background: #05050c; color: #f3f6ff; font-family: Inter, sans-serif; overflow: hidden; }
+        :root {
+            --bg-base: #030712;
+            --panel-bg: rgba(8, 15, 30, 0.94);
+            --term-green: #00ff66;
+            --term-cyan: #00f3ff;
+            --term-amber: #f0c05a;
+            --term-alert: #ff0055;
+            --term-purple: #a855f7;
+            --font-code: 'Fira Code', monospace;
+            --font-title: 'Cinzel', serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body, html {
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-base);
+            color: #ffffff;
+            font-family: var(--font-code);
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        .crt-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+
+        .game-wrapper {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
+            padding: 8px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(5, 10, 20, 0.8); }
+        ::-webkit-scrollbar-thumb { background: var(--term-cyan); border-radius: 3px; }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 10, 20, 0.95);
+            border: 1px solid var(--term-green);
+            padding: 8px 14px;
+            border-radius: 6px;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.15);
+            margin-bottom: 6px;
+        }
+
+        .brand-title {
+            font-family: var(--font-title);
+            color: var(--term-amber);
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hud-metrics {
+            display: flex;
+            gap: 12px;
+            font-size: 0.8rem;
+        }
+
+        .hud-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(0, 243, 255, 0.08);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .hud-item label { color: var(--term-cyan); }
+        .hud-item val { color: var(--term-amber); font-weight: bold; }
+
+        /* Tools Bar */
+        .tools-bar {
+            display: flex;
+            gap: 6px;
+            background: rgba(8, 15, 30, 0.9);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            padding: 6px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            overflow-x: auto;
+        }
+
+        .btn-unlock {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            color: #64748b;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: not-allowed;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-unlock.unlocked {
+            border: 1px solid var(--term-cyan);
+            color: var(--term-cyan);
+            background: rgba(0, 243, 255, 0.08);
+            cursor: pointer;
+        }
+
+        .btn-unlock.unlocked:hover {
+            background: var(--term-cyan);
+            color: var(--bg-base);
+            box-shadow: 0 0 10px var(--term-cyan);
+        }
+
+        .btn-unlock.active-tool {
+            border: 1px solid var(--term-amber);
+            color: var(--term-amber);
+            background: rgba(240, 192, 90, 0.15);
+        }
+
+        /* Viewport Canvas Area */
+        .viewport {
+            flex: 1;
+            position: relative;
+            background: var(--panel-bg);
+            border: 1px solid var(--term-cyan);
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.1);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Modal Panels & Tool Windows */
+        .overlay-window {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 7, 18, 0.95);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            backdrop-filter: blur(8px);
+        }
+
+        .tool-panel {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 10, 20, 0.96);
+            z-index: 15;
+            display: none;
+            flex-direction: column;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .modal-card {
+            background: var(--panel-bg);
+            border: 2px solid var(--term-amber);
+            border-radius: 8px;
+            max-width: 700px;
+            width: 100%;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(240, 192, 90, 0.25);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .modal-title {
+            font-family: var(--font-title);
+            font-size: 1.3rem;
+            color: var(--term-amber);
+            border-bottom: 1px solid var(--term-amber);
+            padding-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+        }
+
+        .choice-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn-choice {
+            background: transparent;
+            border: 1px solid var(--term-cyan);
+            color: var(--term-cyan);
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .btn-choice:hover {
+            background: var(--term-cyan);
+            color: var(--bg-base);
+            box-shadow: 0 0 12px var(--term-cyan);
+        }
+
+        /* CLI Terminal Styling */
+        .cli-output {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid var(--term-green);
+            padding: 12px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            color: var(--term-green);
+            overflow-y: auto;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .cli-input-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--term-cyan);
+            padding: 6px 10px;
+            border-radius: 4px;
+        }
+
+        .cli-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+        }
+
+        /* Toast Popup Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast-msg {
+            background: rgba(8, 15, 30, 0.95);
+            border-left: 4px solid var(--term-cyan);
+            color: #ffffff;
+            padding: 10px 16px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 10, 20, 0.95);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            padding: 6px 12px;
+            border-radius: 6px;
+            margin-top: 6px;
+            font-size: 0.75rem;
+        }
+
+        .btn-util {
+            background: transparent;
+            border: 1px solid var(--term-cyan);
+            color: var(--term-cyan);
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+        }
+
+        .btn-util:hover {
+            background: var(--term-cyan);
+            color: var(--bg-base);
+        }
     </style>
-    <script type="module" crossorigin src="../assets/matrixConscienceIndex-BaXtUm0q.js"></script>
-    <link rel="modulepreload" crossorigin href="../assets/rolldown-runtime-hePW80VL.js">
-    <link rel="modulepreload" crossorigin href="../assets/modulepreload-polyfill-P2Xu9kJm.js">
-    <link rel="modulepreload" crossorigin href="../assets/firebase-auth-C3IUN0KP.js">
-    <link rel="modulepreload" crossorigin href="../assets/framer-motion-DPV1ZFwo.js">
-    <link rel="modulepreload" crossorigin href="../assets/react-Cwo-IJN2.js">
-    <link rel="modulepreload" crossorigin href="../assets/ConscienceProvider-BFBQTH1c.js">
-    <link rel="modulepreload" crossorigin href="../assets/EmergenceDataContext-B5Cx374F.js">
-    <link rel="modulepreload" crossorigin href="../assets/firebase-firestore-BHW49hl6.js">
-    <link rel="modulepreload" crossorigin href="../assets/EmergenceScene-DF0eb-o6.js">
-    <link rel="stylesheet" crossorigin href="../assets/ConscienceProvider-C2HNdFgY.css">
-    <link rel="stylesheet" crossorigin href="../assets/EmergenceScene-Dj3bI9GW.css">
-    <link rel="stylesheet" crossorigin href="../assets/matrixConscienceIndex-nDSSjzWc.css">
-  </head>
-  <body>
-    <div id="matrix-root"></div>
-  </body>
+  <script type="module" crossorigin src="../assets/matrixConscienceIndex-BUNUbJIG.js"></script>
+  <link rel="modulepreload" crossorigin href="../assets/modulepreload-polyfill-P2Xu9kJm.js">
+</head>
+<body>
+    <div class="crt-overlay"></div>
+    <div class="toast-container" id="toast-container"></div>
+
+    <div class="game-wrapper">
+        <header>
+            <div class="brand-title">
+                <span>MATRIX OF CONSCIENCE</span>
+                <span style="font-size: 0.7rem; color: var(--term-cyan);">[MULTIVERSE ARCADE v4.0]</span>
+            </div>
+            <div class="hud-metrics">
+                <div class="hud-item"><label>LEVEL:</label> <val id="hud-level">1 / 6</val></div>
+                <div class="hud-item"><label>MODE:</label> <val id="hud-mode">TOWER DEFENSE</val></div>
+                <div class="hud-item"><label>SCORE:</label> <val id="hud-score">0</val></div>
+                <div class="hud-item"><label>ENERGY/HP:</label> <val id="hud-energy">120 (HP: 100)</val></div>
+                <div class="hud-item"><label>SYNC:</label> <val id="hud-sync" style="color:var(--term-green);">OFFLINE</val></div>
+            </div>
+        </header>
+
+        <div class="tools-bar" id="tools-bar">
+            <span style="color:var(--term-amber); font-size:0.75rem; align-self:center; font-weight:bold;">UNLOCKED SYSTEM TOOLS:</span>
+            <button class="btn-unlock" id="tool-btn-cli" onclick="toggleTool('cli')">🔒 L1: PowerShell CLI</button>
+            <button class="btn-unlock" id="tool-btn-img" onclick="toggleTool('img')">🔒 L2: AI Image Studio</button>
+            <button class="btn-unlock" id="tool-btn-code" onclick="toggleTool('code')">🔒 L3: AI Code Assistant</button>
+            <button class="btn-unlock" id="tool-btn-music" onclick="toggleTool('music')">🔒 L4: AI Music Synthesizer</button>
+            <button class="btn-unlock" id="tool-btn-multi" onclick="toggleTool('multi')">🔒 L5: Cloud Sync & Co-op</button>
+            <button class="btn-unlock" id="tool-btn-blog" onclick="toggleTool('blog')">🔒 L6: Conscience Blog</button>
+            <button class="btn-unlock" id="tool-btn-media" onclick="toggleTool('media')">🔒 VICTORY: Verified Media Hub</button>
+        </div>
+
+        <div class="viewport" id="viewport-container">
+            <canvas id="game-canvas"></canvas>
+
+            <div class="overlay-window" id="modal-overlay">
+                <div class="modal-card">
+                    <div class="modal-title">
+                        <span id="modal-title">INITIALIZING CONSCIENCE MATRIX</span>
+                        <span style="font-size:0.75rem; color:var(--term-cyan);" id="modal-subtitle">CORE NODE ARCHITECTURE</span>
+                    </div>
+                    <div class="modal-body" id="modal-body">
+                        Welcome, Architect. The Matrix of Conscience evaluates autonomous defense choices and ethical alignments across multiple cybernetic domains. Complete each level's objective to unlock AI systemic capabilities!
+                    </div>
+                    <div class="choice-list" id="modal-choices">
+                        <button class="btn-choice" onclick="startLevel()">BEGIN LEVEL 1: TOWER DEFENSE SIEGE</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-panel" id="panel-cli">
+                <div class="modal-title" style="margin-bottom:8px;">
+                    <span>POWERSHELL / GEMINI CLI TERMINAL</span>
+                    <button class="btn-util" onclick="toggleTool(null)">CLOSE [X]</button>
+                </div>
+                <div class="cli-output" id="cli-output">
+                    <div>Windows PowerShell v7.4.1 Matrix Conscience Instance</div>
+                    <div>Type 'help' for built-in commands or ask Gemini AI questions directly!</div>
+                </div>
+                <div class="cli-input-row">
+                    <span style="color:var(--term-green); font-weight:bold;">PS C:\Matrix\Conscience></span>
+                    <input type="text" id="cli-input-field" class="cli-input" placeholder="Type AI query or CLI command..." onkeydown="handleCliInput(event)">
+                </div>
+            </div>
+
+            <div class="tool-panel" id="panel-img">
+                <div class="modal-title" style="margin-bottom:12px;">
+                    <span>AI STUDIO IMAGE GENERATOR (Gemini 3.1 Flash Lite)</span>
+                    <button class="btn-util" onclick="toggleTool(null)">CLOSE [X]</button>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:10px; height:100%;">
+                    <div style="display:flex; gap:8px;">
+                        <input type="text" id="img-prompt-input" class="cli-input" style="border:1px solid var(--term-cyan); padding:8px; border-radius:4px;" placeholder="Prompt: e.g. A cybernetic tree of life glowing with emerald energy in a dark matrix core...">
+                        <button class="btn-util" onclick="generateImage()" id="btn-gen-img" style="background:var(--term-cyan); color:var(--bg-base); font-weight:bold; padding:8px 16px;">GENERATE ART</button>
+                    </div>
+                    <div id="img-output-box" style="flex:1; border:1px dashed var(--term-cyan); border-radius:6px; display:flex; justify-content:center; align-items:center; background:rgba(0,0,0,0.5); overflow:hidden;">
+                        <span style="color:var(--term-amber)">Art output area — Enter prompt above to generate artwork via Gemini API</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-panel" id="panel-code">
+                <div class="modal-title" style="margin-bottom:12px;">
+                    <span>AI CODING ASSISTANT & SCRIPT STUDIO</span>
+                    <button class="btn-util" onclick="toggleTool(null)">CLOSE [X]</button>
+                </div>
+                <div style="display:flex; gap:10px; flex:1;">
+                    <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+                        <textarea id="code-prompt-input" style="width:100%; height:80px; background:rgba(0,0,0,0.8); border:1px solid var(--term-cyan); color:#fff; padding:8px; border-radius:4px; font-family:var(--font-code); font-size:0.85rem;" placeholder="Ask AI Code Assistant to write a script, game algorithm, or web tool..."></textarea>
+                        <button class="btn-util" onclick="generateCodeScript()" style="background:var(--term-amber); color:var(--bg-base); font-weight:bold; padding:8px;">GENERATE CODE SCRIPT</button>
+                        <div id="code-output-display" style="flex:1; background:rgba(0,0,0,0.9); border:1px solid var(--term-green); padding:10px; border-radius:4px; overflow-y:auto; font-family:var(--font-code); font-size:0.8rem; color:var(--term-green); white-space:pre-wrap;">// AI Code Script Output...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-panel" id="panel-music">
+                <div class="modal-title" style="margin-bottom:12px;">
+                    <span>AI MUSIC SYNTHESIZER & TTS VOICE ENGINE</span>
+                    <button class="btn-util" onclick="toggleTool(null)">CLOSE [X]</button>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:12px;">
+                    <div style="background:rgba(0,243,255,0.05); border:1px solid var(--term-cyan); padding:12px; border-radius:6px;">
+                        <h4 style="color:var(--term-amber); margin-bottom:6px;">Web Audio Procedural Cyber Synthesizer</h4>
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn-util" onclick="playSynthBeat('cyber')">PLAY CYBER SYNTH PULSE</button>
+                            <button class="btn-util" onclick="playSynthBeat('ambient')">PLAY MATRIX HARMONIC</button>
+                            <button class="btn-util" onclick="playSynthBeat('boss')">PLAY BATTLE OVERDRIVE</button>
+                        </div>
+                    </div>
+                    <div style="background:rgba(240,192,90,0.05); border:1px solid var(--term-amber); padding:12px; border-radius:6px;">
+                        <h4 style="color:var(--term-amber); margin-bottom:6px;">Gemini Voice TTS Synthesizer (gemini-2.5-flash-preview-tts)</h4>
+                        <div style="display:flex; gap:8px;">
+                            <input type="text" id="tts-speech-input" class="cli-input" style="border:1px solid var(--term-amber); padding:8px; border-radius:4px;" value="Say cheerfully: Welcome Architect to the Matrix of Conscience voice core!">
+                            <button class="btn-util" onclick="generateTtsVoice()" style="background:var(--term-amber); color:var(--bg-base); font-weight:bold;">SYNTHESIZE SPEECH</button>
+                        </div>
+                        <div id="audio-player-container" style="margin-top:10px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-panel" id="panel-multi">
+                <div class="modal-title" style="margin-bottom:12px;">
+                    <span>CLOUD SYNC & MULTIPLAYER LEADERBOARD</span>
+                    <button class="btn-util" onclick="toggleTool(null)">CLOSE [X]</button>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; flex:1;">
+                    <div style="background:rgba(0,0,0,0.8); border:1px solid var(--term-cyan); padding:12px; border-radius:6px; display:flex; flex-direction:column;">
+                        <h4 style="color:var(--term-cyan); border-bottom:1px solid var(--term-cyan); padding-bottom:4px; margin-bottom:8px;">GLOBAL ARCHITECT LEADERBOARD</h4>
+                        <div id="leaderboard-list" style="flex:1; overflow-y:auto; font-size:0.85rem; display:flex; flex-direction:column; gap:6px;">
+                            <div>Loading Firestore Leaderboard...</div>
+                        </div>
+                    </div>
+                    <div style="background:rgba(0,0,0,0.8); border:1px solid var(--term-amber); padding:12px; border-radius:6px; display:flex; flex-direction:column; gap:8px;">
+                        <h4 style="color:var(--term-amber); border-bottom:1px solid var(--term-amber); padding-bottom:4px;">CLOUD SAVE STATUS</h4>
+                        <p style="font-size:0.85rem;">User Identification: <span id="cloud-user-id" style="color:var(--term-cyan);">Connecting...</span></p>
+                        <button class="btn-util" onclick="saveProgressToCloud()" style="background:var(--term-green); color:var(--bg-base); font-weight:bold; padding:8px;">FORCE CLOUD SYNC SAVE</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-panel" id="panel-blog">
+                <div class="modal-title" style="margin-bottom:12px;">
+                    <span>CONSCIENCE CHRONICLE — COMMUNITY BLOG</span>
+                    <button class="btn-util" onclick="toggleTool(null)">CLOSE [X]</button>
+                </div>
+                <div id="blog-posts-feed" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:10px;">
+                    <!-- Blog posts rendered dynamically -->
+                </div>
+            </div>
+
+            <div class="tool-panel" id="panel-media">
+                <div class="modal-title" style="margin-bottom:12px;">
+                    <span>VERIFIED ARCHITECT MEDIA HUB (SPAM-PROTECTED)</span>
+                    <button class="btn-util" onclick="toggleTool(null)">CLOSE [X]</button>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <div style="background:rgba(0,255,102,0.08); border:1px solid var(--term-green); padding:10px; border-radius:6px; font-size:0.85rem;">
+                        ✅ <strong>VERIFICATION PASSED:</strong> You completed all 6 levels of Matrix of Conscience! You now hold full privileges to share media and blog posts to the public ecosystem.
+                    </div>
+                    <input type="text" id="media-title" class="cli-input" style="border:1px solid var(--term-cyan); padding:8px;" placeholder="Media Title / Artifact Name...">
+                    <textarea id="media-content" style="height:80px; background:rgba(0,0,0,0.8); border:1px solid var(--term-cyan); color:#fff; padding:8px; font-family:var(--font-code);" placeholder="Description or image URL / text body..."></textarea>
+                    <button class="btn-util" onclick="publishMediaPost()" style="background:var(--term-green); color:var(--bg-base); font-weight:bold; padding:10px;">PUBLISH TO PUBLIC MATRIX FEED</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="tower-selector" id="tower-selector-bar" style="display: flex; gap:6px;">
+                <span style="color:var(--term-cyan); align-self:center;">TOWERS:</span>
+                <button class="btn-util active" id="btn-t1" onclick="selectTowerType('aegis')">AEGIS WARD (50 EN)</button>
+                <button class="btn-util" id="btn-t2" onclick="selectTowerType('sunfire')">SUNFIRE BEAM (90 EN)</button>
+                <button class="btn-util" id="btn-t3" onclick="selectTowerType('emp')" style="display:none;">EMP PULSE (120 EN)</button>
+            </div>
+
+            <div class="touch-controls" id="shooter-touch-bar" style="display:none; gap:8px;">
+                <button class="btn-util" onclick="moveShooter(-1)">◀ LEFT</button>
+                <button class="btn-util" onclick="fireShooter()">🔥 FIRE</button>
+                <button class="btn-util" onclick="moveShooter(1)">RIGHT ▶</button>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+                <button class="btn-util" onclick="toggleAudio()" id="btn-audio">AUDIO: ON</button>
+                <button class="btn-util" onclick="toggleFullscreen()">FULLSCREEN</button>
+            </div>
+        </footer>
+    </div>
+
+
+    <script>
+        // Web Audio Synthesizer
+        let audioCtx = null;
+        let audioEnabled = true;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) audioCtx = new AudioContextClass();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSound(freq, duration = 0.08, type = 'sine', decay = true) {
+            if (!audioEnabled) return;
+            initAudio();
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                if (decay) gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast-msg';
+            toast.textContent = msg;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3500);
+        }
+
+        // Canvas Setup
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = 800;
+        let height = canvas.height = 500;
+
+        function resizeCanvas() {
+            const container = document.getElementById('viewport-container');
+            width = canvas.width = container.clientWidth;
+            height = canvas.height = container.clientHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        // Level States
+        const GAME_LEVELS = {
+            1: 'TOWER DEFENSE SIEGE',
+            2: 'NEURAL MATCH-3 DECRYPTION',
+            3: 'GRID SPACE SHOOTER',
+            4: 'DEEP SIEGE TD (EMP & SPITTERS)',
+            5: 'CYBER MAZE SENTINEL DEFENSE',
+            6: 'MATRIX OVERLORD CORE FIGHT'
+        };
+
+        let currentLevel = 1;
+        let score = 0;
+        let energy = 120;
+        let playerHp = 100;
+        let selectedTowerType = 'aegis';
+        let isLevelActive = false;
+
+        // Unlock Tracker
+        let unlockedTools = {
+            cli: false,
+            img: false,
+            code: false,
+            music: false,
+            multi: false,
+            blog: false,
+            media: false
+        };
+
+        let activeTool = null;
+
+        function updateUnlockUi() {
+            for (const key in unlockedTools) {
+                const btn = document.getElementById(`tool-btn-${key}`);
+                if (btn) {
+                    if (unlockedTools[key]) {
+                        btn.classList.add('unlocked');
+                        btn.innerHTML = btn.innerHTML.replace('🔒', '🔓');
+                    }
+                }
+            }
+        }
+
+        function toggleTool(toolKey) {
+            if (toolKey && !unlockedTools[toolKey]) {
+                showToast(`🔒 Tool locked! Complete Level ${getUnlockLevelRequirement(toolKey)} to unlock.`);
+                return;
+            }
+
+            document.querySelectorAll('.tool-panel').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.btn-unlock').forEach(b => b.classList.remove('active-tool'));
+
+            if (toolKey && activeTool !== toolKey) {
+                activeTool = toolKey;
+                document.getElementById(`panel-${toolKey}`).style.display = 'flex';
+                document.getElementById(`tool-btn-${toolKey}`).classList.add('active-tool');
+            } else {
+                activeTool = null;
+            }
+        }
+
+        function getUnlockLevelRequirement(key) {
+            const map = { cli: 1, img: 2, code: 3, music: 4, multi: 5, blog: 6, media: 'Game Completion' };
+            return map[key] || 1;
+        }
+
+        /* ---------------- LEVEL 1 & 4: TOWER DEFENSE ENGINES ---------------- */
+        let tdPath = [];
+        let tdTowers = [];
+        let tdEnemies = [];
+        let tdProjectiles = [];
+        let tdWaveCount = 0;
+        let tdTotalWaves = 3;
+        let tdSpawnTimer = 0;
+
+        function initTowerDefense(isAdvanced = false) {
+            tdTowers = [];
+            tdEnemies = [];
+            tdProjectiles = [];
+            tdWaveCount = 0;
+            tdTotalWaves = isAdvanced ? 4 : 3;
+            energy = isAdvanced ? 180 : 120;
+
+            tdPath = [
+                { x: 0, y: Math.floor(height * 0.3) },
+                { x: Math.floor(width * 0.3), y: Math.floor(height * 0.3) },
+                { x: Math.floor(width * 0.3), y: Math.floor(height * 0.7) },
+                { x: Math.floor(width * 0.7), y: Math.floor(height * 0.7) },
+                { x: Math.floor(width * 0.7), y: Math.floor(height * 0.4) },
+                { x: width, y: Math.floor(height * 0.4) }
+            ];
+
+            if (isAdvanced) document.getElementById('btn-t3').style.display = 'inline-block';
+        }
+
+        function updateTowerDefense(dt) {
+            tdSpawnTimer += dt;
+            if (tdSpawnTimer > 1.8 && tdWaveCount < tdTotalWaves * 8) {
+                tdSpawnTimer = 0;
+                tdWaveCount++;
+                const isSpitter = (currentLevel === 4 && tdWaveCount % 3 === 0);
+                tdEnemies.push({
+                    x: tdPath[0].x, y: tdPath[0].y,
+                    pathIdx: 0,
+                    hp: (isSpitter ? 180 : 75) * (currentLevel === 4 ? 1.4 : 1),
+                    maxHp: (isSpitter ? 180 : 75) * (currentLevel === 4 ? 1.4 : 1),
+                    speed: isSpitter ? 60 : 90,
+                    isSpitter: isSpitter
+                });
+            }
+
+            for (let i = tdEnemies.length - 1; i >= 0; i--) {
+                const enemy = tdEnemies[i];
+                const targetNode = tdPath[enemy.pathIdx + 1];
+                if (!targetNode) {
+                    playerHp -= 15;
+                    playSound(180, 0.2, 'sawtooth');
+                    tdEnemies.splice(i, 1);
+                    updateHud();
+                    if (playerHp <= 0) gameOver();
+                    continue;
+                }
+
+                const dx = targetNode.x - enemy.x;
+                const dy = targetNode.y - enemy.y;
+                const dist = Math.hypot(dx, dy);
+
+                if (dist < 4) enemy.pathIdx++;
+                else {
+                    enemy.x += (dx / dist) * enemy.speed * dt;
+                    enemy.y += (dy / dist) * enemy.speed * dt;
+                }
+            }
+
+            tdTowers.forEach(tower => {
+                tower.cooldown = (tower.cooldown || 0) - dt;
+                if (tower.cooldown <= 0) {
+                    const target = tdEnemies.find(e => Math.hypot(e.x - tower.x, e.y - tower.y) < tower.range);
+                    if (target) {
+                        tower.cooldown = tower.fireRate;
+                        tdProjectiles.push({
+                            x: tower.x, y: tower.y, tx: target.x, ty: target.y,
+                            damage: tower.damage, type: tower.type
+                        });
+                        playSound(tower.type === 'sunfire' ? 700 : 400, 0.05, 'square');
+                    }
+                }
+            });
+
+            for (let i = tdProjectiles.length - 1; i >= 0; i--) {
+                const proj = tdProjectiles[i];
+                const dx = proj.tx - proj.x;
+                const dy = proj.ty - proj.y;
+                const dist = Math.hypot(dx, dy);
+
+                if (dist < 8) {
+                    tdEnemies.forEach(e => {
+                        if (Math.hypot(e.x - proj.tx, e.y - proj.ty) < (proj.type === 'sunfire' ? 50 : 20)) {
+                            e.hp -= proj.damage;
+                        }
+                    });
+                    tdProjectiles.splice(i, 1);
+                } else {
+                    proj.x += (dx / dist) * 400 * dt;
+                    proj.y += (dy / dist) * 400 * dt;
+                }
+            }
+
+            for (let i = tdEnemies.length - 1; i >= 0; i--) {
+                if (tdEnemies[i].hp <= 0) {
+                    score += 50; energy += 25;
+                    tdEnemies.splice(i, 1);
+                    updateHud();
+                }
+            }
+
+            if (tdWaveCount >= tdTotalWaves * 8 && tdEnemies.length === 0) completeLevel();
+        }
+
+        function renderTowerDefense() {
+            ctx.strokeStyle = 'rgba(0, 243, 255, 0.2)';
+            ctx.lineWidth = 24; ctx.lineCap = 'round';
+            ctx.beginPath();
+            tdPath.forEach((pt, i) => {
+                if (i === 0) ctx.moveTo(pt.x, pt.y);
+                else ctx.lineTo(pt.x, pt.y);
+            });
+            ctx.stroke();
+
+            tdTowers.forEach(t => {
+                ctx.fillStyle = t.type === 'sunfire' ? '#f0c05a' : (t.type === 'emp' ? '#00f3ff' : '#00ff66');
+                ctx.beginPath(); ctx.arc(t.x, t.y, 14, 0, Math.PI * 2); ctx.fill();
+                ctx.strokeStyle = 'rgba(0, 255, 102, 0.15)';
+                ctx.beginPath(); ctx.arc(t.x, t.y, t.range, 0, Math.PI * 2); ctx.stroke();
+            });
+
+            tdEnemies.forEach(e => {
+                ctx.fillStyle = e.isSpitter ? '#ff0055' : '#a855f7';
+                ctx.fillRect(e.x - 10, e.y - 10, 20, 20);
+                ctx.fillStyle = 'rgba(255,0,0,0.6)'; ctx.fillRect(e.x - 12, e.y - 16, 24, 4);
+                ctx.fillStyle = '#00ff66'; ctx.fillRect(e.x - 12, e.y - 16, (e.hp / e.maxHp) * 24, 4);
+            });
+
+            tdProjectiles.forEach(p => {
+                ctx.fillStyle = p.type === 'sunfire' ? '#f0c05a' : '#00f3ff';
+                ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.fill();
+            });
+        }
+
+        /* ---------------- LEVEL 2: MATCH-3 DECRYPTION ENGINE ---------------- */
+        const M3_ROWS = 7, M3_COLS = 7;
+        let m3Board = [];
+        let m3SelectedCell = null;
+        let m3TargetScore = 1200;
+        let m3Score = 0;
+        const M3_COLORS = ['#00ff66', '#00f3ff', '#f0c05a', '#ff0055', '#a855f7'];
+
+        function initMatchThree() {
+            m3Score = 0; m3Board = [];
+            for (let r = 0; r < M3_ROWS; r++) {
+                m3Board[r] = [];
+                for (let c = 0; c < M3_COLS; c++) {
+                    m3Board[r][c] = Math.floor(Math.random() * M3_COLORS.length);
+                }
+            }
+            checkMatch3Combos();
+        }
+
+        function checkMatch3Combos() {
+            let matched = false;
+            for (let r = 0; r < M3_ROWS; r++) {
+                for (let c = 0; c < M3_COLS - 2; c++) {
+                    let type = m3Board[r][c];
+                    if (type !== null && m3Board[r][c+1] === type && m3Board[r][c+2] === type) {
+                        m3Board[r][c] = m3Board[r][c+1] = m3Board[r][c+2] = null;
+                        matched = true; m3Score += 100;
+                    }
+                }
+            }
+            for (let c = 0; c < M3_COLS; c++) {
+                for (let r = 0; r < M3_ROWS - 2; r++) {
+                    let type = m3Board[r][c];
+                    if (type !== null && m3Board[r+1][c] === type && m3Board[r+2][c] === type) {
+                        m3Board[r][c] = m3Board[r+1][c] = m3Board[r+2][c] = null;
+                        matched = true; m3Score += 100;
+                    }
+                }
+            }
+
+            if (matched) {
+                playSound(600, 0.1, 'sine');
+                applyMatch3Gravity();
+                score += m3Score; updateHud();
+                if (m3Score >= m3TargetScore) completeLevel();
+            }
+        }
+
+        function applyMatch3Gravity() {
+            for (let c = 0; c < M3_COLS; c++) {
+                for (let r = M3_ROWS - 1; r >= 0; r--) {
+                    if (m3Board[r][c] === null) {
+                        for (let k = r - 1; k >= 0; k--) {
+                            if (m3Board[k][c] !== null) {
+                                m3Board[r][c] = m3Board[k][c];
+                                m3Board[k][c] = null;
+                                break;
+                            }
+                        }
+                    }
+                }
+                for (let r = 0; r < M3_ROWS; r++) {
+                    if (m3Board[r][c] === null) {
+                        m3Board[r][c] = Math.floor(Math.random() * M3_COLORS.length);
+                    }
+                }
+            }
+        }
+
+        function renderMatchThree() {
+            const tileSize = Math.min(width, height) / 9;
+            const offsetX = (width - M3_COLS * tileSize) / 2;
+            const offsetY = (height - M3_ROWS * tileSize) / 2;
+
+            for (let r = 0; r < M3_ROWS; r++) {
+                for (let c = 0; c < M3_COLS; c++) {
+                    const x = offsetX + c * tileSize;
+                    const y = offsetY + r * tileSize;
+                    ctx.strokeStyle = 'rgba(0, 243, 255, 0.3)';
+                    ctx.strokeRect(x, y, tileSize, tileSize);
+
+                    if (m3Board[r][c] !== null) {
+                        ctx.fillStyle = M3_COLORS[m3Board[r][c]];
+                        ctx.beginPath();
+                        ctx.arc(x + tileSize/2, y + tileSize/2, tileSize * 0.35, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    if (m3SelectedCell && m3SelectedCell.r === r && m3SelectedCell.c === c) {
+                        ctx.strokeStyle = '#f0c05a'; ctx.lineWidth = 3;
+                        ctx.strokeRect(x + 2, y + 2, tileSize - 4, tileSize - 4);
+                        ctx.lineWidth = 1;
+                    }
+                }
+            }
+
+            ctx.fillStyle = '#00f3ff'; ctx.font = '16px "Fira Code"';
+            ctx.fillText(`TARGET DECRYPTION SCORE: ${m3Score} / ${m3TargetScore}`, offsetX, offsetY - 15);
+        }
+
+        /* ---------------- LEVEL 3: GRID SPACE SHOOTER ---------------- */
+        let shooterPlayer = { x: 0, y: 0 };
+        let shooterBullets = [];
+        let shooterInvaders = [];
+        let shooterDirection = 1;
+
+        function initShooter() {
+            shooterBullets = []; shooterInvaders = [];
+            shooterPlayer.x = width / 2; shooterPlayer.y = height - 50;
+
+            for (let r = 0; r < 4; r++) {
+                for (let c = 0; c < 8; c++) {
+                    shooterInvaders.push({ x: 80 + c * 60, y: 50 + r * 40, alive: true });
+                }
+            }
+        }
+
+        function updateShooter(dt) {
+            let hitEdge = false;
+            shooterInvaders.forEach(inv => {
+                if (!inv.alive) return;
+                inv.x += shooterDirection * 50 * dt;
+                if (inv.x > width - 40 || inv.x < 40) hitEdge = true;
+            });
+
+            if (hitEdge) {
+                shooterDirection *= -1;
+                shooterInvaders.forEach(inv => inv.y += 15);
+            }
+
+            for (let i = shooterBullets.length - 1; i >= 0; i--) {
+                const b = shooterBullets[i];
+                b.y -= 350 * dt;
+
+                shooterInvaders.forEach(inv => {
+                    if (inv.alive && Math.hypot(b.x - inv.x, b.y - inv.y) < 20) {
+                        inv.alive = false; shooterBullets.splice(i, 1);
+                        score += 100; playSound(800, 0.05, 'triangle'); updateHud();
+                    }
+                });
+
+                if (b.y < 0) shooterBullets.splice(i, 1);
+            }
+
+            if (shooterInvaders.every(inv => !inv.alive)) completeLevel();
+        }
+
+        function moveShooter(dir) {
+            shooterPlayer.x = Math.max(30, Math.min(width - 30, shooterPlayer.x + dir * 30));
+        }
+
+        function fireShooter() {
+            shooterBullets.push({ x: shooterPlayer.x, y: shooterPlayer.y - 10 });
+            playSound(900, 0.04, 'square');
+        }
+
+        function renderShooter() {
+            ctx.fillStyle = '#00ff66'; ctx.fillRect(shooterPlayer.x - 15, shooterPlayer.y, 30, 15);
+            shooterInvaders.forEach(inv => {
+                if (!inv.alive) return;
+                ctx.fillStyle = '#ff0055'; ctx.fillRect(inv.x - 15, inv.y - 10, 30, 20);
+            });
+            ctx.fillStyle = '#00f3ff';
+            shooterBullets.forEach(b => ctx.fillRect(b.x - 2, b.y, 4, 10));
+        }
+
+        /* ---------------- LEVEL 5: CYBER PAC-MAZE SENTINEL DEFENSE ---------------- */
+        let pacPlayer = { x: 2, y: 2 };
+        let pacGridSize = 32;
+        let pacNodes = [];
+        let pacSentinels = [
+            { x: 10, y: 10, dx: 1, dy: 0 },
+            { x: 12, y: 4, dx: 0, dy: 1 }
+        ];
+
+        function initPacMaze() {
+            pacPlayer = { x: 2, y: 2 };
+            pacNodes = [];
+            for (let r = 2; r < 12; r += 2) {
+                for (let c = 2; c < 18; c += 2) {
+                    pacNodes.push({ x: c, y: r, collected: false });
+                }
+            }
+        }
+
+        function updatePacMaze(dt) {
+            pacSentinels.forEach(s => {
+                s.x += s.dx * dt * 2; s.y += s.dy * dt * 2;
+                if (s.x > 18 || s.x < 1) s.dx *= -1;
+                if (s.y > 12 || s.y < 1) s.dy *= -1;
+
+                if (Math.hypot(s.x - pacPlayer.x, s.y - pacPlayer.y) < 1.0) {
+                    playerHp -= 20; playSound(200, 0.2, 'sawtooth'); updateHud();
+                    pacPlayer = { x: 2, y: 2 };
+                    if (playerHp <= 0) gameOver();
+                }
+            });
+
+            pacNodes.forEach(n => {
+                if (!n.collected && Math.hypot(n.x - pacPlayer.x, n.y - pacPlayer.y) < 0.8) {
+                    n.collected = true; score += 150; playSound(750, 0.05, 'sine'); updateHud();
+                }
+            });
+
+            if (pacNodes.every(n => n.collected)) completeLevel();
+        }
+
+        function renderPacMaze() {
+            pacNodes.forEach(n => {
+                if (!n.collected) {
+                    ctx.fillStyle = '#f0c05a';
+                    ctx.beginPath(); ctx.arc(n.x * pacGridSize, n.y * pacGridSize, 6, 0, Math.PI * 2); ctx.fill();
+                }
+            });
+
+            ctx.fillStyle = '#00ff66';
+            ctx.beginPath(); ctx.arc(pacPlayer.x * pacGridSize, pacPlayer.y * pacGridSize, 12, 0, Math.PI * 2); ctx.fill();
+
+            ctx.fillStyle = '#ff0055';
+            pacSentinels.forEach(s => {
+                ctx.fillRect(s.x * pacGridSize - 10, s.y * pacGridSize - 10, 20, 20);
+            });
+        }
+
+        /* ---------------- LEVEL 6: MATRIX OVERLORD CORE FIGHT ---------------- */
+        let bossHp = 1000, bossMaxHp = 1000;
+        let bossAttackTimer = 0;
+
+        function initBossFight() {
+            bossHp = 1000;
+        }
+
+        function updateBossFight(dt) {
+            bossAttackTimer += dt;
+            if (bossAttackTimer > 1.2) {
+                bossAttackTimer = 0;
+                bossHp -= 65; score += 200; playSound(850, 0.06, 'square'); updateHud();
+                if (bossHp <= 0) completeLevel();
+            }
+        }
+
+        function renderBossFight() {
+            ctx.fillStyle = '#ff0055';
+            ctx.fillRect(width / 2 - 60, 60, 120, 100);
+            ctx.fillStyle = '#00f3ff'; ctx.font = '18px "Cinzel"';
+            ctx.fillText("MATRIX OVERLORD CORE", width / 2 - 110, 40);
+
+            ctx.fillStyle = 'rgba(255,0,0,0.5)';
+            ctx.fillRect(width / 2 - 150, 180, 300, 16);
+            ctx.fillStyle = '#00ff66';
+            ctx.fillRect(width / 2 - 150, 180, (bossHp / bossMaxHp) * 300, 16);
+        }
+
+        /* ---------------- CORE HUD & GAME LOOP ---------------- */
+        function updateHud() {
+            document.getElementById('hud-level').textContent = `${currentLevel} / 6`;
+            document.getElementById('hud-score').textContent = score;
+            document.getElementById('hud-energy').textContent = `${energy} (HP: ${playerHp})`;
+            document.getElementById('hud-mode').textContent = GAME_LEVELS[currentLevel];
+        }
+
+        function selectTowerType(type) {
+            selectedTowerType = type;
+            document.querySelectorAll('#tower-selector-bar .btn-util').forEach(b => b.classList.remove('active'));
+            if (type === 'aegis') document.getElementById('btn-t1').classList.add('active');
+            if (type === 'sunfire') document.getElementById('btn-t2').classList.add('active');
+            if (type === 'emp') document.getElementById('btn-t3').classList.add('active');
+        }
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+
+            if (currentLevel === 1 || currentLevel === 4) {
+                const cost = selectedTowerType === 'sunfire' ? 90 : (selectedTowerType === 'emp' ? 120 : 50);
+                if (energy >= cost) {
+                    energy -= cost;
+                    tdTowers.push({
+                        x: mx, y: my, type: selectedTowerType,
+                        range: selectedTowerType === 'sunfire' ? 140 : 100,
+                        damage: selectedTowerType === 'sunfire' ? 45 : 20,
+                        fireRate: selectedTowerType === 'sunfire' ? 1.2 : 0.6
+                    });
+                    playSound(500, 0.08, 'sine'); updateHud();
+                }
+            } else if (currentLevel === 2) {
+                const tileSize = Math.min(width, height) / 9;
+                const offsetX = (width - M3_COLS * tileSize) / 2;
+                const offsetY = (height - M3_ROWS * tileSize) / 2;
+
+                const c = Math.floor((mx - offsetX) / tileSize);
+                const r = Math.floor((my - offsetY) / tileSize);
+
+                if (r >= 0 && r < M3_ROWS && c >= 0 && c < M3_COLS) {
+                    if (!m3SelectedCell) m3SelectedCell = { r, c };
+                    else {
+                        const dr = Math.abs(m3SelectedCell.r - r);
+                        const dc = Math.abs(m3SelectedCell.c - c);
+                        if ((dr === 1 && dc === 0) || (dr === 0 && dc === 1)) {
+                            const temp = m3Board[r][c];
+                            m3Board[r][c] = m3Board[m3SelectedCell.r][m3SelectedCell.c];
+                            m3Board[m3SelectedCell.r][m3SelectedCell.c] = temp;
+                            checkMatch3Combos();
+                        }
+                        m3SelectedCell = null;
+                    }
+                }
+            } else if (currentLevel === 3) {
+                fireShooter();
+            } else if (currentLevel === 5) {
+                pacPlayer.x = Math.max(1, Math.min(18, Math.floor(mx / pacGridSize)));
+                pacPlayer.y = Math.max(1, Math.min(12, Math.floor(my / pacGridSize)));
+            }
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (currentLevel === 3) {
+                if (e.key === 'ArrowLeft' || e.key === 'a') moveShooter(-1);
+                if (e.key === 'ArrowRight' || e.key === 'd') moveShooter(1);
+                if (e.key === ' ' || e.key === 'ArrowUp') fireShooter();
+            } else if (currentLevel === 5) {
+                if (e.key === 'ArrowLeft' || e.key === 'a') pacPlayer.x = Math.max(1, pacPlayer.x - 1);
+                if (e.key === 'ArrowRight' || e.key === 'd') pacPlayer.x = Math.min(18, pacPlayer.x + 1);
+                if (e.key === 'ArrowUp' || e.key === 'w') pacPlayer.y = Math.max(1, pacPlayer.y - 1);
+                if (e.key === 'ArrowDown' || e.key === 's') pacPlayer.y = Math.min(12, pacPlayer.y + 1);
+            }
+        });
+
+        function completeLevel() {
+            isLevelActive = false;
+            playSound(880, 0.3, 'sine');
+
+            // Trigger Unlocks
+            if (currentLevel === 1) { unlockedTools.cli = true; showToast("🔓 UNLOCKED LEVEL 1 TOOL: PowerShell CLI Terminal!"); }
+            if (currentLevel === 2) { unlockedTools.img = true; showToast("🔓 UNLOCKED LEVEL 2 TOOL: AI Studio Image Generator!"); }
+            if (currentLevel === 3) { unlockedTools.code = true; showToast("🔓 UNLOCKED LEVEL 3 TOOL: AI Code Assistant!"); }
+            if (currentLevel === 4) { unlockedTools.music = true; showToast("🔓 UNLOCKED LEVEL 4 TOOL: AI Music Synthesizer!"); }
+            if (currentLevel === 5) { unlockedTools.multi = true; showToast("🔓 UNLOCKED LEVEL 5 TOOL: Cloud Sync & Leaderboard!"); }
+            if (currentLevel === 6) { 
+                unlockedTools.blog = true; 
+                unlockedTools.media = true; 
+                showToast("🏆 ARCHITECT VICTORY! UNLOCKED VERIFIED MEDIA HUB!"); 
+            }
+
+            updateUnlockUi();
+
+            const modal = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+            const choices = document.getElementById('modal-choices');
+
+            modal.style.display = 'flex';
+
+            if (currentLevel < 6) {
+                title.textContent = `LEVEL ${currentLevel} COMPLETED!`;
+                body.textContent = `Excellent performance, Architect. You unlocked the Level ${currentLevel} System Tool! Proceed to Level ${currentLevel + 1}.`;
+                choices.innerHTML = `<button class="btn-choice" onclick="advanceNextLevel()">ADVANCE TO LEVEL ${currentLevel + 1}: ${GAME_LEVELS[currentLevel + 1]}</button>`;
+            } else {
+                title.textContent = 'SYSTEM RESTORED — ARCHITECT VICTORY';
+                body.textContent = `Congratulations Architect! You defeated the Matrix Overlord with ${score} PTS! Verified Media Hub unlocked.`;
+                choices.innerHTML = `<button class="btn-choice" onclick="location.reload()">REBOOT MATRIX ARCADE</button>`;
+            }
+
+            saveProgressToCloud();
+        }
+
+        function advanceNextLevel() {
+            currentLevel++;
+            startLevel();
+        }
+
+        function startLevel() {
+            document.getElementById('modal-overlay').style.display = 'none';
+            document.getElementById('shooter-touch-bar').style.display = (currentLevel === 3) ? 'flex' : 'none';
+
+            if (currentLevel === 1) initTowerDefense(false);
+            else if (currentLevel === 2) initMatchThree();
+            else if (currentLevel === 3) initShooter();
+            else if (currentLevel === 4) initTowerDefense(true);
+            else if (currentLevel === 5) initPacMaze();
+            else if (currentLevel === 6) initBossFight();
+
+            isLevelActive = true;
+            updateHud();
+        }
+
+        function gameOver() {
+            isLevelActive = false;
+            document.getElementById('modal-overlay').style.display = 'flex';
+            document.getElementById('modal-title').textContent = 'SYSTEM BREACH DETECTED';
+            document.getElementById('modal-body').textContent = 'The Matrix lost structural integrity. Re-align ethical defenses and try again.';
+            document.getElementById('modal-choices').innerHTML = `<button class="btn-choice" onclick="location.reload()">REBOOT TERMINAL</button>`;
+        }
+
+        function saveProgressToCloud() {
+            if (window.db) {
+                const uid = window.getCurrentUserId();
+                // Firestore mandatory path Rule 1
+                const docRef = doc(window.db, 'artifacts', window.appId, 'users', uid, 'progress', 'game_state');
+                setDoc(docRef, { score, level: currentLevel, updatedAt: new Date() }, { merge: true })
+                    .then(() => showToast("☁️ Progress saved to Cloud Firestore!"))
+                    .catch(e => console.log("Cloud save error:", e));
+
+                const leadRef = doc(window.db, 'artifacts', window.appId, 'public', 'data', 'leaderboard', uid);
+                setDoc(leadRef, { userId: uid, score, level: currentLevel, date: new Date() }, { merge: true });
+            }
+        }
+
+        /* ---------------- AI TOOL CALL INTEGRATIONS (GEMINI API) ---------------- */
+        async function handleCliInput(e) {
+            if (e.key === 'Enter') {
+                const field = document.getElementById('cli-input-field');
+                const query = field.value.trim();
+                if (!query) return;
+
+                const output = document.getElementById('cli-output');
+                output.innerHTML += `<div><span style="color:var(--term-cyan)">PS C:\\></span> ${query}</div>`;
+                field.value = '';
+
+                if (query.toLowerCase() === 'help') {
+                    output.innerHTML += `<div>Built-in commands: help, status, clear, or ask any AI prompt!</div>`;
+                    output.scrollTop = output.scrollHeight;
+                    return;
+                }
+
+                output.innerHTML += `<div style="color:var(--term-amber)">[Gemini AI Thinking...]</div>`;
+                output.scrollTop = output.scrollHeight;
+
+                try {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: query }] }] })
+                    });
+                    const data = await res.json();
+                    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "No AI response returned.";
+                    output.innerHTML += `<div style="color:var(--term-green)">${text}</div>`;
+                } catch (err) {
+                    output.innerHTML += `<div style="color:var(--term-alert)">AI Query Error: ${err.message}</div>`;
+                }
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        async function generateImage() {
+            const prompt = document.getElementById('img-prompt-input').value.trim();
+            const box = document.getElementById('img-output-box');
+            if (!prompt) { showToast("Please enter an image prompt!"); return; }
+
+            box.innerHTML = `<span style="color:var(--term-cyan)">Generating artwork with gemini-3.1-flash-lite-image...</span>`;
+
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-image:generateContent?key=`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: { responseModalities: ['TEXT', 'IMAGE'] }
+                    })
+                });
+                const data = await res.json();
+                const base64 = data?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
+                if (base64) {
+                    box.innerHTML = `<img src="data:image/png;base64,${base64}" style="max-height:100%; border-radius:4px;" />`;
+                } else {
+                    box.innerHTML = `<span style="color:var(--term-alert)">Failed to render image.</span>`;
+                }
+            } catch (err) {
+                box.innerHTML = `<span style="color:var(--term-alert)">Image Gen Error: ${err.message}</span>`;
+            }
+        }
+
+        async function generateCodeScript() {
+            const prompt = document.getElementById('code-prompt-input').value.trim();
+            const display = document.getElementById('code-output-display');
+            if (!prompt) { showToast("Enter a coding request!"); return; }
+
+            display.textContent = "// Generating script with Gemini 3 Flash...";
+
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: `Act as an expert code assistant. Write clean executable code for: ${prompt}` }] }]
+                    })
+                });
+                const data = await res.json();
+                display.textContent = data?.candidates?.[0]?.content?.parts?.[0]?.text || "// No code generated.";
+            } catch (err) {
+                display.textContent = `// Code Gen Error: ${err.message}`;
+            }
+        }
+
+        function playSynthBeat(type) {
+            initAudio();
+            if (type === 'cyber') { playSound(440, 0.3, 'sawtooth'); playSound(880, 0.2, 'sine'); }
+            if (type === 'ambient') { playSound(220, 0.5, 'sine'); playSound(330, 0.4, 'triangle'); }
+            if (type === 'boss') { playSound(150, 0.4, 'square'); playSound(600, 0.2, 'sawtooth'); }
+            showToast(`🎵 Playing ${type.toUpperCase()} synth sound pattern!`);
+        }
+
+        async function generateTtsVoice() {
+            const text = document.getElementById('tts-speech-input').value.trim();
+            const playerBox = document.getElementById('audio-player-container');
+            if (!text) return;
+
+            playerBox.innerHTML = `<span style="color:var(--term-amber)">Generating speech audio with gemini-2.5-flash-preview-tts...</span>`;
+
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: text }] }],
+                        generationConfig: {
+                            responseModalities: ["AUDIO"],
+                            speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } }
+                        }
+                    })
+                });
+                const data = await res.json();
+                const part = data?.candidates?.[0]?.content?.parts?.[0];
+                const audioData = part?.inlineData?.data;
+                const mimeType = part?.inlineData?.mimeType;
+
+                if (audioData) {
+                    playerBox.innerHTML = `<audio controls autoPlay src="data:${mimeType || 'audio/mp3'};base64,${audioData}"></audio>`;
+                } else {
+                    playerBox.innerHTML = `<span style="color:var(--term-alert)">Speech generation error.</span>`;
+                }
+            } catch (err) {
+                playerBox.innerHTML = `<span style="color:var(--term-alert)">TTS Error: ${err.message}</span>`;
+            }
+        }
+
+        async function publishMediaPost() {
+            const title = document.getElementById('media-title').value.trim();
+            const content = document.getElementById('media-content').value.trim();
+            if (!title || !content) { showToast("Title and content required!"); return; }
+
+            if (window.db) {
+                const uid = window.getCurrentUserId();
+                // Rule 1 compliance
+                const blogCol = collection(window.db, 'artifacts', window.appId, 'public', 'data', 'blog_posts');
+                await addDoc(blogCol, { title, content, userId: uid, date: new Date() });
+                showToast("✅ Published verified artifact to Public Matrix Feed!");
+                document.getElementById('media-title').value = '';
+                document.getElementById('media-content').value = '';
+                toggleTool('blog');
+            }
+        }
+
+        function toggleAudio() {
+            audioEnabled = !audioEnabled;
+            document.getElementById('btn-audio').textContent = `AUDIO: ${audioEnabled ? 'ON' : 'OFF'}`;
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+            else if (document.exitFullscreen) document.exitFullscreen();
+        }
+
+        let lastTime = performance.now();
+        function gameLoop(now) {
+            const dt = (now - lastTime) / 1000;
+            lastTime = now;
+
+            ctx.clearRect(0, 0, width, height);
+
+            if (isLevelActive) {
+                if (currentLevel === 1 || currentLevel === 4) {
+                    updateTowerDefense(dt); renderTowerDefense();
+                } else if (currentLevel === 2) {
+                    renderMatchThree();
+                } else if (currentLevel === 3) {
+                    updateShooter(dt); renderShooter();
+                } else if (currentLevel === 5) {
+                    updatePacMaze(dt); renderPacMaze();
+                } else if (currentLevel === 6) {
+                    updateBossFight(dt); renderBossFight();
+                }
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        resizeCanvas();
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
 </html>
+
+
