@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Chapter 3 — The Mirror Path story and traversal prototype.">
+  <meta name="theme-color" content="#040914">
+  <link rel="icon" type="image/png" href="../../assets/logo-S7NXL_ug.png">
+  <title>Chapter 3 — The Mirror Path | Amazing Grace Story Library</title>
+  <style>
+    :root {
+      --bg: #040914;
+      --surface: #0f172a;
+      --surface-2: #162036;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --gold: #facc15;
+      --blue: #60a5fa;
+      --silver: #cbd5e1;
+      --border: rgba(148, 163, 184, 0.25);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: radial-gradient(circle at top, #0b1224 0%, var(--bg) 50%, #03050c 100%);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(4, 9, 20, 0.95);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+    .nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.85rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+    .nav-links { display: flex; gap: 0.65rem; flex-wrap: wrap; }
+    .hero {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2.75rem 1.25rem 1.5rem;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4.8vw, 3.2rem);
+      color: #fff;
+      text-shadow: 0 0 20px rgba(148, 163, 184, 0.4);
+    }
+    .subtitle { color: var(--muted); margin-top: 0.5rem; }
+    .panel {
+      max-width: 960px;
+      margin: 0 auto 1.1rem;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: linear-gradient(180deg, var(--surface) 0%, rgba(15, 23, 42, 0.92) 100%);
+    }
+    h2 { margin-top: 0; color: var(--silver); }
+    h3 { color: #f8fafc; }
+    blockquote {
+      border-left: 3px solid var(--silver);
+      margin: 0.75rem 0;
+      padding: 0.25rem 0 0.25rem 0.85rem;
+      color: #f1f5f9;
+    }
+    .prompt {
+      margin: 0.7rem 0;
+      padding: 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.75);
+      color: var(--silver);
+      font-style: italic;
+    }
+    .duo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem;
+      background: var(--surface-2);
+    }
+    .proto-layout {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0.9rem;
+      align-items: start;
+    }
+    .proto-world {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.9rem;
+      min-height: 200px;
+      background: rgba(15, 23, 42, 0.75);
+    }
+    .proto-world.active-harmonic { box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.65) inset; }
+    .proto-world.active-fractal { box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.65) inset; }
+    .node {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      margin: 0.4rem 0;
+      padding: 0.5rem 0.6rem;
+      background: rgba(2, 6, 23, 0.7);
+      font-size: 0.92rem;
+    }
+    .node.ok { border-color: rgba(34, 197, 94, 0.65); }
+    .node.fail { border-color: rgba(239, 68, 68, 0.65); }
+    .controls { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
+    button {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #1e293b;
+      color: #fff;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+    button:hover { background: #334155; }
+    .status {
+      margin-top: 0.75rem;
+      padding: 0.7rem;
+      border-radius: 9px;
+      background: rgba(15, 23, 42, 0.82);
+      border: 1px solid var(--border);
+      color: var(--silver);
+      font-size: 0.92rem;
+    }
+    .secondary-links {
+      max-width: 960px;
+      margin: 1.5rem auto 2.4rem;
+      padding: 1rem 1.2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .secondary-links ul {
+      margin: 0.5rem 0 0;
+      padding-left: 1.1rem;
+    }
+    .secondary-links a { color: #bfdbfe; }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1rem;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav">
+      <a href="../../">✨ Amazing Grace</a>
+      <nav class="nav-links" aria-label="Story navigation">
+        <a href="../">Stories</a>
+        <a href="../../library/">Library</a>
+        <a href="../../arcade/">Arcade</a>
+        <a href="../../ministry/">Ministry</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Chapter 3 — The Mirror Path</h1>
+      <p class="subtitle">Packaged story chapter + traversal systems + semi-playable mirror crossing prototype.</p>
+    </section>
+
+    <section class="panel" aria-label="Scene 1 First Crossing">
+      <h2>Scene 1 — “First Crossing”</h2>
+      <p><strong>Location:</strong> Mirror Layer (unstable, silver-white void with floating shards of both worlds).</p>
+      <h3>[Cinematic]</h3>
+      <ul>
+        <li>Camera pans across floating fragments: harmonic temples, fractal gardens, frozen echoes.</li>
+        <li>You (Path-Bearer) appear on a golden platform.</li>
+        <li>Nicholai-Echo appears on a blue platform opposite you.</li>
+      </ul>
+      <blockquote><strong>YOU:</strong> “Is this… between us?”</blockquote>
+      <blockquote><strong>NICHOLAI-ECHO:</strong> “This is what happens when two worlds remember each other.”</blockquote>
+      <p>A thin silver bridge flickers between the platforms, unstable.</p>
+      <p class="prompt">SYSTEM PROMPT: Mirror Path traversal unlocked.</p>
+    </section>
+
+    <section class="panel" aria-label="Gameplay Segment 1">
+      <h2>Gameplay Segment 1 — “Learning to Cross”</h2>
+      <h3>Core mechanics introduced</h3>
+      <div class="duo">
+        <article class="card"><strong>Mirror Phase Shift</strong><br>Switch which world is “foreground” in the Mirror Layer.</article>
+        <article class="card"><strong>Reflection Jump</strong><br>Jump between mirrored surfaces (gold ↔ blue).</article>
+        <article class="card"><strong>Dual Trigger Nodes</strong><br>Some platforms only stabilize when both Nicholais act.</article>
+      </div>
+      <p><strong>Objective:</strong> Reach the central Mirror Nexus.</p>
+      <h3>Key beats</h3>
+      <ul>
+        <li>You stabilize golden shards (Harmonic Anchors).</li>
+        <li>Nicholai-Echo stabilizes blue shards (Fractal Anchors).</li>
+        <li>When both are stable, a silver Mirror Bridge forms.</li>
+      </ul>
+      <blockquote><strong>YOU:</strong> “Every step I take, I feel your world shift.”</blockquote>
+      <blockquote><strong>NICHOLAI-ECHO:</strong> “And every choice I make echoes in yours.”</blockquote>
+    </section>
+
+    <section class="panel" aria-label="Mirror Path systems">
+      <h2>Full Mirror Path traversal logic (design)</h2>
+      <h3>Core systems</h3>
+      <ul>
+        <li><strong>State:</strong> WORLD_HARMONIC, WORLD_FRACTAL, WORLD_MIRROR</li>
+        <li><strong>Player roles:</strong> Player 1 → Lead Player (harmonic role), Player 2 or AI → Nicholai-Echo (fractal role)</li>
+      </ul>
+      <h3>Mechanics</h3>
+      <ol>
+        <li><strong>Mirror Phase Shift:</strong> Input trigger (Q / LB), toggles foreground world, changes solid platforms, alters enemy variants.</li>
+        <li><strong>Reflection Jump:</strong> Only near reflective surfaces; teleports player to mirrored position in the other world/layer.</li>
+        <li><strong>Dual Trigger Nodes:</strong> Harmonic activation + fractal activation required; both active forms Mirror Bridge.</li>
+        <li><strong>Paradox-Harmony Sync:</strong> Requires Stability + Paradox thresholds; enables time dilation, full platform visibility, and Dual Resonance Beam.</li>
+      </ol>
+    </section>
+
+    <section class="panel" aria-label="Prototype mirror traversal">
+      <h2>Mirror Path traversal prototype (semi-playable)</h2>
+      <p>This vertical slice demonstrates phase shift, dual node activation, reflection jump gating, and sync eligibility.</p>
+      <div class="proto-layout">
+        <section id="harmonicWorld" class="proto-world active-harmonic" aria-label="Harmonic world room">
+          <h3>Harmonic room (left)</h3>
+          <div id="harmonicNode" class="node"><span>Harmonic Anchor</span><span>Offline</span></div>
+          <div class="node"><span>Lead Player state</span><span id="playerPos">Start</span></div>
+        </section>
+
+        <section id="fractalWorld" class="proto-world" aria-label="Fractal world room">
+          <h3>Fractal room (right)</h3>
+          <div id="fractalNode" class="node"><span>Fractal Anchor</span><span>Offline</span></div>
+          <div class="node"><span>Nicholai-Echo state</span><span id="echoState">Awaiting command</span></div>
+        </section>
+
+        <section class="proto-world" aria-label="Mirror gate and controls">
+          <h3>Mirror gate (center)</h3>
+          <div id="bridgeNode" class="node fail"><span>Mirror Bridge</span><span>Unstable</span></div>
+          <div id="syncNode" class="node"><span>Paradox-Harmony Sync</span><span>Locked</span></div>
+          <div class="controls">
+            <button id="phaseBtn" type="button">Mirror Phase Shift</button>
+            <button id="harmonicBtn" type="button">Stabilize Harmonic Anchor</button>
+            <button id="fractalBtn" type="button">Stabilize Fractal Anchor</button>
+            <button id="jumpBtn" type="button">Reflection Jump</button>
+            <button id="syncBtn" type="button">Paradox-Harmony Sync</button>
+            <button id="fullscreenBtn" type="button">Toggle Fullscreen</button>
+          </div>
+          <div id="status" class="status">Foreground world: Harmonic. Objective: stabilize both anchors and cross.</div>
+        </section>
+      </div>
+    </section>
+
+    <section class="panel" aria-label="Scene 2 and 3">
+      <h2>Scene 2 — “The First Sync”</h2>
+      <p>At the Mirror Nexus, a large silver glyph spins.</p>
+      <p class="prompt">SYSTEM PROMPT: Paradox-Harmony Sync available.</p>
+      <blockquote><strong>YOU:</strong> “Ready?”</blockquote>
+      <blockquote><strong>NICHOLAI-ECHO:</strong> “Let’s see what we can do together.”</blockquote>
+      <p>Both channel their energy into the glyph. The Mirror Layer stabilizes—geometry becomes clean, symmetrical.</p>
+      <blockquote><strong>ORACLE (distant):</strong> “Two paths, one bridge.”</blockquote>
+
+      <h2>Gameplay Segment 2 — “Shared Trial”</h2>
+      <ul>
+        <li>Cooperative puzzles: you stand on harmonic plates to open fractal doors; he stands on fractal plates to open harmonic bridges.</li>
+        <li>Fail state: if either overuses power, Mirror Instability rises.</li>
+        <li>Mini-Boss: Mirror Distortion attacks with Phase Scramble and Path Blur.</li>
+        <li>Solution: trigger Paradox-Harmony Sync to clear the distortion.</li>
+      </ul>
+
+      <h2>Scene 3 — “Toward the Collapse”</h2>
+      <blockquote><strong>YOU:</strong> “I feel something… heavy. Old.”</blockquote>
+      <blockquote><strong>NICHOLAI-ECHO:</strong> “The thing that wants both worlds to fall.”</blockquote>
+      <blockquote><strong>ORACLE:</strong> “Step forward, and face the Collapse.”</blockquote>
+      <p>Fade out. Chapter 3 ends.</p>
+    </section>
+
+    <section class="secondary-links" aria-label="Related links and next steps">
+      <strong>Instructions & related links (kept below primary content):</strong>
+      <ul>
+        <li><a href="../collapse-engine/">Next story: Chapter 4 — The Collapse Engine</a></li>
+        <li><a href="../chapter-34-package/package.json">Chapter 3/4 package manifest (JSON)</a></li>
+        <li><a href="../../OST/">OST package folder</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>&copy; 2026 Amazing Grace Home Living — Mirror Path package</footer>
+
+  <script>
+    (function () {
+      const state = {
+        world: 'HARMONIC',
+        harmonicAnchor: false,
+        fractalAnchor: false,
+        crossed: false,
+        synced: false
+      };
+
+      const harmonicWorld = document.getElementById('harmonicWorld');
+      const fractalWorld = document.getElementById('fractalWorld');
+      const harmonicNode = document.getElementById('harmonicNode');
+      const fractalNode = document.getElementById('fractalNode');
+      const bridgeNode = document.getElementById('bridgeNode');
+      const syncNode = document.getElementById('syncNode');
+      const playerPos = document.getElementById('playerPos');
+      const echoState = document.getElementById('echoState');
+      const status = document.getElementById('status');
+
+      function setNode(node, okText, offText, active) {
+        node.classList.toggle('ok', !!active);
+        node.classList.toggle('fail', !active);
+        node.lastElementChild.textContent = active ? okText : offText;
+      }
+
+      function render() {
+        harmonicWorld.classList.toggle('active-harmonic', state.world === 'HARMONIC');
+        fractalWorld.classList.toggle('active-fractal', state.world === 'FRACTAL');
+
+        setNode(harmonicNode, 'Stable', 'Offline', state.harmonicAnchor);
+        setNode(fractalNode, 'Stable', 'Offline', state.fractalAnchor);
+
+        const bridgeStable = state.harmonicAnchor && state.fractalAnchor;
+        setNode(bridgeNode, 'Stable', 'Unstable', bridgeStable);
+
+        const canSync = bridgeStable;
+        syncNode.classList.toggle('ok', canSync);
+        syncNode.lastElementChild.textContent = state.synced ? 'Active' : canSync ? 'Available' : 'Locked';
+
+        if (state.crossed && !state.synced) {
+          status.textContent = 'Mirror crossing complete. Trigger Paradox-Harmony Sync to lock in stability.';
+        } else if (state.synced) {
+          status.textContent = 'Sync successful. Mirror Layer stabilized. Chapter objective complete.';
+        } else {
+          status.textContent = 'Foreground world: ' + (state.world === 'HARMONIC' ? 'Harmonic' : 'Fractal') + '. Stabilize both anchors and cross.';
+        }
+      }
+
+      document.getElementById('phaseBtn').addEventListener('click', function () {
+        state.world = state.world === 'HARMONIC' ? 'FRACTAL' : 'HARMONIC';
+        echoState.textContent = state.world === 'FRACTAL' ? 'Fractal foreground online' : 'Awaiting command';
+        render();
+      });
+
+      document.getElementById('harmonicBtn').addEventListener('click', function () {
+        state.harmonicAnchor = true;
+        playerPos.textContent = 'Harmonic Anchor';
+        render();
+      });
+
+      document.getElementById('fractalBtn').addEventListener('click', function () {
+        state.fractalAnchor = true;
+        echoState.textContent = 'Fractal Anchor stable';
+        render();
+      });
+
+      document.getElementById('jumpBtn').addEventListener('click', function () {
+        if (state.harmonicAnchor && state.fractalAnchor) {
+          state.crossed = true;
+          playerPos.textContent = 'Mirror Nexus';
+        } else {
+          status.textContent = 'Reflection Jump failed: both anchors must be stable.';
+        }
+        render();
+      });
+
+      document.getElementById('syncBtn').addEventListener('click', function () {
+        if (state.harmonicAnchor && state.fractalAnchor) {
+          state.synced = true;
+        } else {
+          status.textContent = 'Paradox-Harmony Sync unavailable: threshold not met.';
+        }
+        render();
+      });
+
+      document.getElementById('fullscreenBtn').addEventListener('click', function () {
+        if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen();
+        } else if (!document.fullscreenElement) {
+          status.textContent = 'Fullscreen is not supported in this browser.';
+        } else {
+          document.exitFullscreen?.();
+        }
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
