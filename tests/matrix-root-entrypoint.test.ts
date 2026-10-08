@@ -23,7 +23,7 @@ function treeContainsType(node: unknown, target: unknown): boolean {
 }
 
 describe('matrix root entrypoint', () => {
-  it('mounts the full MatrixOfConscience React app for the matrix subdomain root', async () => {
+  it('mounts the modular Matrix of Conscience React app for the matrix subdomain root', async () => {
     const html = fs.readFileSync(path.resolve(__dirname, '../matrix-of-conscience/index.html'), 'utf8');
     const rootElement = { innerHTML: '' };
     const render = vi.fn();
@@ -33,7 +33,7 @@ describe('matrix root entrypoint', () => {
     const addEventListener = vi.fn();
 
     vi.doMock('react-dom/client', () => ({ createRoot }));
-    vi.doMock('../src/components/MatrixOfConscience', () => ({
+    vi.doMock('../matrix-of-conscience/MatrixApp', () => ({
       default: matrixApp,
     }));
 

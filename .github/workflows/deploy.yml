@@ -42,7 +42,7 @@ jobs:
 
       - name: Publish site
         run: |
-          rsync --archive --delete --exclude='.git' --exclude='.nojekyll' source/dist/ pages/
+          rsync --archive --delete --exclude='.git' --exclude='.nojekyll' --exclude='/pr-*/' source/dist/ pages/
           git -C pages config user.name "github-actions[bot]"
           git -C pages config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git -C pages add --all
