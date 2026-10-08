@@ -1,1 +1,0 @@
-import{s as e}from"./firebase-CMd5ksbP.js";export{e as loginWithGoogle};
