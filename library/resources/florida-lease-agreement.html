@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Florida Residential Lease Agreement Template - Amazing Grace Home Living">
+    <meta name="theme-color" content="#020617">
+    <link rel="icon" type="image/png" href="../../assets/logo.png">
+    <link rel="stylesheet" href="../../assets/css/unified-nav.css">
+    <title>Florida Lease Agreement | Amazing Grace Home Living</title>
+
+    <style>
+        :root {
+            --bg: #020617;
+            --surface: #0f172a;
+            --border: #1e293b;
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #38bdf8;
+            --neon-blue: #0ea5e9;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Georgia, serif;
+            background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(2, 6, 23, 0.96);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(12px);
+        }
+
+        .nav-container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 1rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .logo img {
+            height: 42px;
+            width: auto;
+            border-radius: 6px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+            gap: 0.75rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 0.8rem;
+            border-radius: 999px;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.nav-active-page {
+            background: rgba(56, 189, 248, 0.14);
+            color: #fff;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin: 0 0 0.5rem;
+            color: #fff;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            text-align: center;
+            margin: 0 0 2rem;
+        }
+
+        .lease-document {
+            background: rgba(15, 23, 42, 0.92);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin: 1.5rem 0 1rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .subsection-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--neon-blue);
+            margin: 1.25rem 0 0.75rem;
+        }
+
+        p {
+            margin: 0.75rem 0;
+        }
+
+        .definition-list {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .definition {
+            margin: 0.75rem 0;
+        }
+
+        .definition strong {
+            color: var(--neon-blue);
+        }
+
+        .signature-block {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .signature-line {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .signature-item {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .signature-blank {
+            border-bottom: 1px solid var(--text);
+            height: 2rem;
+        }
+
+        .signature-label {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .downloadable {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.14);
+            color: var(--accent);
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--accent);
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .download-btn:hover {
+            background: rgba(56, 189, 248, 0.28);
+            color: #7dd3fc;
+        }
+
+        .footer {
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            text-align: center;
+            padding: 1.5rem 1rem 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 1rem;
+            }
+
+            .lease-document {
+                padding: 1.25rem;
+            }
+
+            .signature-line {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .site-header,
+            .downloadable,
+            .footer {
+                display: none;
+            }
+
+            .lease-document {
+                background: white;
+                border: none;
+                padding: 0;
+            }
+
+            * {
+                color: black;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="../../" class="logo" aria-label="Amazing Grace Home Living — Home">
+                <img src="../../assets/logo.png" alt="Amazing Grace Home Living">
+            </a>
+
+            <nav id="main-nav" class="nav-links" aria-label="Main navigation">
+                <a href="../../#properties">Listings</a>
+                <a href="../" class="nav-active-page" aria-current="page">Library</a>
+                <a href="../../arcade/">Arcade</a>
+                <a href="../../ministry/">Ministry</a>
+                <a href="../../contact/">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <h1>Florida Residential Lease Agreement</h1>
+        <p class="subtitle">Template provided by Amazing Grace Home Living — Tampa and Largo, Florida</p>
+
+        <div class="lease-document">
+            <div class="section-title">FLORIDA RESIDENTIAL LEASE AGREEMENT</div>
+
+            <p>This Lease Agreement (hereinafter "Lease") is entered into on <strong>_________</strong> (date), by and between:</p>
+
+            <div class="definition-list">
+                <div class="definition">
+                    <strong>LANDLORD(S):</strong> _________________________________________________ (name(s))
+                </div>
+                <div class="definition">
+                    <strong>Address:</strong> _________________________________________________________
+                </div>
+            </div>
+
+            <p style="margin-top: 1.5rem;">and</p>
+
+            <div class="definition-list">
+                <div class="definition">
+                    <strong>TENANT(S):</strong> _________________________________________________ (name(s))
+                </div>
+                <div class="definition">
+                    <strong>Address:</strong> _________________________________________________________
+                </div>
+            </div>
+
+            <!-- Section 1 -->
+            <div class="section-title">1. PROPERTY DESCRIPTION</div>
+            <p>The Landlord hereby leases to the Tenant, and the Tenant hereby leases from the Landlord, the residential property located at:</p>
+            <p style="margin-left: 1.5rem; font-weight: bold;">
+                ____________________________________________________________________<br>
+                ____________________________________________________________________<br>
+                County of __________________, State of Florida
+            </p>
+
+            <!-- Section 2 -->
+            <div class="section-title">2. TERM OF LEASE</div>
+            <p>The lease shall commence on <strong>_________</strong> and shall terminate on <strong>_________</strong>, unless sooner terminated as provided herein. This is a <strong>_____</strong> month lease.</p>
+
+            <!-- Section 3 -->
+            <div class="section-title">3. RENT AND PAYMENT TERMS</div>
+            <div class="subsection-title">3.1 Monthly Rent</div>
+            <p>The monthly rent shall be <strong>$_________</strong>, payable on the <strong>_____</strong> day of each month in advance.</p>
+
+            <div class="subsection-title">3.2 Payment Method</div>
+            <p>Rent shall be paid to: <strong>_________________________________________________________</strong></p>
+            <p>Payment shall be made via: ☐ Check ☐ Money Order ☐ Bank Transfer ☐ Other: _________________</p>
+
+            <div class="subsection-title">3.3 Late Payment</div>
+            <p>If rent is not paid by the fifth (5th) day after the due date, Tenant shall pay a late fee of <strong>$_________</strong> or <strong>_____%</strong> of monthly rent, whichever is greater.</p>
+
+            <!-- Section 4 -->
+            <div class="section-title">4. SECURITY DEPOSIT</div>
+            <p>Tenant shall deposit with Landlord the sum of <strong>$_________</strong> as a security deposit within <strong>_____</strong> days of lease execution. This deposit shall be held as security for the faithful performance of all terms of this Lease.</p>
+
+            <p>Per Florida Statute 83.49, the Landlord shall hold this deposit in an interest-bearing account and shall provide Tenant with written notice of the location and terms of the account within 30 days. The interest rate shall be: <strong>_____%</strong></p>
+
+            <p>The Landlord shall return the security deposit within 15 days after lease termination, less any lawful deductions for damage or unpaid rent.</p>
+
+            <!-- Section 5 -->
+            <div class="section-title">5. UTILITIES AND SERVICES</div>
+            <p>Tenant shall be responsible for payment of the following utilities and services:</p>
+            <p style="margin-left: 1.5rem;">
+                ☐ Electricity ☐ Gas ☐ Water ☐ Sewer ☐ Trash ☐ Internet ☐ Other: ______________
+            </p>
+            <p>Landlord shall be responsible for:</p>
+            <p style="margin-left: 1.5rem;">
+                ☐ Electricity ☐ Gas ☐ Water ☐ Sewer ☐ Trash ☐ Internet ☐ Other: ______________
+            </p>
+
+            <!-- Section 6 -->
+            <div class="section-title">6. MAINTENANCE AND REPAIRS</div>
+            <div class="subsection-title">6.1 Tenant Responsibilities</div>
+            <p>Tenant agrees to maintain the property in clean and sanitary condition, including:</p>
+            <ul style="margin-left: 1.5rem;">
+                <li>Keeping all areas clean and free of trash</li>
+                <li>Maintaining landscaping and yard (unless otherwise specified)</li>
+                <li>Reporting all maintenance issues to Landlord immediately</li>
+                <li>Replacing light bulbs and smoke detector batteries</li>
+            </ul>
+
+            <div class="subsection-title">6.2 Landlord Responsibilities</div>
+            <p>Landlord shall maintain the property in compliance with Florida housing codes, including:</p>
+            <ul style="margin-left: 1.5rem;">
+                <li>Structural integrity of the building</li>
+                <li>Plumbing, electrical, and HVAC systems</li>
+                <li>Roof and foundation repairs</li>
+                <li>Common area maintenance</li>
+            </ul>
+
+            <!-- Section 7 -->
+            <div class="section-title">7. OCCUPANCY AND USE</div>
+            <p>The property shall be used and occupied solely by the Tenant named herein and their immediate family members. The number of occupants shall not exceed <strong>_____</strong> without Landlord's written consent.</p>
+
+            <p>Tenant agrees not to:</p>
+            <ul style="margin-left: 1.5rem;">
+                <li>Use the property for any illegal purpose</li>
+                <li>Operate a business from the property without written consent</li>
+                <li>Keep any hazardous materials on the property</li>
+                <li>Create excessive noise or nuisance</li>
+            </ul>
+
+            <!-- Section 8 -->
+            <div class="section-title">8. PETS</div>
+            <p>☐ No pets are allowed</p>
+            <p>☐ Pets are allowed with the following conditions:</p>
+            <p style="margin-left: 1.5rem;">
+                Number of pets: <strong>_____</strong> | Type: <strong>_____________________</strong><br>
+                Pet deposit: <strong>$_________</strong> | Monthly pet fee: <strong>$_________</strong><br>
+                Conditions: __________________________________________________________________
+            </p>
+
+            <!-- Section 9 -->
+            <div class="section-title">9. INSURANCE</div>
+            <p>Tenant shall obtain renter's insurance with a minimum coverage of <strong>$_________</strong> and shall provide proof of insurance to Landlord upon request.</p>
+
+            <!-- Section 10 -->
+            <div class="section-title">10. ENTRY AND INSPECTION</div>
+            <p>Per Florida Statute 83.53, Landlord may enter the property with 12 hours' notice for:</p>
+            <ul style="margin-left: 1.5rem;">
+                <li>Repairs and maintenance</li>
+                <li>Pest control</li>
+                <li>Safety inspections</li>
+                <li>Showing to prospective tenants (within 60 days of lease expiration)</li>
+            </ul>
+            <p>Emergency entry without notice is permitted for fire, flood, gas leak, or other emergencies.</p>
+
+            <!-- Section 11 -->
+            <div class="section-title">11. LEASE RENEWAL AND TERMINATION</div>
+            <div class="subsection-title">11.1 Notice of Non-Renewal</div>
+            <p>Either party must provide <strong>_____</strong> days' written notice of intent not to renew this lease.</p>
+
+            <div class="subsection-title">11.2 Early Termination</div>
+            <p>If Tenant terminates early without cause, Tenant shall be liable for:</p>
+            <p style="margin-left: 1.5rem;">
+                ☐ Remaining rent ☐ Lease break penalty: <strong>$_________</strong> or <strong>_____%</strong> of rent
+            </p>
+
+            <!-- Section 12 -->
+            <div class="section-title">12. RULES AND REGULATIONS</div>
+            <p>Tenant agrees to comply with all applicable federal, state, and local laws, as well as:</p>
+            <ul style="margin-left: 1.5rem;">
+                <li>Community rules and regulations</li>
+                <li>HOA requirements (if applicable)</li>
+                <li>Any additional rules provided by Landlord in writing</li>
+            </ul>
+
+            <!-- Section 13 -->
+            <div class="section-title">13. DEFAULT AND REMEDIES</div>
+            <p>If Tenant fails to pay rent or violates any material term of this lease, Landlord may:</p>
+            <ul style="margin-left: 1.5rem;">
+                <li>Provide written notice to cure the default within 3 days (for non-payment) or 7 days (for other violations)</li>
+                <li>If not cured, initiate eviction proceedings under Florida law</li>
+                <li>Pursue legal action for damages and attorney fees</li>
+            </ul>
+
+            <!-- Section 14 -->
+            <div class="section-title">14. DAMAGE AND LIABILITY</div>
+            <p>Tenant shall be liable for all damage to the property caused by Tenant's negligence or misuse. Tenant's personal property is at Tenant's own risk. Landlord is not responsible for theft, vandalism, or damage beyond normal wear and tear.</p>
+
+            <!-- Section 15 -->
+            <div class="section-title">15. DISPUTE RESOLUTION</div>
+            <p>Any disputes arising from this lease shall be governed by Florida law. ☐ Disputes shall be resolved through mediation before litigation.</p>
+
+            <!-- Section 16 -->
+            <div class="section-title">16. ENTIRE AGREEMENT</div>
+            <p>This Lease constitutes the entire agreement between the parties and supersedes all prior negotiations and agreements. No modifications shall be valid unless in writing and signed by both parties.</p>
+
+            <!-- Signatures -->
+            <div class="signature-block">
+                <p style="font-weight: bold; text-align: center;">SIGNATURES</p>
+
+                <div class="signature-line">
+                    <div class="signature-item">
+                        <p style="margin: 0; font-weight: bold;">LANDLORD(S)</p>
+                        <div class="signature-blank"></div>
+                        <p class="signature-label">Signature</p>
+                        <p style="margin: 0;">_____________________________</p>
+                        <p class="signature-label">Printed Name</p>
+                        <p style="margin: 0;">_____________________________</p>
+                        <p class="signature-label">Date</p>
+                    </div>
+
+                    <div class="signature-item">
+                        <p style="margin: 0; font-weight: bold;">TENANT(S)</p>
+                        <div class="signature-blank"></div>
+                        <p class="signature-label">Signature</p>
+                        <p style="margin: 0;">_____________________________</p>
+                        <p class="signature-label">Printed Name</p>
+                        <p style="margin: 0;">_____________________________</p>
+                        <p class="signature-label">Date</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                <p style="font-style: italic; font-size: 0.9rem; color: var(--muted);">
+                    <strong>Disclaimer:</strong> This template is provided for informational purposes only and does not constitute legal advice. Both parties should consult with an attorney to ensure compliance with Florida law and their specific needs. Amazing Grace Home Living assumes no liability for the use of this document.
+                </p>
+            </div>
+        </div>
+
+        <div class="downloadable">
+            <p style="color: var(--muted); margin-bottom: 1rem;">
+                You can print this agreement directly from your browser for use as a template.
+            </p>
+            <button class="download-btn" onclick="window.print()">🖨️ Print Agreement</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Amazing Grace Home Living &mdash; Tampa and Largo, Florida</p>
+    </footer>
+</body>
+</html>

@@ -923,3 +923,40 @@
     transition: none !important;
   }
 }
+
+/* Mobile Level 1 Canvas Fix */
+@media (max-width: 900px) {
+  .level1-container {
+   padding: 0.5rem;
+  }
+  
+  .level1-stats-bar {
+   flex-wrap: wrap;
+   gap: 0.75rem;
+  }
+  
+  .level1-tower-grid {
+   grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .level1-container {
+   padding: 0.25rem;
+  }
+  
+  .level1-title {
+   font-size: 1rem;
+   margin-bottom: 0.75rem;
+  }
+  
+  .level1-stats-bar {
+   flex-direction: column;
+   gap: 0.5rem;
+  }
+  
+  .level1-tower-grid {
+   grid-template-columns: repeat(3, 1fr);
+   gap: 0.5rem;
+  }
+}
