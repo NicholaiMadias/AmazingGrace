@@ -36,6 +36,7 @@ export default defineConfig({
         ministriesSevenStarCanon: resolve(__dirname, "ministries/seven-star-canon.html"),
         stories:           resolve(__dirname, "stories/index.html"),
         storiesBlogArchitecturalSynthesis: resolve(__dirname, "stories/blog/architectural-js-synthesis.html"),
+        storiesBlogSecretManagement: resolve(__dirname, "stories/blog/zero-overhead-secret-management-google-authentication.html"),
         "stories/blog/rebellion": resolve(__dirname, "stories/blog/rebellion.html"),
         storiesExposeMatrix: resolve(__dirname, "stories/expose-the-matrix/index.html"),
         storiesMatrix:      resolve(__dirname, "stories/matrix.html"),
