@@ -1299,16 +1299,27 @@
                 if (!query) return;
 
                 const output = document.getElementById('cli-output');
-                output.innerHTML += `<div><span style="color:var(--term-cyan)">PS C:\\></span> ${query}</div>`;
+                const appendOutput = (text, color) => {
+                    const line = document.createElement('div');
+                    if (color) line.style.color = color;
+                    line.textContent = text;
+                    output.appendChild(line);
+                };
+                const promptLine = document.createElement('div');
+                const promptPrefix = document.createElement('span');
+                promptPrefix.style.color = 'var(--term-cyan)';
+                promptPrefix.textContent = 'PS C:\\>';
+                promptLine.append(promptPrefix, document.createTextNode(` ${query}`));
+                output.appendChild(promptLine);
                 field.value = '';
 
                 if (query.toLowerCase() === 'help') {
-                    output.innerHTML += `<div>Built-in commands: help, status, clear, or ask any AI prompt!</div>`;
+                    appendOutput('Built-in commands: help, status, clear, or ask any AI prompt!');
                     output.scrollTop = output.scrollHeight;
                     return;
                 }
 
-                output.innerHTML += `<div style="color:var(--term-amber)">[Gemini AI Thinking...]</div>`;
+                appendOutput('[Gemini AI Thinking...]', 'var(--term-amber)');
                 output.scrollTop = output.scrollHeight;
 
                 try {
@@ -1319,9 +1330,9 @@
                     });
                     const data = await res.json();
                     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "No AI response returned.";
-                    output.innerHTML += `<div style="color:var(--term-green)">${text}</div>`;
+                    appendOutput(text, 'var(--term-green)');
                 } catch (err) {
-                    output.innerHTML += `<div style="color:var(--term-alert)">AI Query Error: ${err.message}</div>`;
+                    appendOutput(`AI Query Error: ${err.message}`, 'var(--term-alert)');
                 }
                 output.scrollTop = output.scrollHeight;
             }
@@ -1475,5 +1486,4 @@
     </script>
 </body>
 </html>
-
 
