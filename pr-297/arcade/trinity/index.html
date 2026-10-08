@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Trinity: Matrix of Conscience V1.0 — a self-contained match-3 puzzle engine with localStorage persistence.">
+    <title>Trinity V1.0: Matrix of Conscience | Amazing Grace</title>
+    <link rel="icon" type="image/png" href="../../assets/logo-S7NXL_ug.png">
+    <style>
+        @font-face {
+            font-family: 'Orbitron';
+            src: url('data:font/woff2;base64,d09GMgABAAAAAAS4ABIAAAABjFwAAAQyAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAgkgJg0gIgLx3AQAY5QEjCaoCCAABCAIABCAEIAUEFgYcAYHADRmMVUnXYkKKhx2qxq4VRwRoGH52KPrFtOqZl8KqBkANRFE3AQAA') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --bg: #0a0c18;
+            --panel: rgba(10, 12, 24, 0.9);
+            --border: rgba(0, 255, 160, 0.22);
+            --text: #d7fbe8;
+            --muted: rgba(215, 251, 232, 0.75);
+            --green: #00ff00;
+            --blue: #0066ff;
+            --accent: #00ffa0;
+        }
+
+        * { box-sizing: border-box; }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            background: #000;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--green);
+            overflow: hidden;
+        }
+
+        body {
+            background: radial-gradient(circle at 50% 15%, rgba(0,255,160,0.10), transparent 55%), var(--bg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 255, 160, 0.1);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #0066ff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .app-view {
+            width: min(100%, 600px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .hidden { display: none !important; }
+
+        /* START VIEW */
+        .text-center {
+            text-align: center;
+        }
+
+        .icon-large {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            filter: drop-shadow(0 0 25px rgba(0, 255, 160, 0.4));
+        }
+
+        h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 1rem 0;
+        }
+
+        .subtitle-text {
+            color: var(--muted);
+            font-size: 0.9rem;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 160, 0.3);
+            padding: 1rem;
+            border-radius: 12px;
+            color: white;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        input[type="text"]::placeholder {
+            color: rgba(215, 251, 232, 0.3);
+        }
+
+        button {
+            background: linear-gradient(to right, #0066ff, #0066ff);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 16px;
+            font-family: 'Orbitron', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        button:hover {
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.7);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .button-row {
+            display: flex;
+            gap: 1rem;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .button-secondary {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid var(--border);
+            box-shadow: none;
+        }
+
+        /* GAME BOARD */
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        .game-tile {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 160, 0.18);
+            background: rgba(0, 0, 0, 0.25);
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            user-select: none;
+            touch-action: manipulation;
+            cursor: pointer;
+            transition: all 120ms ease;
+        }
+
+        .game-tile:hover {
+            border-color: rgba(0, 255, 160, 0.5);
+            background: rgba(0, 255, 160, 0.05);
+        }
+
+        .game-tile.selected {
+            border-color: rgba(0, 255, 160, 0.9);
+            background: rgba(0, 255, 160, 0.15);
+            transform: scale(1.05);
+        }
+
+        .game-tile.drag-source {
+            border-color: rgba(0, 242, 255, 0.9);
+            background: rgba(0, 242, 255, 0.15);
+            z-index: 2;
+        }
+
+        .game-tile.drag-target {
+            border-color: rgba(250, 204, 21, 0.9);
+            border-style: dashed;
+        }
+
+        .game-tile.matched {
+            animation: match-pop 0.3s ease-out;
+        }
+
+        @keyframes match-pop {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        /* STATUS AND HUD */
+        .scoreboard {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 1rem;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 0.8rem;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .score-value {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .status {
+            text-align: center;
+            color: var(--muted);
+            min-height: 1.5rem;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        /* SHOP VIEW */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .shop-item {
+            background: rgba(0, 255, 160, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .item-title {
+            font-family: 'Orbitron', monospace;
+            font-weight: bold;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+        }
+
+        .item-description {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        /* LEADERBOARD */
+        .leaderboard-list {
+            width: 100%;
+            max-width: 400px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        .leaderboard-entry {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 255, 160, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .leaderboard-entry:last-child {
+            border-bottom: none;
+        }
+
+        .entry-rank {
+            font-weight: bold;
+            color: var(--accent);
+            min-width: 40px;
+        }
+
+        .entry-name {
+            flex: 1;
+            margin: 0 1rem;
+        }
+
+        .entry-score {
+            font-weight: bold;
+            color: var(--blue);
+        }
+
+        /* FOOTER HUD */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hud-item {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .hud-label {
+            color: var(--blue);
+        }
+
+        .hud-value {
+            color: var(--accent);
+        }
+
+        .hud-button {
+            background: rgba(0, 255, 160, 0.1);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .hud-button:hover {
+            background: rgba(0, 255, 160, 0.15);
+            border-color: rgba(0, 255, 160, 0.5);
+        }
+
+        @media (max-width: 600px) {
+            .app-view {
+                gap: 1rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .icon-large {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-section">
+            <div class="logo-icon">⭐</div>
+            <div>
+                <div class="title">Trinity</div>
+                <div class="subtitle">Matrix of Conscience</div>
+            </div>
+        </div>
+        <a href="../" style="color: var(--blue); text-decoration: none; font-weight: bold;" aria-label="Back to Arcade">← Back</a>
+    </header>
+
+    <main>
+        <!-- START VIEW -->
+        <div id="view-start" class="app-view">
+            <div class="text-center">
+                <div class="icon-large">⭐</div>
+                <h2>Trinity V1.0</h2>
+                <p class="subtitle">The Matrix of Conscience</p>
+                <p class="subtitle-text">Connect the virtues of the Seven Stars to charge the Ozone Shield.</p>
+            </div>
+            <div style="width: 100%; gap: 1rem; display: flex; flex-direction: column;">
+                <input type="text" id="name-in" placeholder="Enter Guardian Name" maxlength="20">
+                <button onclick="startGame()" style="width: 100%;">Initialize Connection</button>
+            </div>
+        </div>
+
+        <!-- GAME VIEW -->
+        <div id="view-game" class="app-view hidden">
+            <div class="scoreboard">
+                <div class="score-item">
+                    <div class="score-label">Level</div>
+                    <div class="score-value" id="v-level">1</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Progress</div>
+                    <div class="score-value" id="v-goal">0/500</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Power</div>
+                    <div class="score-value" id="v-balance">0</div>
+                </div>
+            </div>
+            <div id="game-board"></div>
+            <div class="status" id="game-status"></div>
+            <div class="button-row">
+                <button onclick="nav('shop')" style="flex: 1;">Shop</button>
+                <button onclick="nav('leaderboard')" style="flex: 1;">Leaderboard</button>
+            </div>
+            <p class="subtitle-text" style="margin-top: 1rem;">Drag a tile onto a neighbor, or tap two adjacent tiles, to swap and align 3 or more.</p>
+        </div>
+
+        <!-- COMPLETE VIEW -->
+        <div id="view-complete" class="app-view hidden">
+            <div class="text-center">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">✓</div>
+                <h2>Matrix Secured</h2>
+                <p class="subtitle-text">You have channeled the Seven Sisters. The Ozone Shield holds strong.</p>
+            </div>
+            <div class="button-row">
+                <button onclick="submitScore()" style="flex: 1;">Upload to Leaderboard</button>
+                <button onclick="location.reload()" style="flex: 1; background: rgba(30,41,59,0.8); box-shadow: none;">Re-enter Matrix</button>
+            </div>
+        </div>
+
+        <!-- SHOP VIEW -->
+        <div id="view-shop" class="app-view hidden">
+            <h2 style="color: var(--accent);">Virtue Upgrades</h2>
+            <div class="shop-grid">
+                <div class="shop-item">
+                    <div class="item-title">Summon Guardian</div>
+                    <div class="item-description">Highlights algorithmic weak points</div>
+                    <div class="item-price">1,000 Pwr</div>
+                    <button onclick="buy('guide')" style="width: 100%;">Purchase</button>
+                </div>
+                <div class="shop-item">
+                    <div class="item-title">Integrity Burst</div>
+                    <div class="item-description">+250 toward Ozone Shield</div>
+                    <div class="item-price">500 Pwr</div>
+                    <button onclick="buy('burst')" style="width: 100%;">Purchase</button>
+                </div>
+                <div class="shop-item">
+                    <div class="item-title">Matrix Reshuffle</div>
+                    <div class="item-description">Resets the board state</div>
+                    <div class="item-price">300 Pwr</div>
+                    <button onclick="buy('shift')" style="width: 100%;">Purchase</button>
+                </div>
+            </div>
+            <button onclick="nav('game')" style="width: 100%; margin-top: 1rem;" class="button-secondary">Return to Matrix</button>
+        </div>
+
+        <!-- LEADERBOARD VIEW -->
+        <div id="view-leaderboard" class="app-view hidden">
+            <h2>Top Guardians</h2>
+            <div class="leaderboard-list" id="ldr-list"></div>
+            <button onclick="nav('game')" style="width: 100%; margin-top: 1rem; max-width: 400px;">Back to Game</button>
+        </div>
+    </main>
+
+    <footer>
+        <span class="hud-item"><span class="hud-label">Status:</span> <span class="hud-value" id="status-text">Ready</span></span>
+        <span class="hud-item"><span class="hud-label">Score:</span> <span class="hud-value" id="score-text">0</span></span>
+    </footer>
+
+    <script>
+        /* ==================== GAME STATE ==================== */
+        const GAME_SYMBOLS = ['💚', '⭐', '✝️', '🔥', '💧', '🌈'];
+        const GRID_SIZE = 6;
+        const MATCH_SIZE = 3;
+        
+        let gameState = {
+            guardianName: '',
+            level: 1,
+            currentScore: 0,
+            totalScore: 0,
+            power: 0,
+            goal: 500,
+            grid: [],
+            selected: null,
+            gameActive: false
+        };
+
+        /* ==================== LOCALSTORAGE HELPERS ==================== */
+        function saveGameState() {
+            localStorage.setItem('trinity_game_state', JSON.stringify(gameState));
+        }
+
+        function loadGameState() {
+            const saved = localStorage.getItem('trinity_game_state');
+            return saved ? JSON.parse(saved) : null;
+        }
+
+        function loadLeaderboard() {
+            const ldr = localStorage.getItem('trinity_leaderboard');
+            return ldr ? JSON.parse(ldr) : [];
+        }
+
+        function saveLeaderboard(entries) {
+            localStorage.setItem('trinity_leaderboard', JSON.stringify(entries));
+        }
+
+        /* ==================== GAME LOGIC ==================== */
+        function createGrid() {
+            const grid = [];
+            for (let r = 0; r < GRID_SIZE; r++) {
+                const row = [];
+                for (let c = 0; c < GRID_SIZE; c++) {
+                    row.push(GAME_SYMBOLS[Math.floor(Math.random() * GAME_SYMBOLS.length)]);
+                }
+                grid.push(row);
+            }
+            return grid;
+        }
+
+        function findMatches(grid) {
+            const matched = new Set();
+            
+            // Check horizontal
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE - MATCH_SIZE + 1; c++) {
+                    const symbol = grid[r][c];
+                    if (symbol && grid[r][c + 1] === symbol && grid[r][c + 2] === symbol) {
+                        matched.add(`${r},${c}`);
+                        matched.add(`${r},${c + 1}`);
+                        matched.add(`${r},${c + 2}`);
+                    }
+                }
+            }
+            
+            // Check vertical
+            for (let c = 0; c < GRID_SIZE; c++) {
+                for (let r = 0; r < GRID_SIZE - MATCH_SIZE + 1; r++) {
+                    const symbol = grid[r][c];
+                    if (symbol && grid[r + 1][c] === symbol && grid[r + 2][c] === symbol) {
+                        matched.add(`${r},${c}`);
+                        matched.add(`${r + 1},${c}`);
+                        matched.add(`${r + 2},${c}`);
+                    }
+                }
+            }
+            
+            return Array.from(matched).map(pos => {
+                const [r, c] = pos.split(',').map(Number);
+                return { r, c };
+            });
+        }
+
+        function applyGravity(grid) {
+            for (let c = 0; c < GRID_SIZE; c++) {
+                let writePos = GRID_SIZE - 1;
+                for (let r = GRID_SIZE - 1; r >= 0; r--) {
+                    if (grid[r][c]) {
+                        grid[writePos][c] = grid[r][c];
+                        if (writePos !== r) grid[r][c] = null;
+                        writePos--;
+                    }
+                }
+            }
+            
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE; c++) {
+                    if (!grid[r][c]) {
+                        grid[r][c] = GAME_SYMBOLS[Math.floor(Math.random() * GAME_SYMBOLS.length)];
+                    }
+                }
+            }
+            return grid;
+        }
+
+        function processMatches() {
+            let gained = 0;
+            let hasMatches = true;
+            
+            while (hasMatches) {
+                const matches = findMatches(gameState.grid);
+                hasMatches = matches.length > 0;
+                if (!hasMatches) break;
+                
+                gained += matches.length * 10;
+                matches.forEach(m => { gameState.grid[m.r][m.c] = null; });
+                gameState.grid = applyGravity(gameState.grid);
+            }
+            
+            return gained;
+        }
+
+        function swapTiles(r1, c1, r2, c2) {
+            [gameState.grid[r1][c1], gameState.grid[r2][c2]] = [gameState.grid[r2][c2], gameState.grid[r1][c1]];
+        }
+
+        function isAdjacent(r1, c1, r2, c2) {
+            return Math.abs(r1 - r2) + Math.abs(c1 - c2) === 1;
+        }
+
+        /* ==================== UI FUNCTIONS ==================== */
+        function nav(view) {
+            document.querySelectorAll('.app-view').forEach(v => v.classList.add('hidden'));
+            document.getElementById(`view-${view}`).classList.remove('hidden');
+        }
+
+        function startGame() {
+            const nameInput = document.getElementById('name-in').value.trim();
+            if (!nameInput) {
+                document.getElementById('name-in').style.borderColor = 'rgba(255, 0, 0, 0.5)';
+                document.getElementById('name-in').placeholder = 'Guardian name required!';
+                return;
+            }
+            
+            gameState.guardianName = nameInput;
+            gameState.level = 1;
+            gameState.currentScore = 0;
+            gameState.power = 0;
+            gameState.grid = createGrid();
+            gameState.gameActive = true;
+            gameState.selected = null;
+            
+            renderBoard();
+            nav('game');
+            saveGameState();
+        }
+
+        function renderBoard() {
+            const boardEl = document.getElementById('game-board');
+            boardEl.innerHTML = '';
+            
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE; c++) {
+                    const tile = document.createElement('div');
+                    tile.className = 'game-tile';
+                    tile.textContent = gameState.grid[r][c] || '';
+                    tile.dataset.r = r;
+                    tile.dataset.c = c;
+                    
+                    if (gameState.selected && gameState.selected.r === r && gameState.selected.c === c) {
+                        tile.classList.add('selected');
+                    }
+                    
+                    tile.addEventListener('click', () => handleTileClick(r, c));
+                    boardEl.appendChild(tile);
+                }
+            }
+            
+            updateHUD();
+        }
+
+        function handleTileClick(r, c) {
+            if (!gameState.gameActive) return;
+            
+            if (!gameState.selected) {
+                gameState.selected = { r, c };
+                renderBoard();
+                return;
+            }
+            
+            if (gameState.selected.r === r && gameState.selected.c === c) {
+                gameState.selected = null;
+                renderBoard();
+                return;
+            }
+            
+            if (!isAdjacent(gameState.selected.r, gameState.selected.c, r, c)) {
+                gameState.selected = { r, c };
+                renderBoard();
+                return;
+            }
+            
+            const from = gameState.selected;
+            gameState.selected = null;
+            attemptSwap(from.r, from.c, r, c);
+        }
+
+        function attemptSwap(r1, c1, r2, c2) {
+            if (!gameState.gameActive || !isAdjacent(r1, c1, r2, c2)) return;
+
+            swapTiles(r1, c1, r2, c2);
+            const matches = findMatches(gameState.grid);
+
+            if (matches.length === 0) {
+                swapTiles(r1, c1, r2, c2);
+                document.getElementById('game-status').textContent = 'No alignment — try another swap.';
+            } else {
+                const gained = processMatches();
+                gameState.currentScore += gained;
+                gameState.power += gained;
+
+                if (gameState.currentScore >= gameState.goal) {
+                    gameState.level++;
+                    gameState.goal += 500;
+                }
+            }
+
+            gameState.selected = null;
+            renderBoard();
+            saveGameState();
+        }
+
+        function setupDragSwap(boardEl) {
+            let src = null, srcEl = null, tgtEl = null;
+            const cellAt = (x, y) => {
+                const el = document.elementFromPoint(x, y);
+                const t = el && boardEl.contains(el) ? el.closest('.game-tile') : null;
+                return t ? { el: t, r: +t.dataset.r, c: +t.dataset.c } : null;
+            };
+            const clear = () => {
+                [srcEl, tgtEl].forEach(e => e && e.classList.remove('drag-source', 'drag-target'));
+                if (srcEl) srcEl.style.transform = '';
+                if (tgtEl) tgtEl.style.transform = '';
+                srcEl = tgtEl = null;
+            };
+            const start = (x, y) => {
+                if (!gameState.gameActive) return;
+                const h = cellAt(x, y);
+                if (!h) return;
+                src = h; srcEl = h.el; srcEl.classList.add('drag-source');
+            };
+            const move = (x, y) => {
+                if (!src) return;
+                if (tgtEl) { tgtEl.classList.remove('drag-target'); tgtEl.style.transform = ''; tgtEl = null; }
+                srcEl.style.transform = '';
+                const h = cellAt(x, y);
+                if (h && isAdjacent(src.r, src.c, h.r, h.c)) {
+                    tgtEl = h.el;
+                    tgtEl.classList.add('drag-target');
+                    const dx = (h.c - src.c) * 30, dy = (h.r - src.r) * 30;
+                    srcEl.style.transform = `translate(${dx}%, ${dy}%) scale(1.08)`;
+                    tgtEl.style.transform = `translate(${-dx}%, ${-dy}%)`;
+                }
+            };
+            const end = (x, y) => {
+                if (!src) return false;
+                const from = src, h = cellAt(x, y);
+                src = null;
+                clear();
+                if (h && isAdjacent(from.r, from.c, h.r, h.c)) {
+                    gameState.selected = null;
+                    attemptSwap(from.r, from.c, h.r, h.c);
+                    return true;
+                }
+                return false;
+            };
+            boardEl.style.touchAction = 'none';
+            boardEl.addEventListener('mousedown', e => { if (e.button === 0) start(e.clientX, e.clientY); });
+            window.addEventListener('mousemove', e => move(e.clientX, e.clientY));
+            window.addEventListener('mouseup', e => { end(e.clientX, e.clientY); });
+            boardEl.addEventListener('touchstart', e => { const t = e.touches[0]; if (t) start(t.clientX, t.clientY); }, { passive: true });
+            boardEl.addEventListener('touchmove', e => {
+                const t = e.touches[0];
+                if (t && src) { e.preventDefault(); move(t.clientX, t.clientY); }
+            }, { passive: false });
+            boardEl.addEventListener('touchend', e => {
+                const t = e.changedTouches[0];
+                if (t && end(t.clientX, t.clientY) && e.cancelable) e.preventDefault();
+            });
+            boardEl.addEventListener('touchcancel', () => { src = null; clear(); });
+        }
+
+        function updateHUD() {
+            document.getElementById('v-level').textContent = gameState.level;
+            document.getElementById('v-goal').textContent = `${gameState.currentScore}/${gameState.goal}`;
+            document.getElementById('v-balance').textContent = gameState.power;
+            document.getElementById('score-text').textContent = gameState.totalScore;
+        }
+
+        function buy(item) {
+            const costs = { guide: 1000, burst: 500, shift: 300 };
+            if (gameState.power < costs[item]) {
+                document.getElementById('game-status').textContent = '⚠️ Insufficient Power — return to the matrix to gain more.';
+                return;
+            }
+            
+            gameState.power -= costs[item];
+            
+            switch(item) {
+                case 'guide':
+                    document.getElementById('game-status').textContent = 'Guardian summoned!';
+                    break;
+                case 'burst':
+                    gameState.currentScore += 250;
+                    break;
+                case 'shift':
+                    gameState.grid = createGrid();
+                    break;
+            }
+            
+            renderBoard();
+            saveGameState();
+        }
+
+        function submitScore() {
+            const leaderboard = loadLeaderboard();
+            const scoreToSubmit = gameState.totalScore ?? gameState.currentScore;
+            const newEntry = {
+                name: gameState.guardianName,
+                score: scoreToSubmit,
+                level: gameState.level,
+                date: new Date().toISOString()
+            };
+            
+            leaderboard.push(newEntry);
+            leaderboard.sort((a, b) => b.score - a.score);
+            saveLeaderboard(leaderboard.slice(0, 100));
+            
+            gameState.totalScore = scoreToSubmit;
+            saveGameState();
+            
+            nav('leaderboard');
+            renderLeaderboard();
+        }
+
+        function renderLeaderboard() {
+            const ldrList = document.getElementById('ldr-list');
+            const leaderboard = loadLeaderboard();
+            
+            ldrList.innerHTML = '';
+            leaderboard.slice(0, 50).forEach((entry, idx) => {
+                const div = document.createElement('div');
+                div.className = 'leaderboard-entry';
+
+                const rank = document.createElement('span');
+                rank.className = 'entry-rank';
+                rank.textContent = `#${idx + 1}`;
+
+                const name = document.createElement('span');
+                name.className = 'entry-name';
+                name.textContent = entry.name;
+
+                const score = document.createElement('span');
+                score.className = 'entry-score';
+                score.textContent = entry.score;
+
+                div.appendChild(rank);
+                div.appendChild(name);
+                div.appendChild(score);
+                ldrList.appendChild(div);
+            });
+            
+            if (leaderboard.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'leaderboard-entry';
+                empty.textContent = 'No scores yet. Be the first!';
+                ldrList.appendChild(empty);
+            }
+        }
+
+        /* ==================== INITIALIZATION ==================== */
+        window.addEventListener('DOMContentLoaded', () => {
+            renderLeaderboard();
+            setupDragSwap(document.getElementById('game-board'));
+            document.getElementById('name-in').focus();
+        });
+    </script>
+</body>
+</html>

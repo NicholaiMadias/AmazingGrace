@@ -1,0 +1,15 @@
+{
+  "loop": [
+    "Enter world (Harmonic or Fractal)",
+    "Stabilize local nodes (puzzles/combat)",
+    "Unlock Mirror Path segment",
+    "Traverse Mirror Path using phase shift + reflection jumps",
+    "Face a test (boss or trial)",
+    "Advance toward Collapse Engine"
+  ],
+  "graphicsConcept": {
+    "harmonicWorld": "Soft gradients, rounded architecture, warm gold/white, circular UI",
+    "fractalWorld": "Sharp geometry, recursive patterns, cool blues/purples, angular UI",
+    "mirrorLayer": "Desaturated silver overlays blending both motif families"
+  }
+}
