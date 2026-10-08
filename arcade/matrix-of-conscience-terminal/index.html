@@ -1,191 +1,1631 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nicholai Madias | Digital Architect & Arcade Matrix</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #050811;
-            --panel-bg: rgba(10, 16, 30, 0.85);
-            --gold-primary: #f0c05a;
-            --gold-glow: rgba(240, 192, 90, 0.3);
-            --cyan-accent: #00f3ff;
-            --text-main: #e2e8f0;
-            --text-dim: #94a3b8;
-            --font-title: 'Cinzel', serif;
-            --font-code: 'Fira Code', monospace;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Matrix of Conscience Terminal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    :root {
+      --bg: #04070f;
+      --panel: rgba(10, 18, 35, 0.88);
+      --panel-strong: rgba(8, 14, 28, 0.96);
+      --accent: #5ee7ff;
+      --accent-2: #f3d26d;
+      --accent-3: #ff7f7f;
+      --good: #72f1b8;
+      --text: #e6f1ff;
+      --muted: #91a4c2;
+      --grid: rgba(94, 231, 255, 0.12);
+      --shadow: 0 0 32px rgba(0, 0, 0, 0.35);
+      --terminal-h: 28vh;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at top, rgba(94, 231, 255, 0.14), transparent 28%),
+        linear-gradient(180deg, #08111f 0%, var(--bg) 100%);
+      color: var(--text);
+      font-family: 'Fira Code', monospace;
+      overflow: hidden;
+      touch-action: manipulation;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-shell {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.8rem 1rem;
+      background: rgba(4, 7, 15, 0.92);
+      border-bottom: 1px solid rgba(94, 231, 255, 0.18);
+      box-shadow: var(--shadow);
+      flex-wrap: wrap;
+    }
+
+    .title-group h1 {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1rem, 2vw, 1.6rem);
+      letter-spacing: 0.16em;
+      color: var(--accent-2);
+      text-transform: uppercase;
+    }
+
+    .title-group p {
+      margin: 0.25rem 0 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .stats-bar {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .stat-card {
+      min-width: 110px;
+      padding: 0.55rem 0.7rem;
+      background: var(--panel);
+      border: 1px solid rgba(94, 231, 255, 0.14);
+      border-radius: 12px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .stat-value {
+      margin-top: 0.2rem;
+      font-size: 1rem;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .viewport {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .game-pane {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 0.8rem;
+      gap: 0.8rem;
+    }
+
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      padding: 0.75rem 0.9rem;
+      background: var(--panel);
+      border: 1px solid rgba(94, 231, 255, 0.14);
+      border-radius: 14px;
+    }
+
+    .mode-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .mode-name {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--accent);
+      font-size: 1rem;
+      text-transform: uppercase;
+    }
+
+    .mode-desc {
+      color: var(--muted);
+      font-size: 0.8rem;
+      max-width: 60ch;
+    }
+
+    .mode-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(243, 210, 109, 0.24);
+      background: rgba(243, 210, 109, 0.08);
+      color: var(--accent-2);
+      font-size: 0.76rem;
+      white-space: nowrap;
+    }
+
+    .game-stage {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(94, 231, 255, 0.16);
+      background:
+        linear-gradient(180deg, rgba(8, 14, 28, 0.92), rgba(4, 7, 15, 0.98)),
+        repeating-linear-gradient(0deg, transparent 0 31px, var(--grid) 31px 32px),
+        repeating-linear-gradient(90deg, transparent 0 31px, var(--grid) 31px 32px);
+      box-shadow: var(--shadow);
+    }
+
+    canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      touch-action: none;
+    }
+
+    .overlay-ui {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 1rem;
+      gap: 1rem;
+    }
+
+    .overlay-card {
+      pointer-events: none;
+      padding: 0.75rem 0.9rem;
+      max-width: min(340px, 60vw);
+      background: rgba(3, 7, 15, 0.8);
+      border: 1px solid rgba(94, 231, 255, 0.12);
+      border-radius: 14px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+
+    .overlay-card strong { color: var(--text); }
+
+    .fire-button {
+      position: absolute;
+      right: 1rem;
+      bottom: 1rem;
+      width: 74px;
+      height: 74px;
+      border: none;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,127,127,0.9), rgba(111,28,28,0.95));
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.86rem;
+      letter-spacing: 0.08em;
+      box-shadow: 0 0 18px rgba(255,127,127,0.4);
+      display: none;
+      z-index: 3;
+    }
+
+    .terminal {
+      height: var(--terminal-h);
+      min-height: 180px;
+      max-height: 32vh;
+      background: var(--panel-strong);
+      border-top: 1px solid rgba(94, 231, 255, 0.18);
+      display: flex;
+      flex-direction: column;
+      padding: 0.7rem;
+      gap: 0.55rem;
+    }
+
+    .terminal-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.74rem;
+    }
+
+    .terminal-output {
+      flex: 1;
+      overflow-y: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(94, 231, 255, 0.12);
+      background: rgba(0, 0, 0, 0.28);
+      padding: 0.75rem;
+      font-size: 0.79rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .terminal-line { margin-bottom: 0.3rem; }
+    .terminal-line.system { color: var(--accent); }
+    .terminal-line.error { color: var(--accent-3); }
+    .terminal-line.success { color: var(--good); }
+    .terminal-line.command { color: var(--accent-2); }
+
+    .terminal-input-row {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      border: 1px solid rgba(94, 231, 255, 0.12);
+      border-radius: 12px;
+      padding: 0.65rem 0.8rem;
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    .prompt {
+      color: var(--good);
+      white-space: nowrap;
+      font-size: 0.84rem;
+    }
+
+    .terminal-input-wrap {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    #cliInput {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font: inherit;
+      caret-color: transparent;
+    }
+
+    .fake-caret {
+      position: absolute;
+      width: 8px;
+      height: 1.05em;
+      background: var(--accent);
+      opacity: 0.9;
+      animation: blink 1s step-end infinite;
+      pointer-events: none;
+      transform: translateY(1px);
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    @media (max-width: 900px) {
+      :root { --terminal-h: 30vh; }
+      .overlay-ui { padding: 0.7rem; }
+      .overlay-card { max-width: 75vw; font-size: 0.74rem; }
+    }
+
+    @media (max-width: 720px) {
+      .topbar { padding: 0.7rem; }
+      .game-pane { padding: 0.55rem; }
+      .terminal { min-height: 210px; max-height: 36vh; }
+      .fire-button.mobile-visible { display: block; }
+      .mode-metrics { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="title-group">
+        <h1>Matrix of Conscience Terminal</h1>
+        <p>Three linked trials: defense, synthesis, and ascension.</p>
+      </div>
+      <div class="stats-bar">
+        <div class="stat-card"><div class="stat-label">Level</div><div class="stat-value" id="statLevel">1</div></div>
+        <div class="stat-card"><div class="stat-label">Global Score</div><div class="stat-value" id="statScore">0</div></div>
+        <div class="stat-card"><div class="stat-label">Unlocks</div><div class="stat-value" id="statUnlocks">L1</div></div>
+        <div class="stat-card"><div class="stat-label">State</div><div class="stat-value" id="statState">Booting</div></div>
+      </div>
+    </header>
+
+    <main class="viewport">
+      <section class="game-pane">
+        <div class="game-header">
+          <div class="mode-block">
+            <div class="mode-name" id="modeName">Level 1 · Tower Defense</div>
+            <div class="mode-desc" id="modeDesc">Deploy towers, repel waves, and optimize cosmic efficiency.</div>
+          </div>
+          <div class="mode-metrics" id="modeMetrics"></div>
+        </div>
+        <div class="game-stage" id="gameStage">
+          <canvas id="gameCanvas"></canvas>
+          <div class="overlay-ui">
+            <div class="overlay-card" id="overlayLeft"></div>
+            <div class="overlay-card" id="overlayRight"></div>
+          </div>
+          <button class="fire-button" id="fireButton" aria-label="Fire">FIRE</button>
+        </div>
+      </section>
+
+      <section class="terminal">
+        <div class="terminal-toolbar">
+          <div>CLI terminal · commands: help, status, reset, clear · hotkeys: 1 / 2 / 3</div>
+          <div id="diagnosticsLabel">Diagnostics: awaiting sync</div>
+        </div>
+        <div class="terminal-output" id="terminalOutput" aria-live="polite"></div>
+        <div class="terminal-input-row">
+          <div class="prompt">operator@matrix:~$</div>
+          <div class="terminal-input-wrap">
+            <input id="cliInput" type="text" autocomplete="off" spellcheck="false" aria-label="CLI input" />
+            <div class="fake-caret" id="fakeCaret"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const STORAGE_KEY = 'moc-progress';
+      const DPR = () => Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+      const canvas = document.getElementById('gameCanvas');
+      const stage = document.getElementById('gameStage');
+      const ctx = canvas.getContext('2d');
+      const outputEl = document.getElementById('terminalOutput');
+      const inputEl = document.getElementById('cliInput');
+      const caretEl = document.getElementById('fakeCaret');
+      const fireButton = document.getElementById('fireButton');
+      const statLevel = document.getElementById('statLevel');
+      const statScore = document.getElementById('statScore');
+      const statUnlocks = document.getElementById('statUnlocks');
+      const statState = document.getElementById('statState');
+      const modeNameEl = document.getElementById('modeName');
+      const modeDescEl = document.getElementById('modeDesc');
+      const modeMetricsEl = document.getElementById('modeMetrics');
+      const overlayLeft = document.getElementById('overlayLeft');
+      const overlayRight = document.getElementById('overlayRight');
+      const diagnosticsLabel = document.getElementById('diagnosticsLabel');
+
+      const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+      const lerp = (a, b, t) => a + (b - a) * t;
+      const dist = (ax, ay, bx, by) => Math.hypot(ax - bx, ay - by);
+      const rand = (a, b) => Math.random() * (b - a) + a;
+
+      let width = 0;
+      let height = 0;
+      let pixelRatio = DPR();
+      let lastTime = 0;
+      let audioUnlocked = false;
+      let commandHistory = [];
+      let historyIndex = -1;
+      let activePointer = null;
+
+      const defaultProgress = () => ({
+        currentLevel: 1,
+        unlockedLevels: [1],
+        totalScore: 0,
+        levelScores: { 1: 0, 2: 0, 3: 0 },
+        lastState: 'ready',
+        choices: [],
+        diagnostics: {}
+      });
+
+      const loadProgress = () => {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+          return parsed && typeof parsed === 'object' ? { ...defaultProgress(), ...parsed } : defaultProgress();
+        } catch {
+          return defaultProgress();
+        }
+      };
+
+      const state = {
+        progress: loadProgress(),
+        currentLevel: 1,
+        modeState: 'ready',
+        globalTick: 0,
+        diagnostics: {},
+        isMobile: matchMedia('(max-width: 720px)').matches,
+        flash: 0,
+        particles: []
+      };
+
+      state.currentLevel = clamp(state.progress.currentLevel || 1, 1, 3);
+
+      const audio = (() => {
+        let audioCtx = null;
+        const ensure = () => {
+          if (!audioCtx) {
+            const Ctx = window.AudioContext || window.webkitAudioContext;
+            if (!Ctx) return null;
+            audioCtx = new Ctx();
+          }
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+          return audioCtx;
+        };
+        const envelope = (time, gainNode, attack, decay, sustain = 0.001) => {
+          gainNode.gain.cancelScheduledValues(time);
+          gainNode.gain.setValueAtTime(0.0001, time);
+          gainNode.gain.exponentialRampToValueAtTime(0.18, time + attack);
+          gainNode.gain.exponentialRampToValueAtTime(sustain, time + attack + decay);
+        };
+        const tone = (type, frequency, duration, when = 0, volume = 0.14, sweepTo = null) => {
+          const ctx = ensure();
+          if (!ctx) return;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(frequency, ctx.currentTime + when);
+          if (sweepTo) osc.frequency.exponentialRampToValueAtTime(sweepTo, ctx.currentTime + when + duration);
+          gain.gain.value = 0.0001;
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          const start = ctx.currentTime + when;
+          envelope(start, gain, 0.012, duration * 0.9, 0.0001);
+          gain.gain.setValueAtTime(volume, start + 0.01);
+          gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+          osc.start(start);
+          osc.stop(start + duration + 0.02);
+        };
+        return {
+          unlock() {
+            const ctx = ensure();
+            if (ctx && !audioUnlocked) {
+              audioUnlocked = true;
+              tone('triangle', 440, 0.08, 0, 0.08, 660);
+            }
+          },
+          click() { tone('square', 620, 0.07, 0, 0.06, 520); },
+          confirm() { tone('triangle', 520, 0.12, 0, 0.08, 780); tone('sine', 780, 0.16, 0.08, 0.05, 1040); },
+          success() { tone('triangle', 280, 0.22, 0, 0.1, 880); tone('sine', 660, 0.25, 0.08, 0.06, 1320); },
+          fail() { tone('sawtooth', 240, 0.35, 0, 0.08, 80); },
+          shot() { tone('square', 900, 0.06, 0, 0.05, 400); },
+          impact() { tone('triangle', 180, 0.12, 0, 0.08, 90); },
+          sweep(startHz, endHz, duration) { tone('sine', startHz, duration, 0, 0.08, endHz); }
+        };
+      })();
+
+      function saveProgress() {
+        state.progress.currentLevel = state.currentLevel;
+        state.progress.lastState = state.modeState;
+        state.progress.diagnostics = state.diagnostics;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state.progress));
+      }
+
+      function logTerminal(text, type = 'system') {
+        const div = document.createElement('div');
+        div.className = `terminal-line ${type}`;
+        div.textContent = text;
+        outputEl.appendChild(div);
+        outputEl.scrollTop = outputEl.scrollHeight;
+      }
+
+      function clearTerminal() {
+        outputEl.textContent = '';
+      }
+
+      function updateCaret() {
+        const value = inputEl.value.slice(0, inputEl.selectionStart || 0);
+        const mirror = document.createElement('span');
+        const style = getComputedStyle(inputEl);
+        mirror.style.visibility = 'hidden';
+        mirror.style.position = 'absolute';
+        mirror.style.whiteSpace = 'pre';
+        mirror.style.font = style.font;
+        mirror.textContent = value || '';
+        document.body.appendChild(mirror);
+        const width = mirror.getBoundingClientRect().width;
+        document.body.removeChild(mirror);
+        caretEl.style.left = `${width}px`;
+      }
+
+      function resizeCanvas() {
+        const rect = stage.getBoundingClientRect();
+        width = Math.max(320, rect.width);
+        height = Math.max(240, rect.height);
+        pixelRatio = DPR();
+        canvas.width = Math.floor(width * pixelRatio);
+        canvas.height = Math.floor(height * pixelRatio);
+        ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      }
+
+
+      function drawRoundedRect(context, x, y, w, h, r) {
+        const radius = Math.min(r, w / 2, h / 2);
+        context.beginPath();
+        context.moveTo(x + radius, y);
+        context.arcTo(x + w, y, x + w, y + h, radius);
+        context.arcTo(x + w, y + h, x, y + h, radius);
+        context.arcTo(x, y + h, x, y, radius);
+        context.arcTo(x, y, x + w, y, radius);
+        context.closePath();
+      }
+
+      function addParticles(x, y, color, count, speed = 90) {
+        for (let i = 0; i < count; i++) {
+          state.particles.push({
+            x, y,
+            vx: Math.cos((Math.PI * 2 * i) / count + rand(-0.4, 0.4)) * rand(speed * 0.35, speed),
+            vy: Math.sin((Math.PI * 2 * i) / count + rand(-0.4, 0.4)) * rand(speed * 0.35, speed),
+            life: rand(0.35, 0.9),
+            maxLife: 1,
+            color,
+            size: rand(2, 4)
+          });
+        }
+      }
+
+      function updateParticles(dt) {
+        state.particles = state.particles.filter((p) => {
+          p.life -= dt;
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          p.vy += 18 * dt;
+          return p.life > 0;
+        });
+      }
+
+      function drawParticles() {
+        for (const p of state.particles) {
+          ctx.globalAlpha = clamp(p.life / p.maxLife, 0, 1);
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+      }
+
+      const towerDefense = (() => {
+        const gridCols = 10;
+        const gridRows = 6;
+        const pathRows = [2, 3];
+        const baseWaveCount = 12;
+        let game;
+
+        const makePath = () => {
+          const cells = [];
+          for (let x = 0; x < gridCols; x++) {
+            cells.push({ x, y: x < 5 ? 2 : 3 });
+          }
+          return cells;
+        };
+
+        function init() {
+          const unlockedBonus = (state.progress.unlockedLevels.includes(2) ? 1 : 0) + (state.progress.unlockedLevels.includes(3) ? 1 : 0);
+          game = {
+            gridCols,
+            gridRows,
+            path: makePath(),
+            towers: [],
+            enemies: [],
+            projectiles: [],
+            wave: 1,
+            wavesTotal: baseWaveCount + unlockedBonus,
+            lives: 18,
+            resources: 150,
+            spawnTimer: 0,
+            spawnRemaining: 0,
+            betweenWaves: 1.5,
+            selectedTower: null,
+            kills: 0,
+            towersPlaced: 0,
+            shots: 0,
+            hits: 0,
+            completed: false,
+            failed: false,
+            waveActive: false
+          };
+          beginWave();
+          state.modeState = 'tower-defense';
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            user-select: none;
+        function cellSize() {
+          return Math.min(width / (gridCols + 1), height / (gridRows + 1));
         }
 
-        body, html {
-            width: 100vw;
-            height: 100vh;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: var(--font-code);
-            overflow: hidden;
+        function cellToPoint(x, y) {
+          const size = cellSize();
+          const offsetX = (width - size * gridCols) / 2;
+          const offsetY = (height - size * gridRows) / 2;
+          return { x: offsetX + x * size + size / 2, y: offsetY + y * size + size / 2, size };
         }
 
-        /* Fullscreen Layout */
-        .viewport {
-            display: flex;
-            flex-direction: column;
-            width: 100vw;
-            height: 100vh;
-            background: radial-gradient(circle at 50% 20%, #101c38 0%, var(--bg-dark) 80%);
+        function isPathCell(x, y) {
+          return game.path.some((p) => p.x === x && p.y === y);
         }
 
-        /* Top Bar & Gamification Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 24px;
-            background: rgba(5, 8, 17, 0.95);
-            border-bottom: 1px solid var(--gold-primary);
-            box-shadow: 0 0 15px var(--gold-glow);
-            z-index: 10;
+        function beginWave() {
+          game.waveActive = true;
+          game.spawnRemaining = 5 + Math.floor(game.wave * 1.6);
+          game.spawnTimer = 0.55;
+          game.betweenWaves = 1.4;
+          logTerminal(`Wave ${game.wave} initiated. Hostiles: ${game.spawnRemaining}`, 'system');
+          audio.confirm();
         }
 
-        .brand-title {
-            font-family: var(--font-title);
-            font-size: 1.25rem;
-            color: var(--gold-primary);
-            letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        function spawnEnemy() {
+          const first = game.path[0];
+          const pt = cellToPoint(first.x, first.y);
+          game.enemies.push({
+            pathIndex: 0,
+            progress: 0,
+            speed: 28 + game.wave * 5,
+            hp: 28 + game.wave * 12,
+            maxHp: 28 + game.wave * 12,
+            x: pt.x,
+            y: pt.y,
+            reward: 9 + game.wave,
+            damage: 1
+          });
         }
 
-        .nav-links {
-            display: flex;
-            gap: 12px;
-            align-items: center;
+        function tryPlaceTower(px, py) {
+          const size = cellSize();
+          const offsetX = (width - size * gridCols) / 2;
+          const offsetY = (height - size * gridRows) / 2;
+          const gx = Math.floor((px - offsetX) / size);
+          const gy = Math.floor((py - offsetY) / size);
+          if (gx < 0 || gy < 0 || gx >= gridCols || gy >= gridRows) return false;
+          if (isPathCell(gx, gy)) {
+            logTerminal('Tower placement blocked by active lane.', 'error');
+            audio.fail();
+            return false;
+          }
+          const existing = game.towers.find((t) => t.x === gx && t.y === gy);
+          if (existing) {
+            const upgradeCost = 40 + existing.level * 25;
+            if (game.resources < upgradeCost || existing.level >= 3) {
+              logTerminal(existing.level >= 3 ? 'Tower already at maximum rank.' : 'Insufficient resources for upgrade.', 'error');
+              audio.fail();
+              return false;
+            }
+            game.resources -= upgradeCost;
+            existing.level += 1;
+            existing.range += 14;
+            existing.fireRate *= 0.82;
+            existing.damage += 12;
+            addParticles(px, py, '#f3d26d', 10);
+            logTerminal(`Tower upgraded to rank ${existing.level}.`, 'success');
+            audio.confirm();
+            return true;
+          }
+          const cost = 50;
+          if (game.resources < cost) {
+            logTerminal('Insufficient resources to deploy tower.', 'error');
+            audio.fail();
+            return false;
+          }
+          game.resources -= cost;
+          game.towers.push({ x: gx, y: gy, level: 1, fireRate: 0.85, cooldown: rand(0, 0.4), range: size * 1.8, damage: 18 });
+          game.towersPlaced += 1;
+          addParticles(px, py, '#72f1b8', 8);
+          logTerminal(`Tower deployed at ${gx},${gy}.`, 'success');
+          audio.click();
+          return true;
         }
 
-        .btn-link {
-            background: transparent;
-            border: 1px solid var(--gold-primary);
-            color: var(--gold-primary);
-            padding: 6px 12px;
-            font-family: var(--font-code);
-            font-size: 0.85rem;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.2s ease;
+        function update(dt) {
+          if (!game || game.completed || game.failed) return;
+
+          if (game.waveActive && game.spawnRemaining > 0) {
+            game.spawnTimer -= dt;
+            if (game.spawnTimer <= 0) {
+              spawnEnemy();
+              game.spawnRemaining -= 1;
+              game.spawnTimer = clamp(0.8 - game.wave * 0.03, 0.2, 0.8);
+            }
+          }
+
+          for (const enemy of game.enemies) {
+            const next = game.path[enemy.pathIndex + 1];
+            if (next) {
+              const from = cellToPoint(game.path[enemy.pathIndex].x, game.path[enemy.pathIndex].y);
+              const to = cellToPoint(next.x, next.y);
+              const segment = dist(from.x, from.y, to.x, to.y) || 1;
+              enemy.progress += (enemy.speed * dt) / segment;
+              if (enemy.progress >= 1) {
+                enemy.pathIndex += 1;
+                enemy.progress = 0;
+                if (!game.path[enemy.pathIndex + 1]) {
+                  enemy.reachedEnd = true;
+                }
+              }
+              const pointA = cellToPoint(game.path[enemy.pathIndex].x, game.path[enemy.pathIndex].y);
+              const pointB = next ? cellToPoint(next.x, next.y) : pointA;
+              enemy.x = lerp(pointA.x, pointB.x, enemy.progress);
+              enemy.y = lerp(pointA.y, pointB.y, enemy.progress);
+            }
+          }
+
+          game.enemies = game.enemies.filter((enemy) => {
+            if (enemy.reachedEnd) {
+              game.lives -= enemy.damage;
+              state.flash = 0.22;
+              audio.fail();
+              return false;
+            }
+            return true;
+          });
+
+          for (const tower of game.towers) {
+            tower.cooldown -= dt;
+            if (tower.cooldown > 0) continue;
+            const pos = cellToPoint(tower.x, tower.y);
+            const target = game.enemies.find((enemy) => dist(pos.x, pos.y, enemy.x, enemy.y) <= tower.range);
+            if (!target) continue;
+            tower.cooldown = tower.fireRate;
+            game.projectiles.push({ x: pos.x, y: pos.y, target, speed: 240, damage: tower.damage });
+            game.shots += 1;
+            audio.shot();
+          }
+
+          for (const proj of game.projectiles) {
+            if (!proj.target || proj.target.hp <= 0) {
+              proj.dead = true;
+              continue;
+            }
+            const dx = proj.target.x - proj.x;
+            const dy = proj.target.y - proj.y;
+            const d = Math.hypot(dx, dy) || 1;
+            proj.x += (dx / d) * proj.speed * dt;
+            proj.y += (dy / d) * proj.speed * dt;
+            if (dist(proj.x, proj.y, proj.target.x, proj.target.y) < 10) {
+              proj.target.hp -= proj.damage;
+              game.hits += 1;
+              proj.dead = true;
+              addParticles(proj.x, proj.y, '#5ee7ff', 6, 60);
+              audio.impact();
+            }
+          }
+          game.projectiles = game.projectiles.filter((p) => !p.dead);
+
+          game.enemies = game.enemies.filter((enemy) => {
+            if (enemy.hp <= 0) {
+              game.resources += enemy.reward;
+              game.kills += 1;
+              addParticles(enemy.x, enemy.y, '#ffcf6e', 8, 70);
+              return false;
+            }
+            return true;
+          });
+
+          if (game.lives <= 0) {
+            game.failed = true;
+            state.modeState = 'level-failed';
+            logTerminal('Tower defense failed. Use hotkey 1 to retry.', 'error');
+            audio.fail();
+          }
+
+          if (game.waveActive && game.spawnRemaining <= 0 && game.enemies.length === 0) {
+            game.waveActive = false;
+            if (game.wave >= game.wavesTotal) {
+              game.completed = true;
+              completeLevel(1, computeScore());
+            } else {
+              game.betweenWaves -= dt;
+              if (game.betweenWaves <= 0) {
+                game.wave += 1;
+                beginWave();
+              }
+            }
+          }
+
+          state.diagnostics = {
+            wave: `${game.wave}/${game.wavesTotal}`,
+            enemies: game.enemies.length,
+            resources: game.resources,
+            towers: game.towers.length,
+            efficiency: `${Math.round((game.hits / Math.max(1, game.shots)) * 100)}%`
+          };
         }
 
-        .btn-link:hover {
-            background: var(--gold-primary);
-            color: var(--bg-dark);
-            box-shadow: 0 0 10px var(--gold-primary);
+        function computeScore() {
+          const efficiency = Math.round((game.hits / Math.max(1, game.shots)) * 100);
+          return game.kills * 14 + game.lives * 20 + efficiency * 4 + game.towersPlaced * 10;
         }
 
-        .xp-badge {
-            background: rgba(0, 243, 255, 0.1);
-            border: 1px solid var(--cyan-accent);
-            color: var(--cyan-accent);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        function draw() {
+          if (!game) return;
+          const size = cellSize();
+          const offsetX = (width - size * gridCols) / 2;
+          const offsetY = (height - size * gridRows) / 2;
+
+          ctx.save();
+          for (let y = 0; y < gridRows; y++) {
+            for (let x = 0; x < gridCols; x++) {
+              const px = offsetX + x * size;
+              const py = offsetY + y * size;
+              ctx.fillStyle = isPathCell(x, y) ? 'rgba(243,210,109,0.18)' : 'rgba(94,231,255,0.06)';
+              ctx.strokeStyle = 'rgba(94,231,255,0.18)';
+              ctx.lineWidth = 1;
+              ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
+              ctx.strokeRect(px + 1, py + 1, size - 2, size - 2);
+            }
+          }
+
+          for (const tower of game.towers) {
+            const p = cellToPoint(tower.x, tower.y);
+            ctx.fillStyle = tower.level >= 3 ? '#f3d26d' : tower.level === 2 ? '#72f1b8' : '#5ee7ff';
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, size * 0.22 + tower.level * 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+            ctx.stroke();
+          }
+
+          for (const enemy of game.enemies) {
+            ctx.fillStyle = '#ff7f7f';
+            ctx.fillRect(enemy.x - 11, enemy.y - 11, 22, 22);
+            ctx.fillStyle = '#101827';
+            ctx.fillRect(enemy.x - 12, enemy.y - 19, 24, 5);
+            ctx.fillStyle = '#72f1b8';
+            ctx.fillRect(enemy.x - 12, enemy.y - 19, 24 * (enemy.hp / enemy.maxHp), 5);
+          }
+
+          for (const proj of game.projectiles) {
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(proj.x, proj.y, 3.6, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
         }
 
-        .accent-pill {
-            color: var(--cyan-accent);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        function pointerDown(x, y) {
+          if (!game || game.completed || game.failed) return;
+          tryPlaceTower(x, y);
         }
 
-        /* Main Workspace Navigation */
-        .tab-bar {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(10, 16, 30, 0.8);
-            border-bottom: 1px solid rgba(240, 192, 90, 0.2);
-            padding: 0 16px;
+        function overlay() {
+          return {
+            left: `\n<strong>Tower Defense</strong>\nDeploy towers on empty cells. Tap an existing tower to upgrade it to rank 3.\nSurvive all ${game.wavesTotal} waves to unlock the puzzle trial.`,
+            right: `Lives ${game.lives} · Resources ${game.resources}\nTowers ${game.towers.length} · Deployed ${game.towersPlaced}\nAccuracy ${Math.round((game.hits / Math.max(1, game.shots)) * 100)}%`
+          };
         }
 
-        .tab-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-dim);
-            padding: 12px 20px;
-            font-family: var(--font-code);
-            font-size: 0.9rem;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s ease;
+        return { init, update, draw, pointerDown, overlay, score: () => game ? computeScore() : 0 };
+      })();
+
+      const matchThree = (() => {
+        const colors = ['#ff7f7f', '#72f1b8', '#5ee7ff', '#f3d26d', '#b38cff'];
+        let game;
+
+        const makeBoard = (size) => Array.from({ length: size }, () => Array.from({ length: size }, () => Math.floor(Math.random() * colors.length)));
+
+        function init() {
+          const boardSize = state.progress.unlockedLevels.includes(3) ? 7 : 6;
+          game = {
+            size: boardSize,
+            board: makeBoard(boardSize),
+            selected: null,
+            cascades: 0,
+            combos: 0,
+            piecesCleared: 0,
+            score: 0,
+            target: 1000 + boardSize * 140,
+            resolving: false,
+            completed: false,
+            failed: false,
+            movesLeft: 18 + boardSize,
+            lastCombo: 0
+          };
+          scrubInitialMatches();
+          state.modeState = 'match-three';
+          logTerminal(`Puzzle matrix initialized: ${boardSize}x${boardSize}. Target ${game.target}.`, 'system');
         }
 
-        .tab-btn.active {
-            color: var(--gold-primary);
-            border-bottom-color: var(--gold-primary);
-            background: rgba(240, 192, 90, 0.05);
+        function scrubInitialMatches() {
+          let found = true;
+          while (found) {
+            found = false;
+            const matches = findMatches();
+            if (matches.length) {
+              found = true;
+              for (const [x, y] of matches) game.board[y][x] = Math.floor(Math.random() * colors.length);
+            }
+          }
         }
 
-        /* Dynamic View Container */
-        .content-area {
-            flex: 1;
-            position: relative;
-            overflow: hidden;
+        function boardMetrics() {
+          const padding = 24;
+          const usable = Math.min(width, height) - padding * 2;
+          const tile = usable / game.size;
+          const ox = (width - tile * game.size) / 2;
+          const oy = (height - tile * game.size) / 2;
+          return { tile, ox, oy };
         }
 
-        .view-panel {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            display: none;
-            padding: 20px;
-            overflow-y: auto;
+        function getCell(px, py) {
+          const { tile, ox, oy } = boardMetrics();
+          const x = Math.floor((px - ox) / tile);
+          const y = Math.floor((py - oy) / tile);
+          if (x < 0 || y < 0 || x >= game.size || y >= game.size) return null;
+          return { x, y };
         }
 
-        .view-panel.active {
-            display: flex;
-            flex-direction: column;
+        function areAdjacent(a, b) {
+          return Math.abs(a.x - b.x) + Math.abs(a.y - b.y) === 1;
         }
 
-        /* Arcade Cabinet View */
-        .cabinet-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            padding-bottom: 20px;
+        function swap(a, b) {
+          const temp = game.board[a.y][a.x];
+          game.board[a.y][a.x] = game.board[b.y][b.x];
+          game.board[b.y][b.x] = temp;
         }
 
-        .cabinet-card {
-            background: var(--panel-bg);
-            border: 1px solid rgba(240, 192, 90, 0.3);
-            border-radius: 8px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: transform 0.2s ease, border-color 0.2s ease;
+        function findMatches() {
+          const matches = new Set();
+          for (let y = 0; y < game.size; y++) {
+            let count = 1;
+            for (let x = 1; x <= game.size; x++) {
+              const curr = x < game.size ? game.board[y][x] : -1;
+              const prev = game.board[y][x - 1];
+              if (curr === prev) count += 1;
+              else {
+                if (count >= 3) for (let i = 0; i < count; i++) matches.add(`${x - 1 - i},${y}`);
+                count = 1;
+              }
+            }
+          }
+          for (let x = 0; x < game.size; x++) {
+            let count = 1;
+            for (let y = 1; y <= game.size; y++) {
+              const curr = y < game.size ? game.board[y][x] : -1;
+              const prev = game.board[y - 1][x];
+              if (curr === prev) count += 1;
+              else {
+                if (count >= 3) for (let i = 0; i < count; i++) matches.add(`${x},${y - 1 - i}`);
+                count = 1;
+              }
+            }
+          }
+          return [...matches].map((key) => key.split(',').map(Number));
         }
 
-        .cabinet-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--gold-primary);
-            box-shadow: 0 4px 20px rgba(240, 192, 90, 0.15);
+        function collapseBoard() {
+          for (let x = 0; x < game.size; x++) {
+            const col = [];
+            for (let y = game.size - 1; y >= 0; y--) {
+              if (game.board[y][x] !== null) col.push(game.board[y][x]);
+            }
+            for (let y = game.size - 1; y >= 0; y--) {
+              game.board[y][x] = col[game.size - 1 - y] ?? Math.floor(Math.random() * colors.length);
+            }
+          }
         }
 
-        .cabinet-title {
-            font-family: var(--font-title);
-            color: var(--gold-primary);
-            font-size: 1.1
+        function resolveMatches(chain = 1) {
+          const matches = findMatches();
+          if (!matches.length) {
+            game.resolving = false;
+            return false;
+          }
+          game.resolving = true;
+          game.cascades += 1;
+          game.lastCombo = chain;
+          const multiplier = chain === 1 ? 1 : chain + 0.5;
+          let comboBonus = 0;
+          if (matches.length >= 5) comboBonus = 160;
+          else if (matches.length === 4) comboBonus = 90;
+          else comboBonus = 45;
+          game.combos = Math.max(game.combos, chain);
+          game.piecesCleared += matches.length;
+          game.score += Math.round(matches.length * 35 * multiplier + comboBonus);
+          for (const [x, y] of matches) {
+            const { tile, ox, oy } = boardMetrics();
+            addParticles(ox + x * tile + tile / 2, oy + y * tile + tile / 2, colors[game.board[y][x] ?? 0], 5, 70);
+            game.board[y][x] = null;
+          }
+          audio.confirm();
+          collapseBoard();
+          setTimeout(() => resolveMatches(chain + 1), 120);
+          return true;
+        }
+
+        function trySwap(a, b) {
+          if (game.resolving || game.completed || game.failed) return;
+          if (!areAdjacent(a, b)) {
+            game.selected = b;
+            return;
+          }
+          swap(a, b);
+          const matched = findMatches();
+          if (matched.length) {
+            game.movesLeft -= 1;
+            resolveMatches(1);
+            audio.click();
+          } else {
+            swap(a, b);
+            logTerminal('Swap rejected: no alignment formed.', 'error');
+            audio.fail();
+          }
+          game.selected = null;
+        }
+
+        function update() {
+          if (!game || game.completed || game.failed) return;
+          if (game.score >= game.target) {
+            game.completed = true;
+            completeLevel(2, game.score + game.movesLeft * 40 + game.combos * 60);
+          } else if (game.movesLeft <= 0 && !game.resolving) {
+            game.failed = true;
+            state.modeState = 'level-failed';
+            logTerminal('Puzzle trial exhausted all moves. Hotkey 2 to retry.', 'error');
+            audio.fail();
+          }
+          state.diagnostics = {
+            target: game.target,
+            score: game.score,
+            cascades: game.cascades,
+            combos: game.combos,
+            cleared: game.piecesCleared,
+            moves: game.movesLeft
+          };
+        }
+
+        function draw() {
+          if (!game) return;
+          const { tile, ox, oy } = boardMetrics();
+          ctx.save();
+          for (let y = 0; y < game.size; y++) {
+            for (let x = 0; x < game.size; x++) {
+              const px = ox + x * tile;
+              const py = oy + y * tile;
+              ctx.fillStyle = 'rgba(255,255,255,0.04)';
+              ctx.fillRect(px + 2, py + 2, tile - 4, tile - 4);
+              const val = game.board[y][x];
+              if (val !== null && val !== undefined) {
+                ctx.fillStyle = colors[val];
+                drawRoundedRect(ctx, px + 6, py + 6, tile - 12, tile - 12, 14);
+                ctx.fill();
+              }
+              if (game.selected && game.selected.x === x && game.selected.y === y) {
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(px + 4, py + 4, tile - 8, tile - 8);
+              } else {
+                ctx.strokeStyle = 'rgba(94,231,255,0.22)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(px + 1, py + 1, tile - 2, tile - 2);
+              }
+            }
+          }
+          ctx.restore();
+        }
+
+        function pointerDown(x, y) {
+          if (!game) return;
+          const cell = getCell(x, y);
+          if (!cell) return;
+          if (!game.selected) game.selected = cell;
+          else trySwap(game.selected, cell);
+        }
+
+        function overlay() {
+          return {
+            left: `\n<strong>Match-Three</strong>\nTap two adjacent pieces to swap. Create 3, 4, or 5+ lines to trigger cascades and multipliers.`,
+            right: `Target ${game.target}\nScore ${game.score} · Moves ${game.movesLeft}\nCascades ${game.cascades} · Best Combo x${game.combos}`
+          };
+        }
+
+        return { init, update, draw, pointerDown, overlay, score: () => game ? game.score : 0 };
+      })();
+
+      const shooter = (() => {
+        let game;
+        let keyLeft = false;
+        let keyRight = false;
+        let mouseX = null;
+
+        function init() {
+          const difficulty = state.progress.levelScores[2] ? 1 : 0;
+          game = {
+            player: { x: width / 2, y: height - 48, w: 36, h: 22, speed: 310 },
+            bullets: [],
+            enemyBullets: [],
+            enemies: [],
+            waves: 5 + difficulty,
+            wave: 1,
+            lives: 4,
+            kills: 0,
+            shots: 0,
+            hits: 0,
+            reload: 0,
+            completed: false,
+            failed: false,
+            direction: 1,
+            enemySpeed: 26,
+            descend: 18,
+            fireTimer: 1.2,
+            touchTargetX: null
+          };
+          spawnWave();
+          state.modeState = 'space-invaders';
+          fireButton.classList.toggle('mobile-visible', state.isMobile);
+          logTerminal(`Shooter initialized. ${game.waves} enemy waves detected.`, 'system');
+        }
+
+        function spawnWave() {
+          game.enemies = [];
+          const cols = 6 + Math.min(4, game.wave);
+          const rows = 2 + Math.floor(game.wave / 2);
+          const spacingX = Math.min(68, width / (cols + 2));
+          const spacingY = 50;
+          const startX = width / 2 - ((cols - 1) * spacingX) / 2;
+          for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
+              game.enemies.push({ x: startX + x * spacingX, y: 70 + y * spacingY, w: 28, h: 20, alive: true, phase: rand(0, Math.PI * 2) });
+            }
+          }
+          game.enemySpeed = 28 + game.wave * 6;
+          game.fireTimer = clamp(1.1 - game.wave * 0.08, 0.25, 1.1);
+          audio.confirm();
+        }
+
+        function fire() {
+          if (!game || game.completed || game.failed || game.reload > 0) return;
+          game.bullets.push({ x: game.player.x, y: game.player.y - 16, vy: -420, r: 3 });
+          game.reload = 0.22;
+          game.shots += 1;
+          audio.shot();
+        }
+
+        function update(dt) {
+          if (!game || game.completed || game.failed) return;
+          game.reload -= dt;
+          const player = game.player;
+          let move = 0;
+          if (keyLeft) move -= 1;
+          if (keyRight) move += 1;
+          if (mouseX !== null && !state.isMobile) player.x = lerp(player.x, mouseX, clamp(dt * 8, 0, 1));
+          else if (game.touchTargetX !== null && state.isMobile) player.x = lerp(player.x, game.touchTargetX, clamp(dt * 10, 0, 1));
+          else player.x += move * player.speed * dt;
+          player.x = clamp(player.x, 24, width - 24);
+          player.y = height - 42;
+
+          for (const b of game.bullets) b.y += b.vy * dt;
+          game.bullets = game.bullets.filter((b) => b.y > -20);
+          for (const b of game.enemyBullets) b.y += b.vy * dt;
+          game.enemyBullets = game.enemyBullets.filter((b) => b.y < height + 30);
+
+          let minX = Infinity;
+          let maxX = -Infinity;
+          for (const enemy of game.enemies) {
+            enemy.x += game.direction * game.enemySpeed * dt;
+            enemy.y += Math.sin(state.globalTick * 2 + enemy.phase) * 5 * dt;
+            minX = Math.min(minX, enemy.x - enemy.w / 2);
+            maxX = Math.max(maxX, enemy.x + enemy.w / 2);
+          }
+          if (minX < 18 || maxX > width - 18) {
+            game.direction *= -1;
+            for (const enemy of game.enemies) enemy.y += game.descend;
+          }
+
+          game.fireTimer -= dt;
+          if (game.fireTimer <= 0 && game.enemies.length) {
+            const shooters = [...game.enemies].sort((a, b) => b.y - a.y);
+            const shooter = shooters[Math.floor(Math.random() * Math.min(3, shooters.length))];
+            game.enemyBullets.push({ x: shooter.x, y: shooter.y + 12, vy: 180 + game.wave * 22, r: 4 });
+            game.fireTimer = clamp(1.05 - game.wave * 0.07, 0.22, 1.05);
+          }
+
+          for (const bullet of game.bullets) {
+            for (const enemy of game.enemies) {
+              if (Math.abs(bullet.x - enemy.x) < enemy.w / 2 && Math.abs(bullet.y - enemy.y) < enemy.h / 2) {
+                enemy.dead = true;
+                bullet.dead = true;
+                game.kills += 1;
+                game.hits += 1;
+                addParticles(enemy.x, enemy.y, '#72f1b8', 8, 80);
+                audio.impact();
+                break;
+              }
+            }
+          }
+
+          for (const bullet of game.enemyBullets) {
+            if (Math.abs(bullet.x - player.x) < player.w / 2 && Math.abs(bullet.y - player.y) < player.h / 2) {
+              bullet.dead = true;
+              game.lives -= 1;
+              state.flash = 0.18;
+              addParticles(player.x, player.y, '#ff7f7f', 10, 90);
+              audio.fail();
+            }
+          }
+
+          game.bullets = game.bullets.filter((b) => !b.dead);
+          game.enemyBullets = game.enemyBullets.filter((b) => !b.dead);
+          game.enemies = game.enemies.filter((e) => !e.dead);
+
+          if (game.enemies.some((e) => e.y > height - 110) || game.lives <= 0) {
+            game.failed = true;
+            state.modeState = 'level-failed';
+            logTerminal('Shooter defense collapsed. Hotkey 3 to retry.', 'error');
+            audio.fail();
+          }
+
+          if (!game.enemies.length && !game.failed) {
+            if (game.wave >= game.waves) {
+              game.completed = true;
+              completeLevel(3, computeScore());
+            } else {
+              game.wave += 1;
+              spawnWave();
+            }
+          }
+
+          state.diagnostics = {
+            wave: `${game.wave}/${game.waves}`,
+            enemies: game.enemies.length,
+            lives: game.lives,
+            kills: game.kills,
+            accuracy: `${Math.round((game.hits / Math.max(1, game.shots)) * 100)}%`
+          };
+        }
+
+        function computeScore() {
+          return game.kills * 28 + game.lives * 140 + Math.round((game.hits / Math.max(1, game.shots)) * 100) * 6;
+        }
+
+        function draw() {
+          if (!game) return;
+          const player = game.player;
+          ctx.save();
+          ctx.fillStyle = '#5ee7ff';
+          ctx.beginPath();
+          ctx.moveTo(player.x, player.y - 16);
+          ctx.lineTo(player.x - 18, player.y + 12);
+          ctx.lineTo(player.x + 18, player.y + 12);
+          ctx.closePath();
+          ctx.fill();
+
+          ctx.fillStyle = '#f3d26d';
+          for (const bullet of game.bullets) {
+            ctx.fillRect(bullet.x - 2, bullet.y - 8, 4, 12);
+          }
+          ctx.fillStyle = '#ff7f7f';
+          for (const bullet of game.enemyBullets) {
+            ctx.beginPath();
+            ctx.arc(bullet.x, bullet.y, bullet.r, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          for (const enemy of game.enemies) {
+            ctx.fillStyle = '#b38cff';
+            ctx.fillRect(enemy.x - enemy.w / 2, enemy.y - enemy.h / 2, enemy.w, enemy.h);
+            ctx.fillStyle = '#101827';
+            ctx.fillRect(enemy.x - 8, enemy.y - 3, 6, 6);
+            ctx.fillRect(enemy.x + 2, enemy.y - 3, 6, 6);
+          }
+          ctx.restore();
+        }
+
+        function pointerDown() { fire(); }
+        function pointerMove(x) {
+          if (!game) return;
+          if (state.isMobile) game.touchTargetX = x;
+          else mouseX = x;
+        }
+        function pointerUp() { activePointer = null; }
+        function setKeys(left, right) { keyLeft = left; keyRight = right; }
+        function overlay() {
+          return {
+            left: `\n<strong>Space Invaders</strong>\nDesktop: arrows / mouse to move, space or click to fire.\nMobile: swipe in stage, use FIRE button.`,
+            right: `Lives ${game.lives} · Kills ${game.kills}\nShots ${game.shots} · Accuracy ${Math.round((game.hits / Math.max(1, game.shots)) * 100)}%\nWave ${game.wave}/${game.waves}`
+          };
+        }
+
+        return { init, update, draw, pointerDown, pointerMove, pointerUp, overlay, setKeys, fire, score: () => game ? computeScore() : 0 };
+      })();
+
+      const levels = {
+        1: {
+          name: 'Level 1 · Tower Defense',
+          desc: 'Universe grid defense with deployable towers, upgrades, and escalating enemy waves.',
+          metrics() {
+            const d = state.diagnostics;
+            return [
+              `Wave ${d.wave ?? '-'}`,
+              `Resources ${d.resources ?? '-'}`,
+              `Towers ${d.towers ?? '-'}`,
+              `Efficiency ${d.efficiency ?? '-'}`
+            ];
+          },
+          engine: towerDefense
+        },
+        2: {
+          name: 'Level 2 · Match-Three Puzzle',
+          desc: 'Cascade the conscience grid with combo multipliers and a rising target threshold.',
+          metrics() {
+            const d = state.diagnostics;
+            return [
+              `Score ${d.score ?? '-'}`,
+              `Target ${d.target ?? '-'}`,
+              `Cascades ${d.cascades ?? '-'}`,
+              `Moves ${d.moves ?? '-'}`
+            ];
+          },
+          engine: matchThree
+        },
+        3: {
+          name: 'Level 3 · Space Invaders Shooter',
+          desc: 'Pilot the ascension craft against adaptive invasion waves across desktop and mobile controls.',
+          metrics() {
+            const d = state.diagnostics;
+            return [
+              `Wave ${d.wave ?? '-'}`,
+              `Lives ${d.lives ?? '-'}`,
+              `Kills ${d.kills ?? '-'}`,
+              `Accuracy ${d.accuracy ?? '-'}`
+            ];
+          },
+          engine: shooter
+        }
+      };
+
+      function setLevel(level, announce = true) {
+        state.currentLevel = level;
+        state.diagnostics = {};
+        levels[level].engine.init();
+        updateHUD();
+        saveProgress();
+        if (announce) logTerminal(`Switched to ${levels[level].name}.`, 'command');
+      }
+
+      function completeLevel(level, score) {
+        const normalized = Math.max(score, state.progress.levelScores[level] || 0);
+        state.progress.levelScores[level] = normalized;
+        state.progress.totalScore = Object.values(state.progress.levelScores).reduce((sum, value) => sum + value, 0);
+        if (!state.progress.unlockedLevels.includes(level + 1) && level < 3) state.progress.unlockedLevels.push(level + 1);
+        state.progress.unlockedLevels.sort((a, b) => a - b);
+        state.progress.choices.push({ level, score: normalized, ts: Date.now() });
+        state.modeState = level === 3 ? 'campaign-complete' : 'level-complete';
+        saveProgress();
+        updateHUD();
+        logTerminal(`${levels[level].name} complete. Score recorded: ${normalized}.`, 'success');
+        audio.success();
+        if (level < 3) {
+          setTimeout(() => {
+            state.currentLevel = level + 1;
+            setLevel(level + 1, false);
+            logTerminal(`Next trial unlocked: ${levels[level + 1].name}.`, 'success');
+          }, 700);
+        } else {
+          logTerminal('All trials complete. Use status to review progression or replay any level with 1/2/3.', 'success');
+        }
+      }
+
+      function resetProgress() {
+        localStorage.removeItem(STORAGE_KEY);
+        state.progress = defaultProgress();
+        state.currentLevel = 1;
+        audio.sweep(700, 180, 0.35);
+        clearTerminal();
+        logTerminal('Progress purged. Reinitializing Matrix of Conscience.', 'success');
+        setLevel(1, false);
+      }
+
+      function updateHUD() {
+        const level = levels[state.currentLevel];
+        statLevel.textContent = String(state.currentLevel);
+        statScore.textContent = String(state.progress.totalScore || 0);
+        statUnlocks.textContent = state.progress.unlockedLevels.map((n) => `L${n}`).join(' ');
+        statState.textContent = state.modeState.replace(/-/g, ' ');
+        modeNameEl.textContent = level.name;
+        modeDescEl.textContent = level.desc;
+        modeMetricsEl.innerHTML = '';
+        for (const metric of level.metrics()) {
+          const pill = document.createElement('div');
+          pill.className = 'pill';
+          pill.textContent = metric;
+          modeMetricsEl.appendChild(pill);
+        }
+        const overlay = level.engine.overlay();
+        overlayLeft.innerHTML = overlay.left;
+        overlayRight.innerHTML = overlay.right;
+        diagnosticsLabel.textContent = `Diagnostics: ${JSON.stringify(state.diagnostics)}`;
+      }
+
+      function renderBackground() {
+        ctx.clearRect(0, 0, width, height);
+        const grad = ctx.createLinearGradient(0, 0, 0, height);
+        grad.addColorStop(0, 'rgba(11,22,44,0.9)');
+        grad.addColorStop(1, 'rgba(4,7,15,0.98)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, width, height);
+
+        for (let i = 0; i < 50; i++) {
+          const x = (i * 97.3 + state.globalTick * 8) % width;
+          const y = (i * 53.1) % height;
+          ctx.fillStyle = `rgba(255,255,255,${0.05 + (i % 5) * 0.02})`;
+          ctx.fillRect(x, y, 2, 2);
+        }
+
+        if (state.flash > 0) {
+          ctx.fillStyle = `rgba(255,127,127,${state.flash})`;
+          ctx.fillRect(0, 0, width, height);
+          state.flash = Math.max(0, state.flash - 0.04);
+        }
+      }
+
+      function executeCommand(raw) {
+        const command = raw.trim().toLowerCase();
+        if (!command) return;
+        logTerminal(`> ${raw}`, 'command');
+        commandHistory.unshift(raw);
+        historyIndex = -1;
+        switch (command) {
+          case 'help':
+            logTerminal('Commands:\nhelp - show commands and hotkeys\nstatus - show current level, scores, unlocks, diagnostics\nreset - clear saved progress and restart\nclear - clear terminal output\nHotkeys: 1/2/3 switch levels, Enter runs command, ArrowUp/ArrowDown browse history', 'system');
+            break;
+          case 'status':
+            logTerminal(JSON.stringify({
+              currentLevel: state.currentLevel,
+              modeState: state.modeState,
+              unlockedLevels: state.progress.unlockedLevels,
+              totalScore: state.progress.totalScore,
+              levelScores: state.progress.levelScores,
+              diagnostics: state.diagnostics
+            }, null, 2), 'system');
+            break;
+          case 'reset':
+            resetProgress();
+            break;
+          case 'clear':
+            clearTerminal();
+            break;
+          default:
+            logTerminal(`Unknown command: ${raw}`, 'error');
+        }
+      }
+
+      function onPointerDown(event) {
+        audio.unlock();
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        activePointer = { x, y, id: event.pointerId };
+        if (state.currentLevel === 3 && !state.isMobile) shooter.pointerDown(x, y);
+        else levels[state.currentLevel].engine.pointerDown(x, y);
+      }
+
+      function onPointerMove(event) {
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        if (state.currentLevel === 3) shooter.pointerMove(x, y);
+        if (state.isMobile && activePointer) activePointer.x = x;
+      }
+
+      function onTouchMove(event) {
+        if (state.currentLevel !== 3 || !state.isMobile) return;
+        const touch = event.touches[0];
+        if (!touch) return;
+        const rect = canvas.getBoundingClientRect();
+        shooter.pointerMove(touch.clientX - rect.left, touch.clientY - rect.top);
+      }
+
+      function handleKeyDown(event) {
+        audio.unlock();
+        if (document.activeElement === inputEl) {
+          if (event.key === 'Enter') {
+            executeCommand(inputEl.value);
+            inputEl.value = '';
+            updateCaret();
+            return;
+          }
+          if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            historyIndex = Math.min(commandHistory.length - 1, historyIndex + 1);
+            inputEl.value = commandHistory[historyIndex] || inputEl.value;
+            updateCaret();
+            return;
+          }
+          if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            historyIndex = Math.max(-1, historyIndex - 1);
+            inputEl.value = historyIndex >= 0 ? commandHistory[historyIndex] : '';
+            updateCaret();
+            return;
+          }
+        }
+
+        if (event.key === '1') { setLevel(1); return; }
+        if (event.key === '2' && state.progress.unlockedLevels.includes(2)) { setLevel(2); return; }
+        if (event.key === '3' && state.progress.unlockedLevels.includes(3)) { setLevel(3); return; }
+
+        if (state.currentLevel === 3) {
+          if (event.key === 'ArrowLeft') shooter.setKeys(true, keyRight);
+          if (event.key === 'ArrowRight') shooter.setKeys(keyLeft, true);
+          if (event.code === 'Space') {
+            event.preventDefault();
+            shooter.fire();
+          }
+        }
+      }
+
+      function handleKeyUp(event) {
+        if (state.currentLevel === 3) {
+          if (event.key === 'ArrowLeft') shooter.setKeys(false, keyRight);
+          if (event.key === 'ArrowRight') shooter.setKeys(keyLeft, false);
+        }
+      }
+
+      function loop(ts) {
+        const time = ts * 0.001;
+        const dt = Math.min(0.033, time - lastTime || 0.016);
+        lastTime = time;
+        state.globalTick += dt;
+        renderBackground();
+        levels[state.currentLevel].engine.update(dt);
+        levels[state.currentLevel].engine.draw();
+        updateParticles(dt);
+        drawParticles();
+        updateHUD();
+        requestAnimationFrame(loop);
+      }
+
+      function boot() {
+        resizeCanvas();
+        setLevel(state.currentLevel, false);
+        clearTerminal();
+        logTerminal('Matrix of Conscience terminal online.', 'success');
+        logTerminal('Use help for commands. Survive, cascade, and ascend.', 'system');
+        updateCaret();
+        inputEl.focus();
+        requestAnimationFrame(loop);
+      }
+
+      canvas.addEventListener('pointerdown', onPointerDown);
+      canvas.addEventListener('pointermove', onPointerMove);
+      canvas.addEventListener('pointerup', () => shooter.pointerUp());
+      canvas.addEventListener('pointerleave', () => shooter.pointerUp());
+      canvas.addEventListener('touchmove', onTouchMove, { passive: true });
+      fireButton.addEventListener('click', () => { audio.unlock(); shooter.fire(); });
+      ['click', 'keydown', 'touchstart'].forEach((type) => window.addEventListener(type, () => audio.unlock(), { once: true, passive: true }));
+      inputEl.addEventListener('input', updateCaret);
+      inputEl.addEventListener('click', updateCaret);
+      inputEl.addEventListener('keyup', updateCaret);
+      window.addEventListener('resize', () => {
+        state.isMobile = matchMedia('(max-width: 720px)').matches;
+        fireButton.classList.toggle('mobile-visible', state.isMobile && state.currentLevel === 3);
+        resizeCanvas();
+      });
+      window.addEventListener('keydown', handleKeyDown);
+      window.addEventListener('keyup', handleKeyUp);
+
+      boot();
+    })();
+  </script>
+</body>
+</html>
