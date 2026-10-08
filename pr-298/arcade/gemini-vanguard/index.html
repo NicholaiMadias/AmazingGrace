@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Space Vanguard | TD</title>
+    <!-- Keep Tailwind CDN for rapid prototyping to match the provided file exactly, as per implementation plan -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;700;900&display=swap');
+
+:root {
+            --space-dark: #020617;
+            --gem-ruby: #ef4444;
+            --gem-diamond: #38bdf8;
+            --gem-emerald: #10b981;
+            --gem-amethyst: #a855f7;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--space-dark);
+            color: #f8fafc;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        #game-canvas {
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+            cursor: crosshair;
+            display: block;
+        }
+
+        .ui-panel {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+        }
+
+        .tower-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tower-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            background: rgba(30, 41, 59, 0.8);
+        }
+
+        .tower-btn:active { transform: scale(0.95); }
+
+        .tower-btn.selected {
+            border-color: var(--gem-diamond);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        .code-font { font-family: 'Fira Code', monospace; }
+
+        @keyframes pulse-red {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .low-integrity { animation: pulse-red 1s infinite; color: var(--gem-ruby); }
+    </style>
+  <script type="module" crossorigin src="../../assets/arcadeGeminiVanguard-Bh05uiQ7.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/rolldown-runtime-hePW80VL.js">
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-P2Xu9kJm.js">
+  <link rel="modulepreload" crossorigin href="../../assets/firebase-auth-C3IUN0KP.js">
+  <link rel="modulepreload" crossorigin href="../../assets/framer-motion-DPV1ZFwo.js">
+  <link rel="modulepreload" crossorigin href="../../assets/react-Cwo-IJN2.js">
+  <link rel="modulepreload" crossorigin href="../../assets/EmergenceDataContext-B5Cx374F.js">
+</head>
+<body class="flex flex-col h-screen">
+    <div id="root" class="flex flex-col h-full w-full"></div>
+</body>
+</html>

@@ -1,0 +1,138 @@
+@import url('./rebellion-skin.css');
+@import url('./nexus-neon.css');
+@import url('./nexus-neon-fx.css');
+
+:root {
+  --unified-nav-bg: rgba(2, 6, 23, 0.96);
+  --unified-nav-border: rgba(30, 41, 59, 1);
+  --unified-nav-text: #e2e8f0;
+  --unified-nav-pill: rgba(56, 189, 248, 0.14);
+  --unified-nav-pill-active: rgba(56, 189, 248, 0.22);
+  --unified-nav-max-width: 1120px;
+}
+
+.site-header {
+  position: sticky !important;
+  top: 0;
+  z-index: 1000;
+  background: var(--unified-nav-bg) !important;
+  border-bottom: 1px solid var(--unified-nav-border) !important;
+  backdrop-filter: blur(12px);
+}
+
+.site-header .nav-container {
+  max-width: var(--unified-nav-max-width);
+  margin: 0 auto;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.site-header .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--unified-nav-text) !important;
+  text-decoration: none !important;
+  font-weight: 700;
+}
+
+.site-header .logo img {
+  height: 40px;
+  width: auto;
+  border-radius: 6px;
+  display: block;
+}
+
+/* Hide any legacy logo text to keep the header clean and consistent. */
+.site-header .logo span {
+  display: none !important;
+}
+
+.site-header nav#main-nav,
+.site-header .nav-links,
+.site-header .main-nav {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;      /* keep nav on a single row */
+  white-space: nowrap;    /* prevent link text from wrapping */
+  justify-content: flex-end;
+  position: static !important;
+  width: auto !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* Ensure old mobile-only toggled states remain visible without JS. */
+.site-header .nav-links.open,
+.site-header .nav-links.show {
+  display: flex !important;
+}
+
+.site-header nav#main-nav a,
+.site-header .nav-links a,
+.site-header .main-nav a {
+  color: var(--unified-nav-text) !important;
+  text-decoration: none !important;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent !important;
+}
+
+.site-header nav#main-nav a:hover,
+.site-header .nav-links a:hover,
+.site-header .main-nav a:hover {
+  background: var(--unified-nav-pill) !important;
+}
+
+.site-header nav#main-nav a[aria-current="page"],
+.site-header nav#main-nav a.nav-active-page,
+.site-header nav#main-nav a.active,
+.site-header .nav-links a[aria-current="page"],
+.site-header .nav-links a.nav-active-page,
+.site-header .nav-links a.active,
+.site-header .main-nav a[aria-current="page"],
+.site-header .main-nav a.nav-active-page,
+.site-header .main-nav a.active {
+  background: var(--unified-nav-pill-active) !important;
+  color: #fff !important;
+}
+
+.menu-toggle {
+  display: none !important;
+}
+
+/* Mobile-specific navigation improvements for iPhone and small screens */
+@media (max-width: 768px) {
+  .site-header .nav-container {
+    justify-content: center;
+    padding: 0.75rem 1rem;
+  }
+
+  .site-header .logo {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .site-header nav#main-nav,
+  .site-header .nav-links,
+  .site-header .main-nav {
+    width: 100%;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
+  .site-header nav#main-nav a,
+  .site-header .nav-links a,
+  .site-header .main-nav a {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.9rem;
+  }
+}
