@@ -510,15 +510,15 @@ export default function Level1NexusDefense({ onBack, onVictory, sectorId }: Leve
         ctx.restore();
     };
 
-    const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const handleCanvasInteraction = (clientX: number, clientY: number) => {
         if (!gameActive || !engineRef.current) return;
         const rect = canvasRef.current!.getBoundingClientRect();
         
         const scaleX = canvasRef.current!.width / rect.width;
         const scaleY = canvasRef.current!.height / rect.height;
         
-        const x = (e.clientX - rect.left) * scaleX;
-        const y = (e.clientY - rect.top) * scaleY;
+       const x = (clientX - rect.left) * scaleX;
+       const y = (clientY - rect.top) * scaleY;
         
         const col = Math.floor(x / CELL_SIZE);
         const row = Math.floor(y / CELL_SIZE);
@@ -571,6 +571,18 @@ export default function Level1NexusDefense({ onBack, onVictory, sectorId }: Leve
             });
             setMoney(engine.money);
         }
+    };
+
+    const handleCanvasMouseClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+       handleCanvasInteraction(e.clientX, e.clientY);
+    };
+
+    const handleCanvasTouchEnd = (e: React.TouchEvent<HTMLCanvasElement>) => {
+       e.preventDefault();
+       if (e.changedTouches.length > 0) {
+           const touch = e.changedTouches[0];
+           handleCanvasInteraction(touch.clientX, touch.clientY);
+       }
     };
 
     const startWave = () => {
@@ -649,8 +661,8 @@ export default function Level1NexusDefense({ onBack, onVictory, sectorId }: Leve
                         </button>
                     </div>
 
-                    <div style={{ position: 'relative', border: '2px solid #1e293b', borderRadius: '8px', overflow: 'hidden', width: '100%', maxWidth: '600px', aspectRatio: '600/400' }}>
-                        <canvas ref={canvasRef} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} onClick={handleCanvasClick} style={{ background: '#0a0f1d', display: 'block', width: '100%', height: '100%' }} />
+                    <div style={{ position: 'relative', border: '2px solid #1e293b', borderRadius: '8px', overflow: 'hidden', width: '100%', maxWidth: '600px', aspectRatio: '600/400', touchAction: 'none' }}>
+                        <canvas ref={canvasRef} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} onClick={handleCanvasMouseClick} onTouchEnd={handleCanvasTouchEnd} style={{ background: '#0a0f1d', display: 'block', width: '100%', height: '100%', touchAction: 'none' }} />
                         {sectorId && wave >= 5 && engineRef.current?.waveActive && (
                             <TowerDefenseBoss 
                                 sectorId={sectorId} 

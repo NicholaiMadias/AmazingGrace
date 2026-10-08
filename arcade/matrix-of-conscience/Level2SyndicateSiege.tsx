@@ -34,6 +34,8 @@ type Enemy = {
   delay: number;
   type: 'normal' | 'elite' | 'boss';
   speed: number;
+  baseSpeed?: number;
+  slowTimer?: number;
   weakpointFlashed?: boolean;
 };
 
@@ -70,9 +72,10 @@ const TOWER_STATS: Record<TowerType, { cost: number; damage: number; range: numb
 interface Level2Props {
   onBack: () => void;
   onVictory: () => void;
+  sectorId?: number;
 }
 
-export default function Level2SyndicateSiege({ onBack, onVictory }: Level2Props) {
+export default function Level2SyndicateSiege({ onBack, onVictory, sectorId }: Level2Props) {
   const [state, setState] = useState<GameState>({
     credits: 600,
     xp: 0,
@@ -131,11 +134,11 @@ export default function Level2SyndicateSiege({ onBack, onVictory }: Level2Props)
           if (tier >= 3) speed = 2;
           if (i === 0 && tier >= 2) { type = 'elite'; hp *= 2; }
         }
-        newEnemies.push({ id: `e_${nextWave}_${i}`, pathIndex: 0, hp, maxHp: hp, alive: true, delay: i * 7, type, speed });
+        newEnemies.push({ id: `e_${nextWave}_${i}`, pathIndex: 0, hp, maxHp: hp, alive: true, delay: i * 7, type, speed, baseSpeed: speed, slowTimer: 0 });
       }
 
       if (isElite && tier >= 4 && !s.overloadTriggered) {
-        newEnemies.push({ id: `b_${nextWave}`, pathIndex: 0, hp: 40 + nextWave * 10, maxHp: 40 + nextWave * 10, alive: true, delay: 15, type: 'boss', speed: 1 });
+        newEnemies.push({ id: `b_${nextWave}`, pathIndex: 0, hp: 40 + nextWave * 10, maxHp: 40 + nextWave * 10, alive: true, delay: 15, type: 'boss', speed: 1, baseSpeed: 1, slowTimer: 0 });
         addChat('Trinity', "Structural anomaly detected. A Syndicate Overseer is attempting a full breach.");
       }
 
@@ -153,7 +156,7 @@ export default function Level2SyndicateSiege({ onBack, onVictory }: Level2Props)
     setState(s => {
       if (s.enemies.every(e => !e.alive) && s.enemies.length > 0) {
         if (s.loopId) clearInterval(s.loopId);
-        
+         
         // Victory Condition for Level 2: completing Wave 5
         if (s.wave === 5) {
           setIsLevelWon(true);
@@ -174,6 +177,15 @@ export default function Level2SyndicateSiege({ onBack, onVictory }: Level2Props)
       for (let e of nextEnemies) {
         if (!e.alive) continue;
         if (e.delay > 0) { e.delay--; continue; }
+         
+        // Handle slow effect decay
+        if (e.slowTimer && e.slowTimer > 0) {
+          e.slowTimer--;
+          if (e.slowTimer <= 0) {
+            e.speed = e.baseSpeed || 1;
+          }
+        }
+         
         e.pathIndex += e.speed;
         if (e.pathIndex >= PATH.length) {
           e.alive = false;
@@ -215,7 +227,12 @@ export default function Level2SyndicateSiege({ onBack, onVictory }: Level2Props)
           // @ts-ignore
           if (cellEl && typeof window.triggerTowerFire === 'function') window.triggerTowerFire(cellEl);
 
-          if (t.type === 'ion') target.speed = 1;
+          // Ion tower applies slow (not permanent)
+          if (t.type === 'ion') {
+            target.slowTimer = 30;
+            target.speed = 0.5;
+          }
+           
           if (t.type === 'artillery') {
              const [tr, tc] = PATH[Math.floor(target.pathIndex)];
              nextEnemies.forEach(e => {

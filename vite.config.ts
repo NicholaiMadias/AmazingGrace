@@ -14,6 +14,7 @@ export default defineConfig({
       input: {
         main:              resolve(__dirname, "index.html"),
         contact:           resolve(__dirname, "contact/index.html"),
+        profile:           resolve(__dirname, "profile/index.html"),
         matrix:            resolve(__dirname, "matrix.html"),
         arcade:            resolve(__dirname, "arcade/index.html"),
         arcadeMatrix:      resolve(__dirname, "arcade/matrix-of-conscience/index.html"),
