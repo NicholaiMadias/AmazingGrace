@@ -37,6 +37,7 @@ describe('story library blog entry', () => {
     );
     expect(html).toContain('Workload Identity Federation');
     expect(html).toContain('Firebase Authentication');
+    expect(html).toContain('  authenticate:');
     expect(html.indexOf('Further reading')).toBeGreaterThan(html.indexOf('</article>'));
     expect(html).not.toMatch(/YOUR_[A-Z_]+|DEPLOYMENT_ID|TODO/);
     expect(html).toContain('rel="noopener noreferrer"');
