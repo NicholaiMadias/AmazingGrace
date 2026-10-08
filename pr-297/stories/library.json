@@ -284,6 +284,24 @@
       "summary": "Architectural JS Synthesis of the Matrix of Conscience — unifying the Sequence Stabilizer, Binary Rain, and a point-based economy in high-fidelity simulation environments."
     },
     {
+      "title": "Architectural Guide: Zero-Overhead Secret Management & Google Authentication",
+      "author": "Amazing Grace Engineering",
+      "genre": "Technology / Security",
+      "series": "Engineering Guides",
+      "type": "blog",
+      "slug": "blog-zero-overhead-secret-management-google-authentication",
+      "path": "./blog/zero-overhead-secret-management-google-authentication.html",
+      "tags": [
+        "google-cloud",
+        "workload-identity-federation",
+        "secret-management",
+        "firebase-authentication",
+        "security",
+        "blog"
+      ],
+      "summary": "A practical guide to keyless GitHub Actions deployments, Google Cloud secret handling, and Firebase Google sign-in, with security boundaries and deployment best practices."
+    },
+    {
       "title": "The Sovereign Spirit: A Deep Dive into The Apocryphon of John",
       "author": "Amazing Grace Story Team",
       "genre": "Gnosticism / Spirituality",
