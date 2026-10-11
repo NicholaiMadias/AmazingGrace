@@ -71,6 +71,9 @@ describe('Matrix of Conscience campaign', () => {
     expect(appSource).toContain('sectorId={selectedSector}');
     expect(level2Source).toContain('sectorId?: number;');
     expect(level2Source).toMatch(/function Level2SyndicateSiege\(\{\s*onBack,\s*onVictory,\s*sectorId\s*\}/);
+    expect(level2Source).toContain('loopId: newBaseHp <= 0 ? null : s.loopId');
+    expect(level2Source).toContain('CONTINUE TO LEVEL 3');
+    expect(level2Source).toContain('the shield opens by choice—not force');
     expect(appSource).toContain('onMissionComplete={() => completeLevel(3)}');
     expect(emergenceSource).toContain('gameState.wave > 3');
     expect(emergenceSource).toContain('Rift Peacemaker');
