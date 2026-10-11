@@ -1,0 +1,27 @@
+{
+  "id": "chapter-3-4-content-package",
+  "title": "Mirror Path + Collapse Engine",
+  "version": "1.0.0",
+  "chapters": [
+    {
+      "id": "chapter-3",
+      "title": "The Mirror Path",
+      "storyPath": "../mirror-path/",
+      "systemsPath": "./mirror-path-traversal.json"
+    },
+    {
+      "id": "chapter-4",
+      "title": "The Collapse Engine",
+      "storyPath": "../collapse-engine/",
+      "bossPath": "./collapse-engine-arena.json"
+    }
+  ],
+  "prototype": {
+    "loopPath": "./prototype-loop.json",
+    "embeddedIn": "../mirror-path/"
+  },
+  "ost": {
+    "root": "../../OST",
+    "index": "../../OST/index.json"
+  }
+}

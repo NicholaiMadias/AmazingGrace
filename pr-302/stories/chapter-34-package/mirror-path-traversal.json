@@ -1,0 +1,47 @@
+{
+  "coreSystems": {
+    "state": ["WORLD_HARMONIC", "WORLD_FRACTAL", "WORLD_MIRROR"],
+    "playerRoles": [
+      "Player 1 -> Lead Player (harmonic role)",
+      "Player 2 or AI -> Nicholai-Echo (fractal bias)"
+    ]
+  },
+  "mechanics": [
+    {
+      "name": "Mirror Phase Shift",
+      "input": "Q / LB",
+      "effect": [
+        "Toggle foreground world",
+        "Change platform solidity",
+        "Alter enemy behavior variants"
+      ]
+    },
+    {
+      "name": "Reflection Jump",
+      "input": "Jump near reflective surfaces",
+      "effect": [
+        "Teleport player to mirrored position in the other world/layer"
+      ]
+    },
+    {
+      "name": "Dual Trigger Nodes",
+      "requirements": [
+        "Harmonic activation (stand + pulse)",
+        "Fractal activation (stand + weave)"
+      ],
+      "result": "Mirror Bridge forms"
+    },
+    {
+      "name": "Paradox-Harmony Sync",
+      "requirements": [
+        "Stability meter above threshold",
+        "Paradox meter above threshold"
+      ],
+      "effects": [
+        "Time dilation",
+        "All platforms visible",
+        "Dual Resonance Beam available"
+      ]
+    }
+  ]
+}
