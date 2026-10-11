@@ -1,0 +1,89 @@
+/* --- REBELLION 2027 GLOBAL ARCHITECTURE SKIN --- */
+:root {
+  --bg-deep: #020205;
+  --bg-matrix: radial-gradient(circle at top, #0b0b16 0%, #050509 50%, #020204 100%);
+  --bg-panel: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), rgba(5, 5, 15, 0.98));
+
+  /* Virtue & Alignment Color Axes */
+  --accent-cyan: #35e0ff;
+  --accent-gold: #ffd86b;
+  --accent-crimson: #ff4b8b;
+  --accent-purple: #bd00ff;
+
+  /* Text & Structure */
+  --text-main: #f5f5ff;
+  --text-muted: #8899a6;
+  --border-glow: rgba(53, 224, 255, 0.15);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --z-scanline-overlay: 9999;
+}
+
+/* --- Base Rules --- */
+body {
+  background: var(--bg-deep);
+  background-image: var(--bg-matrix);
+  color: var(--text-main);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* --- Dynamic Scanline Overlay --- */
+body::before {
+  content: ' ';
+  display: block;
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.04));
+  z-index: var(--z-scanline-overlay);
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+}
+
+/* --- Diegetic Panel Refinement --- */
+.janus-panel, .panel, .admin-sidebar {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.janus-panel:hover, .panel:hover {
+  border-color: rgba(53, 224, 255, 0.25);
+}
+
+/* --- Typography Overrides --- */
+h1, h2, h3, h4 {
+  font-family: 'Orbitron', 'Share Tech Mono', sans-serif;
+  letter-spacing: 0.1em;
+}
+
+.font-mono {
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 0.1em;
+}
+
+/* --- Interactive Elements --- */
+.btn-primary, .nav-btn.active {
+  background: linear-gradient(135deg, var(--accent-crimson), var(--accent-gold));
+  color: #020205;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  border-radius: 6px;
+  box-shadow: 0 2px 12px rgba(255, 75, 139, 0.3);
+}
+
+.btn-secondary {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-cyan);
+  background: rgba(53, 224, 255, 0.05);
+  color: var(--accent-cyan);
+}

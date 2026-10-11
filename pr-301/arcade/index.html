@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Arcade | Amazing Grace</title>
+  <!-- Google Fonts for premium typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #020617;
+      --panel-bg: rgba(15, 23, 42, 0.8);
+      --neon-cyan: #00f2ff;
+      --neon-purple: #bc13fe;
+      --neon-green: #10b981;
+      --neon-gold: #facc15;
+      --neon-red: #f43f5e;
+      --neon-teal: #38bdf8;
+      --neon-orange: #fb923c;
+      --neon-violet: #e879f9;
+      --border-glow: rgba(0, 242, 255, 0.25);
+      --font-title: 'Orbitron', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'Fira Code', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: #ffffff;
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Particle Canvas Background */
+    #space-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    /* Scanline effect wrapper */
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.25) 50%
+      ), linear-gradient(
+        90deg,
+        rgba(255, 0, 0, 0.06),
+        rgba(0, 255, 0, 0.02),
+        rgba(0, 255, 0, 0.06)
+      );
+      background-size: 100% 4px, 6px 100%;
+      opacity: 0.4;
+    }
+
+    .main-container {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 1200px);
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 4rem;
+      position: relative;
+    }
+
+    .subtitle-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      color: var(--neon-cyan);
+      background: rgba(0, 242, 255, 0.1);
+      border: 1px solid var(--neon-cyan);
+      padding: 0.4rem 1.2rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      box-shadow: 0 0 15px rgba(0, 242, 255, 0.15);
+      margin-bottom: 1.25rem;
+    }
+
+    h1 {
+      font-family: var(--font-title);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      color: #ffffff;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+      margin-bottom: 0.5rem;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), var(--neon-violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 8px rgba(0, 242, 255, 0.4));
+    }
+
+    .header p {
+      color: #94a3b8;
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 1rem auto 0;
+      line-height: 1.6;
+    }
+
+    /* Core Action Bar */
+    .action-bar {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .btn {
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-primary {
+      background: rgba(188, 19, 254, 0.15);
+      border: 1px solid var(--neon-purple);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: var(--neon-purple);
+      color: #ffffff;
+      box-shadow: 0 0 25px rgba(188, 19, 254, 0.55);
+      transform: translateY(-2px);
+    }
+
+    /* Grid Layout */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 5rem;
+    }
+
+    /* Card Styling */
+    .game-card {
+      background: var(--panel-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 300px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+    }
+
+    .game-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    /* Custom neon glowing classes */
+    .glow-cyan { --card-glow: var(--neon-cyan); border-color: rgba(0, 242, 255, 0.2); }
+    .glow-purple { --card-glow: var(--neon-purple); border-color: rgba(188, 19, 254, 0.2); }
+    .glow-green { --card-glow: var(--neon-green); border-color: rgba(16, 185, 129, 0.2); }
+    .glow-gold { --card-glow: var(--neon-gold); border-color: rgba(250, 204, 21, 0.2); }
+    .glow-red { --card-glow: var(--neon-red); border-color: rgba(244, 63, 94, 0.2); }
+    .glow-teal { --card-glow: var(--neon-teal); border-color: rgba(56, 189, 248, 0.2); }
+    .glow-orange { --card-glow: var(--neon-orange); border-color: rgba(251, 146, 60, 0.2); }
+    .glow-violet { --card-glow: var(--neon-violet); border-color: rgba(232, 121, 249, 0.2); }
+    .glow-steel { --card-glow: #64748b; border-color: rgba(100, 116, 139, 0.2); }
+
+    .game-card:hover {
+      border-color: var(--card-glow);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(var(--glow-rgb), 0.25);
+      transform: translateY(-6px);
+    }
+
+    .game-card.glow-cyan:hover { box-shadow: 0 0 25px rgba(0, 242, 255, 0.25); }
+    .game-card.glow-purple:hover { box-shadow: 0 0 25px rgba(188, 19, 254, 0.25); }
+    .game-card.glow-green:hover { box-shadow: 0 0 25px rgba(16, 185, 129, 0.25); }
+    .game-card.glow-gold:hover { box-shadow: 0 0 25px rgba(250, 204, 21, 0.25); }
+    .game-card.glow-red:hover { box-shadow: 0 0 25px rgba(244, 63, 94, 0.25); }
+    .game-card.glow-teal:hover { box-shadow: 0 0 25px rgba(56, 189, 248, 0.25); }
+    .game-card.glow-orange:hover { box-shadow: 0 0 25px rgba(251, 146, 60, 0.25); }
+    .game-card.glow-violet:hover { box-shadow: 0 0 25px rgba(232, 121, 249, 0.25); }
+    .game-card.glow-steel:hover { box-shadow: 0 0 25px rgba(100, 116, 139, 0.25); }
+
+    .card-top {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+    }
+
+    .game-card:hover .card-badge {
+      color: var(--card-glow);
+      border-color: var(--card-glow);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .cabinet-decor {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.15);
+    }
+
+    .card-title {
+      font-family: var(--font-title);
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+      color: #ffffff;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .game-card:hover .card-title {
+      color: var(--card-glow);
+      text-shadow: 0 0 10px rgba(var(--glow-rgb), 0.3);
+    }
+
+    .card-desc {
+      color: #94a3b8;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .card-bottom {
+      margin-top: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-launch {
+      width: 100%;
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.85rem;
+      border-radius: 6px;
+      text-decoration: none;
+      text-align: center;
+      display: block;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      transition: all 0.3s;
+    }
+
+    .game-card:hover .btn-launch {
+      background: rgba(var(--glow-rgb), 0.1);
+      border-color: var(--card-glow);
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(var(--glow-rgb), 0.2);
+    }
+
+    .game-card.glow-cyan:hover .btn-launch { background: rgba(0, 242, 255, 0.12); color: var(--neon-cyan); }
+    .game-card.glow-purple:hover .btn-launch { background: rgba(188, 19, 254, 0.12); color: var(--neon-purple); }
+    .game-card.glow-green:hover .btn-launch { background: rgba(16, 185, 129, 0.12); color: var(--neon-green); }
+    .game-card.glow-gold:hover .btn-launch { background: rgba(250, 204, 21, 0.12); color: var(--neon-gold); }
+    .game-card.glow-red:hover .btn-launch { background: rgba(244, 63, 94, 0.12); color: var(--neon-red); }
+    .game-card.glow-teal:hover .btn-launch { background: rgba(56, 189, 248, 0.12); color: var(--neon-teal); }
+    .game-card.glow-orange:hover .btn-launch { background: rgba(251, 146, 60, 0.12); color: var(--neon-orange); }
+    .game-card.glow-violet:hover .btn-launch { background: rgba(232, 121, 249, 0.12); color: var(--neon-violet); }
+    .game-card.glow-steel:hover .btn-launch { background: rgba(100, 116, 139, 0.12); color: #cbd5e1; }
+
+    /* Footer diagnostics */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 2rem;
+      margin-top: 5rem;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: rgba(148, 163, 184, 0.4);
+    }
+
+    footer p {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-highlight {
+      color: var(--neon-cyan);
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <!-- Canvas for dynamic background -->
+  <canvas id="space-canvas"></canvas>
+  
+  <!-- Retro scanlines overlay -->
+  <div class="scanlines"></div>
+
+  <div class="main-container">
+    <header>
+      <div class="subtitle-badge">Amazing Grace Arcade // Active Builds</div>
+      <h1>Arcade <span class="gradient-text">Game Grid</span></h1>
+      <p>Launch the current working games from one clean hub with stable relative routes for previews and production.</p>
+    </header>
+
+    <div class="action-bar">
+      <!-- High Priority Return link to satisfy vitest spec -->
+      <a href="../matrix.html" class="btn btn-primary">← Return to Sovereign Matrix</a>
+    </div>
+
+    <div class="games-grid">
+      <!-- 1. Matrix of Conscience -->
+      <div class="game-card glow-green">
+        <div class="card-top">
+          <div class="card-meta">
+            <span class="card-badge">SYNERGY HEART</span>
+            <span class="cabinet-decor">NODE: MO-C1</span>
+          </div>
+          <h2 class="card-title">Matrix of Conscience</h2>
+          <p class="card-desc">The core 3D simulation sandbox. Monitor sovereign agents, trigger system events, and defend the grid against corrupted anomalies.</p>
+        </div>
+        <div class="card-bottom">
+          <a href="./matrix-of-conscience/" class="btn-launch">Initialize Console</a>
+        </div>
+      </div>
+
+      <!-- 2. Nexus Defense (Tower Defense) -->
+      <div class="game-card glow-cyan">
+        <div class="card-top">
+          <div class="card-meta">
+            <span class="card-badge">TACTICAL SIEGE</span>
+            <span class="cabinet-decor">NODE: TD-DS</span>
+          </div>
+          <h2 class="card-title">Nexus Defense</h2>
+          <p class="card-desc">Protect the core network integrity against incoming compromise waves. Standalone 2D tactical command environment.</p>
+        </div>
+        <div class="card-bottom">
+          <a href="./tower-defense/" class="btn-launch">Mount Defense Node</a>
+        </div>
+      </div>
+
+      <!-- 3. Star Matrix -->
+      <div class="game-card glow-purple">
+        <div class="card-top">
+          <div class="card-meta">
+            <span class="card-badge">COSMIC PUZZLE</span>
+            <span class="cabinet-decor">NODE: SM-XX</span>
+          </div>
+          <h2 class="card-title">Star Matrix</h2>
+          <p class="card-desc">Match and align stellar constellations on a shifting 7x7 dimensional grid. Chain supernova combos for massive ranks.</p>
+        </div>
+        <div class="card-bottom">
+          <a href="./star-matrix/" class="btn-launch">Deploy Star Board</a>
+        </div>
+      </div>
+
+      <!-- 4. Syndicate Siege -->
+      <div class="game-card glow-red">
+        <div class="card-top">
+          <div class="card-meta">
+            <span class="card-badge">REBELLION OS</span>
+            <span class="cabinet-decor">NODE: SS-RB</span>
+          </div>
+          <h2 class="card-title">Syndicate Siege</h2>
+          <p class="card-desc">Defend the rebellion base against Syndicate Overseers. Unlock ultra-shards and elite cosmetic tower skins.</p>
+        </div>
+        <div class="card-bottom">
+          <a href="./syndicate-siege/" class="btn-launch">Join Rebellion</a>
+        </div>
+      </div>
+
+      <!-- 5. Trinity Core -->
+      <div class="game-card glow-teal">
+        <div class="card-top">
+          <div class="card-meta">
+            <span class="card-badge">METAPHYSICAL</span>
+            <span class="cabinet-decor">NODE: TC-33</span>
+          </div>
+          <h2 class="card-title">Trinity Core</h2>
+          <p class="card-desc">Balance the three pillars of divine consciousness and harmony. Align your inner soul values in a sacred trial environment.</p>
+        </div>
+        <div class="card-bottom">
+          <a href="./trinity/" class="btn-launch">Calibrate Trinity</a>
+        </div>
+      </div>
+
+      <!-- 6. Lore Archive -->
+      <div class="game-card glow-steel">
+        <div class="card-top">
+          <div class="card-meta">
+            <span class="card-badge">CLASSIFIED</span>
+            <span class="cabinet-decor">NODE: LA-CL</span>
+          </div>
+          <h2 class="card-title">Lore Archive</h2>
+          <p class="card-desc">Access encrypted logs and historical data from the Matrix. Deep dive into the origins of the Sovereign AIs.</p>
+        </div>
+        <div class="card-bottom">
+          <a href="./lore-archive/" class="btn-launch">Access Files</a>
+        </div>
+      </div>
+
+      <!-- 7. Mystery of the Seven Stars -->
+      <div class="game-card glow-violet">
+        <div class="card-top">
+          <div class="card-meta">
+            <span class="card-badge">MATCH-3 PUZZLE</span>
+            <span class="cabinet-decor">NODE: S7-ST</span>
+          </div>
+          <h2 class="card-title">Mystery of the Seven Stars</h2>
+          <p class="card-desc">Swap adjacent virtue gems, chain cascading combos, and ascend through levels inspired by the seven churches of Revelation. Desktop drag-and-drop and mobile swipe supported.</p>
+        </div>
+        <div class="card-bottom">
+          <a href="./seven-stars/" class="btn-launch">Begin Journey</a>
+        </div>
+      </div>
+
+      <!-- 8. Holy Bible Study -->
+      <div class="game-card glow-orange">
+        <div class="card-top">
+          <div class="card-meta">
+            <span class="card-badge">SACRED DATA</span>
+            <span class="cabinet-decor">NODE: BS-77</span>
+          </div>
+          <h2 class="card-title">Holy Bible Study</h2>
+          <p class="card-desc">Interactive scriptures study, scripture matches, and holy virtue progression mechanics to elevate spiritual knowledge.</p>
+        </div>
+        <div class="card-bottom">
+          <a href="./bible-study/" class="btn-launch">Enter Study Hall</a>
+        </div>
+      </div>
+
+      <!-- 9. Virtue Match -->
+      <div class="game-card glow-gold">
+        <div class="card-top">
+          <div class="card-meta">
+            <span class="card-badge">VIRTUE ASCENSION</span>
+            <span class="cabinet-decor">NODE: VM-88</span>
+          </div>
+          <h2 class="card-title">Virtue Match</h2>
+          <p class="card-desc">Align sacred virtues—Knowledge, Faith, Truth, Compassion, Courage, Creativity, Integrity—on an 8×8 grid. Chain combos and use power-ups to ascend 5 levels.</p>
+        </div>
+        <div class="card-bottom">
+          <a href="./virtue-match/" class="btn-launch">Begin Ascension</a>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>ARCADE HUB STATUS: <span class="footer-highlight">ACTIVE ROUTES VERIFIED</span></p>
+      <p>Legacy routes stay available, but this page now points only to active game builds.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Star Matrix floating stardust background particles
+    const canvas = document.getElementById('space-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const particles = [];
+    const colors = ['#00f2ff', '#bc13fe', '#10b981', '#facc15', '#f43f5e', '#38bdf8', '#fb923c', '#e879f9'];
+
+    for (let i = 0; i < 75; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        size: Math.random() * 2.2 + 0.6,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: Math.random() * 0.5 + 0.2
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+      });
+
+      ctx.shadowBlur = 0; // Reset shadow
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>

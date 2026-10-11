@@ -1,0 +1,81 @@
+/* UNIVERSAL NEON PULSE */
+@keyframes neonPulse {
+  0% {
+    box-shadow: 0 0 6px currentColor, 0 0 12px currentColor;
+  }
+  50% {
+    box-shadow: 0 0 12px currentColor, 0 0 24px currentColor;
+  }
+  100% {
+    box-shadow: 0 0 6px currentColor, 0 0 12px currentColor;
+  }
+}
+
+/* APPLY TO ANY ELEMENT */
+.neon-pulse {
+  animation: neonPulse 2.2s ease-in-out infinite;
+}
+
+/* STRONGER VARIANT */
+.neon-pulse-strong {
+  animation: neonPulse 1.4s ease-in-out infinite;
+}
+
+/* GLOBAL GLASS PANEL */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 1.25rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* HOVER LIFT */
+.glass-panel:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 32px rgba(0,0,0,0.45);
+}
+
+/* STRONGER VARIANT FOR STARWHEEL */
+.glass-panel-strong {
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+  border-radius: 16px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.glass-panel-strong:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 32px rgba(0,0,0,0.45);
+}
+
+/* DRAGONBALL‑E (cyan) */
+.dragonball-e .glass-panel {
+  border-color: rgba(56,189,248,0.35);
+}
+.dragonball-e .neon-pulse {
+  color: #38bdf8;
+}
+
+/* PAC‑MASTERY (yellow) */
+.pac-mastery .glass-panel {
+  border-color: rgba(250,204,21,0.35);
+}
+.pac-mastery .neon-pulse {
+  color: #facc15;
+}
+
+/* META‑WISDOM (purple) */
+.meta-wisdom .glass-panel {
+  border-color: rgba(168,85,247,0.35);
+}
+.meta-wisdom .neon-pulse {
+  color: #a855f7;
+}
