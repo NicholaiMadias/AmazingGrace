@@ -270,7 +270,14 @@ export default function Level2SyndicateSiege({ onBack, onVictory, sectorId }: Le
         }
       }
 
-      return { ...s, baseHp: newBaseHp, enemies: nextEnemies, towers: nextTowers, credits: s.credits + crGained };
+      return {
+        ...s,
+        baseHp: newBaseHp,
+        enemies: nextEnemies,
+        towers: nextTowers,
+        credits: s.credits + crGained,
+        loopId: newBaseHp <= 0 ? null : s.loopId
+      };
     });
   }, [addChat]);
 
@@ -515,12 +522,12 @@ export default function Level2SyndicateSiege({ onBack, onVictory, sectorId }: Le
           <div style={{ textAlign: 'center', maxWidth: '500px', padding: '2rem' }}>
             <h1 style={{ color: '#ffd86b', fontSize: '3rem', margin: 0, textShadow: '0 0 20px rgba(255,216,107,0.5)', letterSpacing: '2px' }}>VICTORY</h1>
             <p style={{ color: '#cbd5e1', fontSize: '1.25rem', marginTop: '1rem', lineHeight: '1.6' }}>
-              Syndicate threat neutralized. Duality Core is fully calibrated. Establish primary consciousness vector.
+              The Syndicate lowers its weapons. At Aurion Gate, the shield opens by choice—not force—and its keepers send the first allied signal into the restored grid.
             </p>
           </div>
           <div style={{ display: 'flex', gap: '1rem' }}>
             <button onClick={onVictory} style={{ background: 'linear-gradient(90deg, #ffd86b, #00e5ff)', border: 'none', color: '#090d16', padding: '1rem 2rem', fontSize: '1.1rem', fontWeight: 800, borderRadius: '8px', cursor: 'pointer', boxShadow: '0 4px 14px rgba(0, 229, 255, 0.3)' }}>
-              PROCEED TO FINAL LEVEL (3D)
+              CONTINUE TO LEVEL 3
             </button>
             <button onClick={onBack} style={{ background: 'rgba(30, 41, 59, 0.5)', border: '1px solid #475569', color: '#cbd5e1', padding: '1rem 2rem', fontSize: '1.1rem', fontWeight: 700, borderRadius: '8px', cursor: 'pointer' }}>
               LEVEL SELECTOR
