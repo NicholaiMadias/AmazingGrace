@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower Defense | Amazing Grace Arcade</title>
+  <script type="module" crossorigin src="../../assets/arcadeTowerDefense-DxbBNCXh.js"></script>
+  <link rel="modulepreload" crossorigin href="../../assets/modulepreload-polyfill-P2Xu9kJm.js">
+  <link rel="stylesheet" crossorigin href="../../assets/arcadeTowerDefense-D_6vjJWX.css">
+</head>
+<body>
+    <nav aria-label="Arcade navigation" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1rem 0;color:#cbd5e1;font-family:Arial,sans-serif;">
+        <a href="../" style="color:#00f2ff;text-decoration:none;font-weight:700;">← Back to Arcade</a>
+        <a href="../../" style="color:#cbd5e1;text-decoration:none;font-weight:600;">Amazing Grace Home</a>
+    </nav>
+
+    <!-- MAIN MENU -->
+    <div id="menu-screen" class="screen">
+        <h1 class="title">NEXUS DEFENSE</h1>
+        
+        <div class="faction-box">
+            <h3>SELECT FACTION</h3>
+            <div class="faction-options">
+                <div class="faction-btn selected" data-faction="netrunners">
+                    <strong>NETRUNNERS</strong><br>+50 Start Cores
+                </div>
+                <div class="faction-btn" data-faction="sentinels">
+                    <strong>SENTINELS</strong><br>+10% Tower DMG
+                </div>
+                <div class="faction-btn" data-faction="architects">
+                    <strong>ARCHITECTS</strong><br>-10% Tower Cost
+                </div>
+                <div class="faction-btn" data-faction="guardians">
+                    <strong>GUARDIANS</strong><br>+10 Max Integrity
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-actions">
+            <button id="btn-play" class="btn primary-btn">INITIALIZE COMBAT</button>
+            <button id="btn-store" class="btn">SYSTEM STORE</button>
+            <button id="btn-leaderboard" class="btn">GLOBAL RANKINGS</button>
+        </div>
+
+        <section class="instruction-box" aria-labelledby="emergent-word-heading">
+            <h3 id="emergent-word-heading">EMERGENT WORD // TOWER DEFENSE INSTRUCTIONS</h3>
+            <ol>
+                <li>Select your faction, then initialize combat to deploy into the grid.</li>
+                <li>Choose a tower chassis and place it off-path to defend the core route.</li>
+                <li>Start each wave, earn cores from kills, and upgrade installed towers.</li>
+                <li>Keep integrity above zero through escalating waves to secure your rank.</li>
+            </ol>
+        </section>
+    </div>
+
+    <!-- STORE SCREEN -->
+    <div id="store-screen" class="screen hidden">
+        <h1 class="title">SYSTEM STORE</h1>
+        <div class="wallet-info">DATA FRAGMENTS: <span id="store-fragments">0</span></div>
+        <div id="discount-banner" class="hidden" style="color:#00f2ff; margin-bottom:15px; font-weight:bold;">DISCOUNT ACTIVE</div>
+        
+        <div class="store-grid">
+            <div class="store-item" data-upgrade="integrity">
+                <strong>Integrity Core</strong>
+                <p>+5 Base Health</p>
+                <button class="btn btn-buy">BUY (<span class="cost">100</span>)</button>
+                <div class="level">Level: <span class="lvl">0</span></div>
+            </div>
+            <div class="store-item" data-upgrade="economy">
+                <strong>Core Generator</strong>
+                <p>+20 Start Cores</p>
+                <button class="btn btn-buy">BUY (<span class="cost">150</span>)</button>
+                <div class="level">Level: <span class="lvl">0</span></div>
+            </div>
+            <div class="store-item" data-upgrade="damage">
+                <strong>Overclock</strong>
+                <p>+5% DMG</p>
+                <button class="btn btn-buy">BUY (<span class="cost">200</span>)</button>
+                <div class="level">Level: <span class="lvl">0</span></div>
+            </div>
+        </div>
+        
+        <button class="btn back-to-menu" style="margin-top: 20px;">BACK TO MENU</button>
+    </div>
+
+    <!-- LEADERBOARD SCREEN -->
+    <div id="leaderboard-screen" class="screen hidden">
+        <h1 class="title">GLOBAL RANKINGS</h1>
+        <p style="color:var(--text); margin-bottom: 10px;">Top defenders receive Store Discounts (1st: 75% | 2nd: 50%)</p>
+        <div class="leaderboard-list" id="lb-list">
+            Loading data from Firebase...
+        </div>
+        <button class="btn back-to-menu" style="margin-top: 20px;">BACK TO MENU</button>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="game-screen" class="screen hidden">
+        <div id="game-wrapper">
+            <div id="header">
+                <div class="stat">CORES: <span id="stat-money">100</span></div>
+                <div class="stat">INTEGRITY: <span id="stat-health">20</span></div>
+                <div class="stat">WAVE: <span id="stat-wave">1</span></div>
+                <button id="btn-start" class="btn primary-btn">START WAVE</button>
+            </div>
+            
+            <canvas id="game-canvas" width="600" height="400"></canvas>
+            
+            <div id="build-panel">
+                <div class="tower-option selected" data-type="basic">
+                    <strong>Blaster</strong><br>Cost: <span class="t-cost">50</span><br>Rng: Med
+                </div>
+                <div class="tower-option" data-type="rapid">
+                    <strong>Rapid</strong><br>Cost: <span class="t-cost">100</span><br>Rng: Low
+                </div>
+                <div class="tower-option" data-type="sniper">
+                    <strong>Sniper</strong><br>Cost: <span class="t-cost">150</span><br>Rng: High
+                </div>
+                <div class="tower-option" data-type="emp">
+                    <strong>EMP</strong><br>Cost: <span class="t-cost">200</span><br>Slow 50%
+                </div>
+                <div class="tower-option" data-type="plasma">
+                    <strong>Plasma</strong><br>Cost: <span class="t-cost">250</span><br>Splash
+                </div>
+                <div class="tower-option" data-type="tesla">
+                    <strong>Tesla</strong><br>Cost: <span class="t-cost">300</span><br>Chain
+                </div>
+            </div>
+            <div style="color:#94a3b8; font-size:11px; margin-top:10px; text-align:center; font-family:monospace; text-shadow:0 0 5px rgba(255,255,255,0.1); letter-spacing:1px; line-height:1.4;">
+                💡 CYBER UPGRADE PROTOCOL: CLICK AN INSTALLED TOWER TO UPCLOCK ITS SYSTEMS<br>
+                (DMG +50% | RNG +15% | FIRE RATE +15% | COST: 60% BASE x LEVEL)
+            </div>
+
+            <div id="overlay" class="hidden">
+                <h1 id="overlay-title">SYSTEM COMPROMISED</h1>
+                <p id="overlay-desc">Integrity reached 0.</p>
+                <div style="margin-bottom: 15px;">Fragments Earned: <span id="overlay-fragments">0</span></div>
+                <button id="btn-restart" class="btn">RETURN TO MENU</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enter Name Dialog for High Score -->
+    <div id="name-dialog" class="hidden" style="position:absolute; inset:0; background:rgba(0,0,0,0.9); z-index:999; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+        <h2 style="color:var(--accent); margin-bottom:10px;">NEW HIGH SCORE</h2>
+        <p style="color:white; margin-bottom:10px;">Enter your callsign for the Global Leaderboard:</p>
+        <input type="text" id="player-name-input" maxlength="12" style="padding:10px; font-family:var(--mono); font-size:16px; background:#020617; color:var(--accent); border:1px solid var(--accent); margin-bottom:15px; outline:none;" placeholder="GUEST">
+        <div style="display:flex; gap:10px;">
+            <button id="btn-submit-score" class="btn primary-btn">SUBMIT</button>
+            <button id="btn-cancel-score" class="btn">CANCEL</button>
+        </div>
+    </div>
+
+    <audio id="bg-music">
+        <source src="../../assets/storm-CpVkJXGp.mp3" type="audio/mpeg">
+    </audio>
+
+</body>
+</html>

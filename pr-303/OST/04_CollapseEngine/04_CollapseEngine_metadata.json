@@ -1,0 +1,9 @@
+{
+  "id": "04_CollapseEngine",
+  "title": "Collapse Engine",
+  "usage": "Chapter 4 boss encounter",
+  "mood": ["ominous", "urgent", "volatile"],
+  "tempo_bpm": 124,
+  "instruments": ["distorted low strings", "hybrid percussion", "granular synth"],
+  "motifs": ["descending entropy motif", "disrupted dual-theme fragments"]
+}

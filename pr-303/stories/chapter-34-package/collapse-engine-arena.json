@@ -1,0 +1,24 @@
+{
+  "boss": "Collapse Engine",
+  "phases": [
+    {
+      "id": "dissolution",
+      "arena": "Circular platform with harmonic and fractal segments",
+      "attacks": ["Memory Fade", "Entropy Pulse"],
+      "mechanic": "Keep at least 50% of segments stable to avoid wipe"
+    },
+    {
+      "id": "fracture",
+      "arena": "Top Harmonic layer + Bottom Fractal layer",
+      "attacks": ["Recursive Collapse", "Choice Overload"],
+      "mechanic": "Use Mirror Phase Shift to identify real threat; defeat linked clones"
+    },
+    {
+      "id": "dual-resonance",
+      "arena": "Narrow bridge between worlds",
+      "attacks": ["Collapse Wave", "Entropy Singularity"],
+      "mechanic": "Trigger Paradox-Harmony Sync and channel Dual Resonance Beam"
+    }
+  ],
+  "resolution": "Contain the Engine into a dormant silver star"
+}
