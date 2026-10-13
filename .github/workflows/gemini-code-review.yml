@@ -24,7 +24,7 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
-      - uses: google-github-actions/run-gemini-cli@v0
+      - uses: google-github-actions/run-gemini-cli@v0.1.22
         continue-on-error: true
         env:
           GEMINI_CLI_TRUST_WORKSPACE: true
