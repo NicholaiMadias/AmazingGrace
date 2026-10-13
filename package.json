@@ -21,7 +21,7 @@
     "firebase": "^12.19.0",
     "framer-motion": "^13.2.0",
     "lucide-react": "^1.41.0",
-    "nodemailer": "^9.0.5",
+    "nodemailer": "^10.0.9",
     "postprocessing": "^6.39.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
@@ -35,6 +35,6 @@
     "@vitejs/plugin-react": "^6.1.1",
     "typescript": "^7.0.2",
     "vite": "^8.2.2",
-    "vitest": "^4.1.10"
+    "vitest": "^5.0.3"
   }
 }
