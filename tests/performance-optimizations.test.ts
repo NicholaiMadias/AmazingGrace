@@ -6,6 +6,8 @@ describe('performance optimization fixes', () => {
   const serviceWorker = fs.readFileSync('public/sw.js', 'utf8');
   const matchmaker = fs.readFileSync('js/matchmaker.js', 'utf8');
   const starMatrix = fs.readFileSync('arcade/star-matrix/index.html', 'utf8');
+  const matrixGame = fs.readFileSync('arcade/matrix-of-conscience/app.js', 'utf8');
+  const matrixPage = fs.readFileSync('matrix.html', 'utf8');
   const viteConfig = fs.readFileSync('vite.config.ts', 'utf8');
   const lensBoard = fs.readFileSync('arcade/matrix-of-conscience/LensBoard.jsx', 'utf8');
   const conscienceProvider = fs.readFileSync('src/components/ConscienceProvider.tsx', 'utf8');
@@ -46,6 +48,15 @@ describe('performance optimization fixes', () => {
     expect(starMatrix).toContain("boardEl.addEventListener('pointerup', onPointerUp);");
     expect(starMatrix).toContain("boardEl.addEventListener('pointercancel', onPointerCancel);");
     expect(starMatrix).not.toContain("cell.addEventListener('pointerdown', onPointerDown);");
+  });
+
+  it('reuses match results and board nodes during match-3 play', () => {
+    expect(starMatrix).toContain('let matchResult = firstMatch;');
+    expect(starMatrix).toContain('matchResult = findMatches(next);');
+    expect(matrixGame).toContain('async resolveMatches(matches = findMatchesGrouped(this.board))');
+    expect(matrixGame).not.toContain('matches.flat()');
+    expect(matrixGame).toContain('grid.replaceChildren(cells)');
+    expect(matrixPage).toContain("document.addEventListener('visibilitychange'");
   });
 
   it('splits firebase and framer-motion chunks with lower warning limit', () => {

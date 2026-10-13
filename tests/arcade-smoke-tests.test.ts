@@ -17,7 +17,6 @@ import { resolve } from 'path';
 const ARCADE_GAMES = [
   { name: 'Main Arcade', path: 'arcade/index.html' },
   { name: 'Matrix of Conscience', path: 'arcade/matrix-of-conscience/index.html' },
-  { name: 'Matrix Terminal', path: 'arcade/matrix-of-conscience-terminal/index.html' },
   { name: 'Lore Archive', path: 'arcade/lore-archive/index.html' },
   { name: 'Certificates', path: 'arcade/certificates/index.html' },
   { name: 'Bible Study', path: 'arcade/bible-study/index.html' },

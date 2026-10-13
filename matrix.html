@@ -1406,6 +1406,14 @@
     }
     animationId = requestAnimationFrame(drawMatrixRain);
   }
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (animationId !== null) cancelAnimationFrame(animationId);
+      animationId = null;
+    } else if (animationId === null) {
+      animationId = requestAnimationFrame(drawMatrixRain);
+    }
+  });
   resizeCanvas();
   drawMatrixRain();
 
@@ -1427,8 +1435,7 @@
     function drawOscilloscope() {
       const panel = document.getElementById('diagnostics-panel');
       if (!oscCanvas || !panel || panel.style.display === 'none') {
-        // Skip rendering if Diagnostics Console is closed/hidden to save cpu resources
-        requestAnimationFrame(drawOscilloscope);
+        setTimeout(drawOscilloscope, 500);
         return;
       }
 
@@ -1817,11 +1824,13 @@
   /* ── Telemetry Diagnostics Module ──────────────────────── */
   const runBtn = document.getElementById('diag-run-btn');
   const dnsBtn = document.getElementById('diag-dns-btn');
+  let cpuLoadInterval = null;
 
   runBtn.addEventListener('click', () => {
     synth.playClick();
     const grid = document.getElementById('diag-browser-grid');
-    grid.innerHTML = '';
+    grid.replaceChildren();
+    if (cpuLoadInterval !== null) clearInterval(cpuLoadInterval);
     const data = runBrowserDiagnostics();
 
     // CPU thread display activation
@@ -1831,7 +1840,8 @@
     
     if (typeof threads === 'number') {
       cpuPanel.style.display = 'block';
-      cpuGrid.innerHTML = '';
+      cpuGrid.replaceChildren();
+      const cores = document.createDocumentFragment();
       for (let i = 0; i < Math.min(threads, 16); i++) {
         const core = document.createElement('div');
         core.className = 'cpu-core active';
@@ -1839,12 +1849,14 @@
           <div class="cpu-core-label">CORE ${i+1}</div>
           <div class="cpu-core-val">${Math.floor(50 + Math.random() * 50)}%</div>
         `;
-        cpuGrid.appendChild(core);
+        cores.appendChild(core);
       }
+      cpuGrid.appendChild(cores);
       // Periodically flicker core loads to look hyper-realistic!
-      const loadInterval = setInterval(() => {
+      cpuLoadInterval = setInterval(() => {
         if (!document.getElementById('diagnostics-panel') || document.getElementById('diagnostics-panel').style.display === 'none') {
-          clearInterval(loadInterval);
+          clearInterval(cpuLoadInterval);
+          cpuLoadInterval = null;
           return;
         }
         document.querySelectorAll('.cpu-core-val').forEach(val => {
@@ -1853,14 +1865,16 @@
       }, 2000);
     }
 
+    const rows = document.createDocumentFragment();
     Object.entries(data).forEach(([key, value]) => {
       const row = document.createElement('tr');
       row.innerHTML = `
         <td class="diag-key">${key}</td>
         <td class="diag-value">${String(value)}</td>
       `;
-      grid.appendChild(row);
+      rows.appendChild(row);
     });
+    grid.appendChild(rows);
     synth.playSuccess();
   });
 
@@ -1874,7 +1888,7 @@
       </div>
     `;
     const results = await runDnsTests();
-    list.innerHTML = '';
+    const items = document.createDocumentFragment();
     results.forEach(({ host, label, reachable, latencyMs, error }) => {
       const item = document.createElement('div');
       item.className = 'dns-item';
@@ -1890,8 +1904,9 @@
           ${reachable ? `${latencyMs}ms` : 'FAILED'}
         </span>
       `;
-      list.appendChild(item);
+      items.appendChild(item);
     });
+    list.replaceChildren(items);
     if (results.some(r => r.reachable)) {
       synth.playSuccess();
     } else {

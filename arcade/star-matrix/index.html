@@ -326,13 +326,13 @@
         boardEl.classList.add('board-shake');
         setTimeout(() => boardEl.classList.remove('board-shake'), 300);
 
-        while (true) {
-          const res = findMatches(next);
-          if (!res.matches.length) break;
-          gained += res.matches.length * 10 * combo;
-          next = applyMatches(next, res, combo);
+        let matchResult = firstMatch;
+        while (matchResult.matches.length) {
+          gained += matchResult.matches.length * 10 * combo;
+          next = applyMatches(next, matchResult, combo);
           next = applyGravity(next);
           combo++;
+          matchResult = findMatches(next);
         }
 
         gridData = next;

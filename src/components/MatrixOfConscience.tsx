@@ -784,7 +784,6 @@ function MatrixCoreMaster({ activeUser }: { activeUser: string }) {
                     extSubsystem.includes("seven-stars") ? "SEVEN STARS" :
                     extSubsystem.includes("emergence-3d") ? "EMERGENCE 3D" :
                     extSubsystem.includes("atari-lab") ? "ATARI WING" :
-                    extSubsystem.includes("matrix-of-conscience-terminal") ? "TRINITY TERMINAL" :
                     extSubsystem.includes("certificates") ? "SOVEREIGN CERTIFICATES" : "EXTERNAL NODE"
                   }
                 </span>
@@ -1414,13 +1413,6 @@ function MatrixCoreMaster({ activeUser }: { activeUser: string }) {
                       tag: "3D SIMULATION"
                     },
 
-                    {
-                      name: "Trinity Terminal",
-                      desc: "Access command-line simulation triggers directly via DOS console.",
-                      path: "/arcade/matrix-of-conscience-terminal/index.html",
-                      color: "#06b6d4",
-                      tag: "COMMAND CENTER"
-                    },
                     ...(isAtariUnlocked ? [{
                       name: "Atari Wing",
                       desc: "Proto-simulation lab. Cognition models unstable. Chrono-lock engaged.",
@@ -1524,7 +1516,6 @@ function MetricRow({ label, value, color }: { label: string; value: number; colo
     </div>
   );
 }
-
 
 
 

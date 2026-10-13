@@ -13,12 +13,12 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main:              resolve(__dirname, "index.html"),
+        cli:               resolve(__dirname, "CLI.html"),
         contact:           resolve(__dirname, "contact/index.html"),
         profile:           resolve(__dirname, "profile/index.html"),
         matrix:            resolve(__dirname, "matrix.html"),
         arcade:            resolve(__dirname, "arcade/index.html"),
         arcadeMatrix:      resolve(__dirname, "arcade/matrix-of-conscience/index.html"),
-        arcadeMatrixTerminal: resolve(__dirname, "arcade/matrix-of-conscience-terminal/index.html"),
         arcadeAtariLab:    resolve(__dirname, "arcade/atari-lab/index.html"),
         arcadeLoreArchive: resolve(__dirname, "arcade/lore-archive/index.html"),
         matrixConscienceIndex: resolve(__dirname, "matrix-of-conscience/index.html"),
@@ -49,6 +49,7 @@ export default defineConfig({
         storiesFixingCopilotRulesetBypass: resolve(__dirname, "stories/fixing-copilot-ruleset-bypass-errors/index.html"),
         storiesGithubBypassSetupApp: resolve(__dirname, "stories/github-bypass-setup-app/index.html"),
         libraryIndex:                resolve(__dirname, "library/index.html"),
+        libraryFloridaLease:         resolve(__dirname, "library/resources/florida-lease-agreement.html"),
         libraryExposeMatrix:         resolve(__dirname, "library/expose-the-matrix/index.html"),
         libraryNoahAndTheArk:        resolve(__dirname, "library/noah-and-the-ark/index.html"),
         libraryAmazingGraceCovenant: resolve(__dirname, "library/amazing-grace-covenant/index.html"),
@@ -91,6 +92,14 @@ export default defineConfig({
             resolve(__dirname, 'stories/library.json'),
             resolve(__dirname, 'dist/stories/library.json')
           );
+          copyFileSync(
+            resolve(__dirname, 'ministries/story-nodes.js'),
+            resolve(__dirname, 'dist/ministries/story-nodes.js')
+          );
+          copyFileSync(
+            resolve(__dirname, 'ministry/bible-journey-data.js'),
+            resolve(__dirname, 'dist/ministry/bible-journey-data.js')
+          );
           cpSync(
             resolve(__dirname, 'stories/chapter-34-package'),
             resolve(__dirname, 'dist/stories/chapter-34-package'),
@@ -102,7 +111,7 @@ export default defineConfig({
             { recursive: true }
           );
           // Preserve legacy non-module arcade runtime scripts required by
-          // syndicate-siege, lore-archive, and matrix-of-conscience-terminal pages.
+          // syndicate-siege and lore-archive pages.
           cpSync(
             resolve(__dirname, 'arcade/js'),
             resolve(__dirname, 'dist/arcade/js'),
