@@ -183,20 +183,26 @@ class NexusMatrix {
   renderBoard() {
     const grid = document.getElementById('sm-grid');
     if (!grid) return;
-    grid.innerHTML = '';
-    for (let r = 0; r < 7; r++) {
-      for (let c = 0; c < 7; c++) {
-        const kind = typeof this.board[r][c] === 'string' ? this.board[r][c] : this.board[r][c].kind;
-        const emoji = this.theme.mapping[kind] || '❓';
-        
+    if (grid.childElementCount !== 49) {
+      const cells = document.createDocumentFragment();
+      for (let idx = 0; idx < 49; idx++) {
         const cell = document.createElement('div');
         cell.className = 'star-cell';
-        cell.dataset.row = r;
-        cell.dataset.col = c;
-        cell.dataset.type = kind;
-        cell.textContent = emoji;
-        grid.appendChild(cell);
+        cells.appendChild(cell);
       }
+      grid.replaceChildren(cells);
+    }
+
+    for (let idx = 0; idx < 49; idx++) {
+      const r = Math.floor(idx / 7);
+      const c = idx % 7;
+      const gem = this.board[r][c];
+      const kind = typeof gem === 'string' ? gem : gem.kind;
+      const cell = grid.children[idx];
+      cell.dataset.row = r;
+      cell.dataset.col = c;
+      cell.dataset.type = kind;
+      cell.textContent = this.theme.mapping[kind] || '❓';
     }
     if (this.input) this.input.updateSelectionClasses();
   }
@@ -234,11 +240,10 @@ class NexusMatrix {
 
     this.moves--;
     this.updateHUD();
-    await this.resolveMatches();
+    await this.resolveMatches(matches);
   }
 
-  async resolveMatches() {
-    const matches = findMatchesGrouped(this.board);
+  async resolveMatches(matches = findMatchesGrouped(this.board)) {
     if (matches.length === 0) {
       this.combo = 1;
       this.updateHUD();
@@ -247,32 +252,37 @@ class NexusMatrix {
       return;
     }
 
-    const cleared = matches.flat();
-    const pts = cleared.length * 10 * this.combo;
+    let clearedCount = 0;
+    for (const group of matches) clearedCount += group.length;
+    const pts = clearedCount * 10 * this.combo;
     this.score += pts;
     
     if (this.audio) {
-        if (this.combo > 1 || cleared.length >= 4) {
+        if (this.combo > 1 || clearedCount >= 4) {
             this.audio.playSFX('star_chain'); // Use storm.mp3 for chain reactions
         } else {
             this.audio.playSFX('success');
         }
     }
 
-    if (cleared.length >= 4) {
+    if (clearedCount >= 4) {
         this.combo++;
         this.log(`COMBO INCREASED: x${this.combo}`);
     }
     this.updateHUD();
 
-    cleared.forEach(({ r, c }) => {
-      const cell = document.querySelector(`.star-cell[data-row="${r}"][data-col="${c}"]`);
-      cell?.classList.add('matched');
-    });
+    for (const group of matches) {
+      for (const { r, c } of group) {
+        const cell = document.querySelector(`.star-cell[data-row="${r}"][data-col="${c}"]`);
+        cell?.classList.add('matched');
+      }
+    }
 
     await new Promise(r => setTimeout(r, 400));
 
-    cleared.forEach(({ r, c }) => { this.board[r][c] = null; });
+    for (const group of matches) {
+      for (const { r, c } of group) this.board[r][c] = null;
+    }
     this.board = applyGravity(this.board);
     this.renderBoard();
 

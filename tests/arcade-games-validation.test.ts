@@ -40,7 +40,6 @@ describe('Arcade Games Validation', () => {
   describe('Individual Game Pages', () => {
     const games = [
       { name: 'Matrix of Conscience', path: 'arcade/matrix-of-conscience/index.html' },
-      { name: 'Trinity Terminal', path: 'arcade/matrix-of-conscience-terminal/index.html' },
       { name: 'Bible Study', path: 'arcade/bible-study/index.html' },
       { name: 'Syndicate Siege', path: 'arcade/syndicate-siege/index.html' },
       { name: 'Certificates', path: 'arcade/certificates/index.html' },
@@ -70,7 +69,6 @@ describe('Arcade Games Validation', () => {
     const requiredEntries = [
       { name: 'arcade', entry: 'arcade/index.html' },
       { name: 'arcadeMatrix', entry: 'arcade/matrix-of-conscience/index.html' },
-      { name: 'arcadeMatrixTerminal', entry: 'arcade/matrix-of-conscience-terminal/index.html' },
       { name: 'arcadeBibleStudy', entry: 'arcade/bible-study/index.html' },
       { name: 'arcadeSyndicateSiege', entry: 'arcade/syndicate-siege/index.html' },
       { name: 'arcadeCertificates', entry: 'arcade/certificates/index.html' },
@@ -87,6 +85,7 @@ describe('Arcade Games Validation', () => {
     });
 
     it('should not include removed game entries', () => {
+      expect(viteConfig).not.toContain('arcade/matrix-of-conscience-terminal/index.html');
       expect(viteConfig).not.toContain('arcade/nexus-matrix/index.html');
       expect(viteConfig).not.toContain('arcade/janus/index.html');
       expect(viteConfig).not.toContain('arcade/nexus-arcade/index.html');

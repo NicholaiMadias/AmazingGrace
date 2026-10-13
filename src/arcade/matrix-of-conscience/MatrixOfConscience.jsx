@@ -490,15 +490,15 @@ function MatrixCoreMaster({ activeUser }) {
     let currentText = "";
     let i = 0;
     const interval = setInterval(() => {
-      currentText += reply[i];
+      currentText += reply.slice(i, i + 2);
       setOracleReply(currentText);
-      i++;
+      i += 2;
       if (i >= reply.length) {
         clearInterval(interval);
         setOracleTyping(false);
         playSynthSound("victory");
       }
-    }, 15);
+    }, 30);
 
     setOracleQuery("");
   };

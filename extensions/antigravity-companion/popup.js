@@ -79,10 +79,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  // Load Trinity CLI Iframe
+  // Load Matrix of Conscience iframe
   function loadCliIframe() {
     if (!cliFrame.src || cliFrame.src === "about:blank") {
-      const cliUrl = `${config.hostUrl}/arcade/matrix-of-conscience-terminal/index.html`;
+      const cliUrl = `${config.hostUrl}/arcade/matrix-of-conscience/`;
       cliLoading.style.display = "flex";
       cliFrame.src = cliUrl;
       

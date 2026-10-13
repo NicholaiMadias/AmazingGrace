@@ -10,6 +10,7 @@ const ROLE_ORDER = ['owner', 'superAdmin', 'admin', 'user'];
 
 /** Tracks whether the delegated change listener has been attached */
 let _changeListenerAttached = false;
+let statusTimeout;
 
 /**
  * Build a role badge HTML string.
@@ -50,7 +51,7 @@ export async function renderUserTable(db, currentUser) {
   const tbody = document.getElementById('user-table-body');
   if (!tbody) return;
 
-  tbody.innerHTML = '';
+  const rows = document.createDocumentFragment();
 
   const canEditRole = ['superAdmin', 'owner'].includes(currentUser?.role);
 
@@ -72,8 +73,9 @@ export async function renderUserTable(db, currentUser) {
       <td>$${Number(u.donations || 0).toFixed(2)}</td>
       <td>${escapeHtml(toolList)}</td>
     `;
-    tbody.appendChild(row);
+    rows.appendChild(row);
   });
+  tbody.replaceChildren(rows);
 
   // Attach the delegated role-change handler only once per page lifetime
   if (canEditRole && !_changeListenerAttached) {
@@ -109,5 +111,6 @@ function showStatus(msg, isError = false) {
   el.textContent = msg;
   el.className = `matrix-alert${isError ? ' error' : ''}`;
   el.style.display = 'block';
-  setTimeout(() => { el.style.display = 'none'; }, 3000);
+  clearTimeout(statusTimeout);
+  statusTimeout = setTimeout(() => { el.style.display = 'none'; }, 3000);
 }

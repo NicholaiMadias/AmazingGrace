@@ -27,4 +27,9 @@ describe('Our Covenant of New Beginnings library integration', () => {
     const viteConfig = fs.readFileSync('vite.config.ts', 'utf8');
     expect(viteConfig).toContain('stories/our-covenant-of-new-beginnings/index.html');
   });
+
+  it('does not list the coming-soon covenant placeholder', () => {
+    const entries = Array.isArray(libraryJson.entries) ? libraryJson.entries : [];
+    expect(entries.some((item: { slug?: string }) => item.slug === 'amazing-grace-covenant')).toBe(false);
+  });
 });
