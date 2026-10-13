@@ -1,0 +1,116 @@
+name: System Validation
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        # Temporary guard: Vite 7 and @vitejs/plugin-react peer ranges can conflict in CI.
+        # Remove --legacy-peer-deps after the plain npm ci probe below succeeds consistently.
+        run: npm ci --legacy-peer-deps
+
+      - name: Probe plain npm ci compatibility
+        id: plain_npm_ci_probe
+        continue-on-error: true
+        run: |
+          probe_dir="$(mktemp -d)"
+          cp package.json package-lock.json "$probe_dir"/
+          cd "$probe_dir"
+          npm ci
+
+      - name: Report peer dependency compatibility debt
+        if: steps.plain_npm_ci_probe.outcome == 'failure'
+        run: |
+          echo "::warning::Plain npm ci failed in compatibility probe. Keep --legacy-peer-deps for now and align peer dependency versions."
+
+      - name: Theme schema validation
+        run: npm test -- tests/text-contrast-theme-vars.test.ts tests/rebellion-skin-integration.test.ts
+
+      - name: Arcade registry integrity checks
+        run: npm test -- tests/arcade-games-validation.test.ts
+
+      - name: Game health checks - Star Matrix
+        run: npm test -- tests/starMap.test.ts
+
+      - name: Game health checks - Match Maker
+        run: npm test -- tests/canonical-matchmaker.test.ts tests/constellationState.test.ts
+
+      - name: Game health checks - Trinity
+        run: npm test -- tests/matrix-conscience-terminal.test.ts
+
+      - name: Instruction layer validation
+        run: |
+          test ! -f .github/copilot-instructions.md
+          test ! -f docs/rulesets-and-agents.md
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Build the React App
+        run: npm run build
+        env:
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+          VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}
+          VITE_FIREBASE_VAPID_KEY: ${{ secrets.VITE_FIREBASE_VAPID_KEY }}
+
+      - name: Enforce rollback gate on failure
+        if: failure()
+        run: |
+          echo "Rollback gate engaged: this failed status blocks promotion."
+
+      - name: Upload dist artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-dist
+          path: dist
+          retention-days: 1
+
+  deploy:
+    name: Deploy to Firebase Hosting
+    needs: validate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site-dist
+          path: dist
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_AMAZING_GRACE_HL_BBEAA || secrets.FIREBASE }}
+          projectId: amazing-grace-hl-bbeaa
+          channelId: live

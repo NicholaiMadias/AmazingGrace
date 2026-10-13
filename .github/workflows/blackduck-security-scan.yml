@@ -1,0 +1,117 @@
+name: Black Duck Security Scan
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+  schedule:
+    - cron: '0 2 * * 0'
+  workflow_dispatch:
+    inputs:
+      fail_on_severity:
+        description: 'Fail build on severity (BLOCKER|CRITICAL|MAJOR|MINOR|NONE)'
+        required: false
+        default: 'CRITICAL'
+        type: choice
+        options:
+          - NONE
+          - MINOR
+          - MAJOR
+          - CRITICAL
+          - BLOCKER
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  blackducksca:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Cache Black Duck data
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.blackduck
+            **/blackduck
+          key: blackduck-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            blackduck-${{ runner.os }}-
+
+      - name: Resolve Black Duck configuration
+        id: blackduck_config
+        run: |
+          if [ -n "${BLACKDUCKSCA_URL}" ] && [ -n "${BLACKDUCKSCA_TOKEN}" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          BLACKDUCKSCA_URL: ${{ vars.BLACKDUCKSCA_URL }}
+          BLACKDUCKSCA_TOKEN: ${{ secrets.BLACKDUCKSCA_TOKEN }}
+
+      - name: Black Duck security scan
+        id: black_duck_security_scan
+        if: steps.blackduck_config.outputs.configured == 'true'
+        uses: blackduck-inc/black-duck-security-scan@v2
+        with:
+          blackducksca_url: ${{ vars.BLACKDUCKSCA_URL }}
+          blackducksca_token: ${{ secrets.BLACKDUCKSCA_TOKEN }}
+          blackducksca_scan_full: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+          blackducksca_scan_failure_severities: ${{ github.event.inputs.fail_on_severity || 'CRITICAL' }}
+          mark_build_status: ${{ github.event_name == 'pull_request' }}
+        env:
+          DETECT_PROJECT_VERSION_NAME: ${{ github.ref_name }}
+          DETECT_CODE_LOCATION_NAME: ${{ github.repository }}-${{ github.ref_name }}
+        continue-on-error: ${{ github.event_name == 'schedule' }}
+
+      - name: Skip scan when Black Duck is not configured
+        if: steps.blackduck_config.outputs.configured != 'true'
+        run: |
+          echo "Black Duck scan skipped because BLACKDUCKSCA_URL variable or BLACKDUCKSCA_TOKEN secret is not configured."
+
+      - name: Upload scan results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: blackduck-scan-results-${{ github.run_number }}
+          path: |
+            **/blackduck/
+            **/Black_Duck_Notices_Report.txt
+          retention-days: 30
+
+      - name: Security scan summary
+        if: always()
+        run: |
+          scan_type="On-Change Scan"
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            scan_type="Scheduled Full Scan"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            scan_type="Manual Full Scan"
+          fi
+          echo "## 🔒 Black Duck Security Scan Results" > "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Branch**: ${{ github.ref_name }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Scan Type**: ${scan_type}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Status**: ${{ steps.black_duck_security_scan.outcome || 'skipped' }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Review detailed results in Black Duck or the uploaded workflow artifacts." >> "$GITHUB_STEP_SUMMARY"

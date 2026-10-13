@@ -1,0 +1,68 @@
+name: Validate Vite Entry Points
+
+on:
+  pull_request:
+    paths:
+      - 'arcade/**/*.html'
+      - 'vite.config.ts'
+  push:
+    branches: [main]
+    paths:
+      - 'arcade/**/*.html'
+      - 'vite.config.ts'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate Vite entries for TypeScript modules
+        run: |
+          echo "Checking for HTML files that load TypeScript/React modules..."
+
+          MISSING_ENTRIES=""
+
+          # Find all HTML files that reference .tsx or .ts module scripts
+          while IFS= read -r htmlfile; do
+            # Check if this HTML has both type="module" and a .ts/.tsx src (order-independent)
+            if grep -q 'type="module"' "$htmlfile" && grep -qE 'src="[^"]*\.tsx?"' "$htmlfile"; then
+              # Verify the HTML file is in vite.config.ts
+              if ! grep -qF "$htmlfile" vite.config.ts; then
+                MISSING_ENTRIES="$MISSING_ENTRIES\n  - $htmlfile (loads TypeScript but missing from Vite config)"
+              fi
+
+              # Warn about cross-directory .tsx imports (anti-pattern)
+              if grep -qE 'src="\.\./[^"]*\.(tsx?)"' "$htmlfile"; then
+                echo "::warning file=$htmlfile::This HTML loads TypeScript from a parent/sibling directory. Consider making it self-contained."
+              fi
+            fi
+          done < <(find arcade -name "*.html")
+
+          if [ -n "$MISSING_ENTRIES" ]; then
+            echo -e "::error::Missing Vite entry points for:$MISSING_ENTRIES"
+            echo "Add these to vite.config.ts rollupOptions.input"
+            exit 1
+          fi
+
+          echo "All HTML files loading TypeScript have corresponding Vite entries"
+
+      - name: Verify build succeeds
+        run: |
+          npm ci --legacy-peer-deps
+          npm run build
+
+          # Verify matrix-of-conscience was built
+          if [ ! -d "dist/arcade/matrix-of-conscience" ]; then
+            echo "::error::Matrix of Conscience was not built to dist/"
+            exit 1
+          fi
+
+          echo "Build completed successfully"

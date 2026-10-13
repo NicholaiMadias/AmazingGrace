@@ -1,9 +1,0 @@
-"scripts": {
-  "dev": "vite",
-  "build": "tsc && vite build",
-  "typecheck": "tsc --noEmit",
-  "ella-merge": "node scripts/ella-merge.js",
-  "preview": "vite preview",
-  "test": "vitest run",
-  "quality:gate": "node scripts/quality-gate.mjs"
-}

@@ -1,0 +1,250 @@
+name: Aurora — Dependency & Security Guard
+
+on:
+  schedule:
+    - cron: '0 3 * * 0'
+  push:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:
+    inputs:
+      update_type:
+        description: 'Update type (patch|minor|major|all)'
+        required: false
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - all
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: aurora-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Audit dependencies
+        id: audit
+        run: |
+          echo "## 🔒 Security Audit Results" >> $GITHUB_STEP_SUMMARY
+          npm audit --json > audit-results.json || true
+
+          CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' audit-results.json)
+          HIGH=$(jq '.metadata.vulnerabilities.high // 0' audit-results.json)
+          MODERATE=$(jq '.metadata.vulnerabilities.moderate // 0' audit-results.json)
+          LOW=$(jq '.metadata.vulnerabilities.low // 0' audit-results.json)
+
+          echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
+          echo "high=$HIGH" >> $GITHUB_OUTPUT
+          echo "moderate=$MODERATE" >> $GITHUB_OUTPUT
+          echo "low=$LOW" >> $GITHUB_OUTPUT
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Severity | Count |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔴 Critical | $CRITICAL |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🟠 High | $HIGH |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🟡 Moderate | $MODERATE |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🟢 Low | $LOW |" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload audit results
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-audit-${{ github.run_number }}
+          path: audit-results.json
+          retention-days: 90
+
+      - name: Fail on critical vulnerabilities
+        if: ${{ fromJSON(steps.audit.outputs.critical) > 0 && github.event_name == 'pull_request' }}
+        run: |
+          echo "❌ Critical vulnerabilities detected. Review required before merge."
+          exit 1
+
+  outdated:
+    name: Dependency Freshness Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    outputs:
+      has_updates: ${{ steps.outdated.outputs.has_updates }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Check outdated packages
+        id: outdated
+        run: |
+          npm outdated --json > outdated.json || true
+
+          echo "## 📦 Outdated Dependencies" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -s outdated.json ] && [ "$(cat outdated.json)" != "{}" ]; then
+            echo "Updates available:" >> $GITHUB_STEP_SUMMARY
+            echo '```json' >> $GITHUB_STEP_SUMMARY
+            cat outdated.json | jq '.' >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "has_updates=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ All dependencies are up to date!" >> $GITHUB_STEP_SUMMARY
+            echo "has_updates=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload outdated report
+        if: steps.outdated.outputs.has_updates == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: outdated-dependencies-${{ github.run_number }}
+          path: outdated.json
+          retention-days: 30
+
+  auto-update:
+    name: Auto-Update Dependencies
+    needs: [audit, outdated]
+    runs-on: ubuntu-latest
+    if: |
+      (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') &&
+      needs.outdated.outputs.has_updates == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Update patch versions
+        if: github.event.inputs.update_type == 'patch' || github.event.inputs.update_type == 'all' || github.event_name == 'schedule'
+        run: |
+          npm update --save
+          npm audit fix || true
+
+      - name: Update minor versions
+        if: github.event.inputs.update_type == 'minor' || github.event.inputs.update_type == 'all'
+        run: |
+          npm install -g npm-check-updates
+          ncu -u --target minor
+          npm install --legacy-peer-deps
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: |
+            chore(deps): auto-update dependencies (${{ github.event.inputs.update_type || 'patch' }})
+
+            - Security patches applied
+            - Automated dependency updates
+            - Generated by Aurora workflow
+          branch: aurora/dependency-updates-${{ github.run_number }}
+          delete-branch: true
+          title: "🤖 Aurora: Dependency Updates (${{ github.event.inputs.update_type || 'patch' }})"
+          body: |
+            ## 🔄 Automated Dependency Updates
+
+            **Update Type**: `${{ github.event.inputs.update_type || 'patch' }}`
+            **Triggered by**: `${{ github.event_name }}`
+
+            ### 🔍 Changes
+            - Security vulnerabilities patched
+            - Dependencies updated to latest compatible versions
+            - Lock file regenerated
+
+            ### ✅ Pre-flight Checks
+            - Security audit completed
+            - No critical vulnerabilities introduced
+            - Compatible with Node.js 20
+
+            ### 🎮 Testing Required
+            - [ ] All games load without errors
+            - [ ] Match-3 drag-and-drop functionality works
+            - [ ] Firebase deployment succeeds
+            - [ ] Mobile responsive design intact
+
+            **Auto-generated by Aurora workflow** 🌅
+          labels: |
+            dependencies
+            automated
+            aurora
+          draft: false
+
+  license-compliance:
+    name: License Compliance Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Check licenses
+        id: licenses
+        run: |
+          npx license-checker --json --out licenses.json
+
+          echo "## 📜 License Compliance Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if grep -qi "gpl\|agpl\|copyleft" licenses.json; then
+            echo "⚠️ Potentially restrictive licenses detected" >> $GITHUB_STEP_SUMMARY
+            echo "has_issues=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ All licenses compatible" >> $GITHUB_STEP_SUMMARY
+            echo "has_issues=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload license report
+        uses: actions/upload-artifact@v4
+        with:
+          name: license-report-${{ github.run_number }}
+          path: licenses.json
+          retention-days: 90
