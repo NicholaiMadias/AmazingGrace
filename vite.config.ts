@@ -60,7 +60,6 @@ export default defineConfig({
         storiesElla:       resolve(__dirname, "stories/characters/ella.html"),
         news:              resolve(__dirname, "news/index.html"),
         newsZykoLearn:     resolve(__dirname, "news/articles/zyko-learn.html"),
-        newsFutureArticles: resolve(__dirname, "news/articles/future-articles.html"),
         support:           resolve(__dirname, "support/index.html"),
         privacy:           resolve(__dirname, "privacy.html"),
         arcadeRedirect:    resolve(__dirname, "arcade.html"),
@@ -68,6 +67,8 @@ export default defineConfig({
         arcadeNexusHud:    resolve(__dirname, "arcade/nexus-hud/index.html"),
         arcadeVirtueMatch: resolve(__dirname, "arcade/virtue-match/index.html"),
         arcadePortfolioCli: resolve(__dirname, "arcade/portfolio-cli.html"),
+        cli:               resolve(__dirname, "CLI.html"),
+        libraryLeaseAgreement: resolve(__dirname, "library/resources/florida-lease-agreement.html"),
       },
       output: {
         manualChunks(id) {
@@ -107,6 +108,11 @@ export default defineConfig({
             resolve(__dirname, 'arcade/js'),
             resolve(__dirname, 'dist/arcade/js'),
             { recursive: true }
+          );
+          mkdirSync(resolve(__dirname, 'dist/scripts'), { recursive: true });
+          cpSync(
+            resolve(__dirname, 'scripts/Add-GitHubRulesetBypass.ps1'),
+            resolve(__dirname, 'dist/scripts/Add-GitHubRulesetBypass.ps1')
           );
           try {
             cpSync(

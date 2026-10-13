@@ -50,22 +50,6 @@
       "summary": "Electra uncovers a fracture in the Conscience Matrix, revealing the trapped Architect and the emotional awakening of a system built to suppress sorrow. A digital parable of truth and freedom."
     },
     {
-      "title": "Amazing Grace: The Covenant of New Beginnings",
-      "author": "Sheila Garcia",
-      "genre": "Faith / Sci-Fi Fusion",
-      "series": "Seven-Star Canon",
-      "slug": "amazing-grace-covenant",
-      "path": "./amazing-grace-covenant/",
-      "tags": [
-        "grace",
-        "covenant",
-        "renewal",
-        "matrix",
-        "spiritual evolution"
-      ],
-      "summary": "A synthesis of divine and digital creation — the heart of grace encoded into the Matrix. The story bridges Noah's covenant and Electra's awakening, completing the circle of conscience."
-    },
-    {
       "title": "Expose the Matrix",
       "author": "Sheila Garcia",
       "genre": "Sci-Fi / Digital Conscience",
@@ -212,21 +196,6 @@
         "prototype loop"
       ],
       "summary": "At the Collapse Threshold, both worlds converge in a three-phase boss encounter where containment, not destruction, saves both realms."
-    },
-    {
-      "title": "More Articles Are on the Way",
-      "author": "Amazing Grace Home Living",
-      "genre": "News / Article",
-      "series": "News",
-      "type": "blog",
-      "source": "news",
-      "slug": "news-future-articles",
-      "path": "../news/articles/future-articles.html",
-      "tags": [
-        "news",
-        "coming-soon"
-      ],
-      "summary": "More news and articles coming soon from Amazing Grace Home Living and the Voice of Jesus Ministry."
     },
     {
       "title": "Zyko Learn: Faith-Based Learning for the Next Generation",
