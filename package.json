@@ -21,7 +21,7 @@
     "firebase": "^12.19.0",
     "framer-motion": "^13.2.0",
     "lucide-react": "^1.41.0",
-    "nodemailer": "^10.0.9",
+    "nodemailer": "^10.1.0",
     "postprocessing": "^6.39.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
