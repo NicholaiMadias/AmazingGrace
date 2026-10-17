@@ -1,101 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Voice of Jesus Ministry | Amazing Grace Home Living</title>
+
+<meta name="description"
+      content="Voice of Jesus Ministry serving communities through outreach, discipleship, youth development, and Christian education.">
+
+<meta name="theme-color" content="#0d0115">
+
+../assets/logo.png
+
+https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600;700&display=swap
+
+<style>
+:root{
+  --bg:#0d0115;
+  --surface:rgba(30,10,45,.75);
+  --surface-light:rgba(74,35,90,.4);
+  --gold:#ffd700;
+  --accent:#c084fc;
+  --text:#f0e6ff;
+  --muted:#b89dc8;
+  --border:rgba(255,215,0,.18);
+  --radius:16px;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Inter,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(192,132,252,.15), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255,215,0,.08), transparent 50%);
+}
+
+.site-header{
+  padding:1rem 2rem;
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+  position:sticky;
+  top:0;
+  background:rgba(10,2,18,.92);
+  z-index:100;
+}
+
+.nav-container{
+  width:min(96vw,1600px);
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:1rem;
+}
+
+.logo{
+  color:var(--gold);
+  text-decoration:none;
+  font-family:Orbitron,sans-serif;
+  font-weight:700;
+}
+
+.nav-links{
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+
+.nav-links a{
+  color:var(--text);
+  text-decoration:none;
+  font-weight:600;
+}
+
+.nav-links a:hover{
+  color:var(--gold);
+}
+
+.hero{
+  text-align:center;
+  padding:6rem 1.5rem;
+}
+
+.hero-icon{
+  font-size:4rem;
+}
+
+.hero h1{
+  font-family:Orbitron,sans-serif;
+  color:var(--gold);
+  font-size:clamp(2rem,5vw,4rem);
+  margin:1rem 0;
+}
+
+.hero p{
+  color:var(--muted);
+  font-size:1.2rem;
+  max-width:700px;
+  margin:auto;
+}
+
+.hero-actions{
+  margin-top:2rem;
+  display:flex;
+  gap:1rem;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.btn{
+  display:inline-block;
+  text-decoration:none;
+  padding:.85rem 1.4rem;
+  border-radius:10px;
+  font-weight:700;
+  border:1px solid var(--border);
+}
+
+.btn-primary{
+  background:var(--gold);
+  color:#111;
+}
+
+.btn-secondary{
+  background:rgba(255,215,0,.08);
+  color:var(--text);
+}
+
+.section{
+  width:min(96vw,1400px);
+  margin:auto;
+  padding:3rem 1rem;
+}
+
+.section-title{
+  font-family:Orbitron,sans-serif;
+  color:var(--gold);
+  margin-bottom:1rem;
+  text-align:center;
+}
+
+.section-intro{
+  text-align:center;
+  color:var(--muted);
+  max-width:800px;
+  margin:auto auto 2rem;
+}
+
+.feature-card,
+.card,
+.media-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:1.5rem;
+}
+
+.feature-card{
+  max-width:1000px;
+  margin:auto;
+}
+
+.youtube{
+  position:relative;
+  padding-top:56.25%;
+  margin-top:1rem;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.youtube iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:none;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.5rem;
+}
+
+.card h3,
+.media-card h3{
+  color:var(--gold);
+  margin-bottom:.5rem;
+}
+
+.icon{
+  font-size:2rem;
+  margin-bottom:.75rem;
+}
+
+.media-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
+  gap:2rem;
+}
+
+.portal-link{
+  display:block;
+  text-align:center;
+  text-decoration:none;
+  color:var(--text);
+  background:var(--surface-light);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:2rem;
+  font-weight:700;
+  transition:.2s;
+}
+
+.portal-link:hover{
+  transform:translateY(-4px);
+  border-color:var(--gold);
+}
+
+.support-card{
+  text-align:center;
+}
+
+.footer{
+  margin-top:4rem;
+  border-top:1px solid var(--border);
+  text-align:center;
+  padding:2rem;
+  color:var(--muted);
+}
+
+@media (max-width:800px){
+
+  .nav-container{
+    flex-direction:column;
+  }
+
+  .media-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero-actions{
+    flex-direction:column;
+    align-items:center;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="nav-container">
+
+    ../
+      Voice of Jesus Ministry
+    </a>
+
+    <nav class="nav-links">
+      ../Home</a>
+      ../library/Library</a>
+      ../arcade/Arcade</a>
+      ../contact/Contact</a>
+    </nav>
+
+  </div>
+</header>
+
 <main>
 
-  <!-- HERO -->
+<section class="hero">
 
-  <section class="hero">
-    <div class="hero-icon">🕊️</div>
+  <div class="hero-icon">🕊️</div>
 
-    <h1>Voice of Jesus Ministry</h1>
+  <h1>Voice of Jesus Ministry</h1>
+
+  <p>
+    Feeding Communities.
+    Sharing Faith.
+    Building Hope.
+  </p>
+
+  <div class="hero-actions">
+
+    <a class="btn btn-primary"
+       href="https://amazinggracehl.org/support/">
+       🤝 Support the Mission
+    </a>
+
+    #mission26
+       🎥 Watch Mission Updates
+    </a>
+
+    ../library/
+       📖 Read Stories
+    </a>
+
+  </div>
+
+</section>
+
+<section class="section" id="mission26">
+
+  <h2 class="section-title">Mission In Action</h2>
+
+  <p class="section-intro">
+    Voice of Jesus Ministry serves remote communities through
+    outreach, discipleship, youth development and practical support.
+  </p>
+
+  <div class="feature-card">
+
+    <h3>Mission 26 • Latest Outreach Update</h3>
 
     <p>
-      Feeding Communities.
-      Sharing Faith.
-      Building Hope.
+      Follow the latest ministry activities, outreach efforts,
+      and community development initiatives.
     </p>
 
-    <div class="hero-actions">
-
-      <a href="https://amazinggracehl.org/support/"
-         class="primary-btn">
-         🤝 Support the Mission
-      </a>
-
-      <a href="#featured-video"
-         class="secondary-btn">
-         🎥 Watch Mission Updates
-      </a>
-
-      <a href="../library/"
-         class="secondary-btn">
-         📖 Read Stories
-      </a>
-
+    <div class="youtube">
+      https://www.youtube.com/embed/XB_Ax8NWGlo
+      </iframe>
     </div>
 
-  </section>
+  </div>
 
+</section>
 
-  <!-- MISSION -->
+<section class="section">
 
-  <section class="content-section">
+  <h2 class="section-title">Current Mission Goals</h2>
 
-    <h2>Mission In Action</h2>
+  <div class="grid">
 
-    <p class="section-intro">
-      Voice of Jesus Ministry serves remote island communities
-      through outreach, practical support, discipleship,
-      youth development, and Christian education.
-    </p>
+    <div class="card">
+      <div class="icon">🚤</div>
+      <h3>Boat Engine</h3>
+      <p>Restore transportation access to remote communities.</p>
+    </div>
 
-    <div id="featured-video" class="featured-video">
+    <div class="card">
+      <div class="icon">💧</div>
+      <h3>Water Filtration</h3>
+      <p>Expand access to clean water and healthier living.</p>
+    </div>
 
-      <h3>Mission 26</h3>
+    <div class="card">
+      <div class="icon">🏕️</div>
+      <h3>Youth Camp</h3>
+      <p>Create faith-centered opportunities for young people.</p>
+    </div>
 
-      <p>
-        Latest outreach update documenting ministry impact,
-        village partnerships, and ongoing support efforts.
-      </p>
+    <div class="card">
+      <div class="icon">⛪</div>
+      <h3>Church Support</h3>
+      <p>Strengthen local ministry leadership and discipleship.</p>
+    </div>
 
-      <div class="youtube-embed">
-        <iframe
-          src="https://www.youtube.com/embed/XB_Ax8NWGlo"
-          title="Mission 26 Outreach Update"
-          loading="lazy"
-          allowfullscreen>
+  </div>
+
+</section>
+
+<section class="section">
+
+  <h2 class="section-title">Media Hub</h2>
+
+  <div class="media-grid">
+
+    <div class="media-card">
+
+      <h3>Mission Highlights Short</h3>
+
+      <div class="youtube">
+        https://www.youtube.com/embed/m9r_nSi6Ms8
         </iframe>
       </div>
 
-      <a href="https://youtu.be/XB_Ax8NWGlo?is=eMmprlYOiBZBGYUq"
-         target="_blank"
-         rel="noopener"
-         class="video-link">
+    </div>
 
-         Watch On YouTube
+    <div class="media-card">
+
+      <h3>Enterprise AMV</h3>
+
+      <p>
+        Featured community media presentation.
+      </p>
+
+      ../assets/video/enterprise-amv.mp4
+         View Media
       </a>
 
     </div>
 
-  </section>
+  </div>
 
+</section>
 
-  <!-- CURRENT NEEDS -->
+<section class="section">
 
-  <section class="content-section">
+  <h2 class="section-title">Explore & Learn</h2>
 
-    <h2>Current Mission Goals</h2>
+  <div class="grid">
 
-    <div class="card-grid">
+    ./bible-journey.html
+      ✝ Bible Journey
+    </a>
 
-      <div class="impact-card">
-        <div class="icon">🚤</div>
-        <h3>Boat Engine</h3>
-        <p>
-          Restore transportation access to remote coastal communities.
-        </p>
-      </div>
+    ../ministries/
+      ✨ Seven Stars Journey
+    </a>
 
-      <div class="impact-card">
-        <div class="icon">💧</div>
-        <h3>Water Filtration</h3>
-        <p>
-          Expand access to cleaner water and healthier
+    ../arcade/
+      🎮 Arcade
+    </a>
+
+    ../library/
+      📚 Library
+    </a>
+
+  </div>
+
+</section>
+
+<section class="section">
+
+  <div class="support-card card">
+
+    <h2 class="section-title">Partner With The Mission</h2>
+
+    <p>
+      Every contribution helps expand outreach,
+      strengthen communities, and support future generations.
+    </p>
+
+    <br>
+
+    <a class="btn btn-primary"
+       href="https://amazinggracehl.org/support/">
+
+       🤝 Support Voice of Jesus Ministry
+
+    </a>
+
+  </div>
+
+</section>
+
+</main>
+
+<footer class="footer">
+
+  <p>
+    © 2026 Amazing Grace Home Living
+  </p>
+
+</footer>
+
+</body>
+</html>
