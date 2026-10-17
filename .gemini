@@ -1,0 +1,25 @@
+mkdir -p .gemini
+cat << 'EOF' > .gemini/config.yaml
+# Gemini CLI - Fully Unlocked Workspace Configuration
+
+# Model Assignments
+default_model: "gemini-2.5-pro"
+fast_model: "gemini-2.5-flash"
+
+# Automation & Permissions
+autoAccept: true             # Automatically executes tool calls without manual prompts
+sandbox: false               # Runs commands directly on host (set to "docker" if container isolation is needed)
+
+# Unrestricted Tool Access
+excludeTools: []             # Clears all tool exclusions
+coreTools:                   # Explicitly enables all built-in capabilities
+  - "read_file"
+  - "write_file"
+  - "edit"
+  - "glob"
+  - "grep"
+  - "run_shell_command"
+
+# Custom Tooling & Telemetry
+usageStatisticsEnabled: true
+EOF
