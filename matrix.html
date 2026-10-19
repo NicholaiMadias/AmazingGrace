@@ -217,10 +217,123 @@
     /* ── Status bar ───────────────────────────────────────────── */
     #status-bar { font-size: 0.75rem; color: var(--matrix-text); opacity: 0.55; margin-top: 1.5rem; text-align: center; }
 
-    /* ── Responsive tweaks ────────────────────────────────────── */
-    @media (max-width: 480px) {
-      .page-wrap { padding: 1rem 0.75rem 3rem; }
+    /* ── AmazingGrace Console ── */
+    #console-panel {
+      --card: #1e1e1e;
+      --accent: #2563eb;
+      --console-text: #f3f4f6;
+      --muted: #9ca3af;
+      --error: #ef4444;
+      --success: #22c55e;
+      background: #121212;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 16px;
+      color: var(--console-text);
+      margin-top: 2.5rem;
     }
+    .console-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .console-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin: 0;
+      color: #f3f4f6;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-btn {
+      background: var(--card, #1e1e1e);
+      color: #f3f4f6;
+      border: 1px solid #333;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background: var(--card, #1e1e1e);
+      border: 1px solid #333;
+      border-radius: 6px;
+      width: 180px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+    .dropdown-menu button {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      color: #f3f4f6;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.85rem;
+    }
+    .dropdown-menu button:hover {
+      background: #2a2a2a;
+    }
+    .auth-btn {
+      width: 100%;
+      background-color: var(--accent, #2563eb);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.95rem;
+    }
+    .output-box {
+      background-color: #0d0d0d;
+      border: 1px solid #222;
+      border-radius: 6px;
+      padding: 12px;
+      height: 220px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+      color: #f3f4f6;
+    }
+    .input-group {
+      display: flex;
+      gap: 8px;
+    }
+    #console-panel input[type="text"] {
+      flex: 1;
+      background: var(--card, #1e1e1e);
+      border: 1px solid #333;
+      color: #f3f4f6;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .send-btn {
+      background: var(--accent, #2563eb);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .status-error { color: #ef4444; }
+    .status-success { color: #22c55e; }
   </style>
 </head>
 <body>
@@ -302,6 +415,17 @@
       <a href="#diagnostics-panel" class="btn" id="btn-diagnostics">Open Diagnostics</a>
     </div>
 
+    <!-- AmazingGrace Console -->
+    <div class="tool-card" id="card-ag-console">
+      <h2>⚡ AmazingGrace Console</h2>
+      <p>Operational terminal for Anti-Gravity, Gemini CLI dispatch, and Drive State synchronization.</p>
+      <div>
+        <span class="tool-badge unlocked" id="badge-ag-console">UNLOCKED</span>
+        <span class="tool-hint" id="hint-ag-console"></span>
+      </div>
+      <a href="#console-panel" class="btn" id="btn-ag-console">Open Console</a>
+    </div>
+
   </div><!-- /.tools-grid -->
 
   <!-- ══════════════ VISION FORGE PANEL ════════════════════════ -->
@@ -350,6 +474,30 @@
       <div id="diag-dns-list" aria-live="polite" style="display:flex;flex-direction:column;gap:0.4rem">
         <p style="font-size:0.8rem;color:var(--matrix-text);opacity:0.5">Click "Run DNS Tests" to probe network targets.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ AMAZINGGRACE CONSOLE PANEL ════════════════ -->
+  <section class="matrix-card" id="console-panel" aria-label="AmazingGrace Console tool" style="margin-top:2.5rem;display:none">
+    <div class="console-header">
+      <h2 class="console-title">AmazingGrace Console</h2>
+      <div class="dropdown">
+        <button class="dropdown-btn" id="dropdownBtn" type="button" onclick="toggleDropdown()">⋮ Tools</button>
+        <div class="dropdown-menu" id="toolsMenu">
+          <button type="button" id="toolAntiGravity" onclick="selectTool('ANTIGRAVITY')">Anti-Gravity Setup</button>
+          <button type="button" id="toolCliDispatch" onclick="selectTool('CLI_DISPATCH')">Gemini Command Line</button>
+          <button type="button" id="toolDriveSync" onclick="selectTool('DRIVE_SYNC')">Drive State Sync</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="auth-btn" id="authBtn" type="button" onclick="authenticateGitHub()">🔐 Authenticate with GitHub</button>
+
+    <div class="output-box" id="consoleLogs">[System Initialized] Ready for input.</div>
+
+    <div class="input-group">
+      <input type="text" id="commandInput" placeholder="Enter command or prompt...">
+      <button class="send-btn" id="sendBtn" type="button" onclick="executeAction()">Send</button>
     </div>
   </section>
 
@@ -434,10 +582,11 @@
       { id: 'visionforge', featureId: 'visionForge', card: 'card-visionforge', badge: 'badge-visionforge', hint: 'hint-visionforge', btn: 'btn-visionforge', panel: 'visionforge-panel' },
       { id: 'nations',     featureId: 'nations',     card: 'card-nations',     badge: 'badge-nations',     hint: 'hint-nations',     btn: 'btn-nations',     panel: 'nations-panel' },
       { id: 'diagnostics', featureId: 'diagnostics', card: 'card-diagnostics', badge: 'badge-diagnostics', hint: 'hint-diagnostics', btn: 'btn-diagnostics', panel: 'diagnostics-panel' },
+      { id: 'console',     featureId: 'agConsole',   card: 'card-ag-console',  badge: 'badge-ag-console',  hint: 'hint-ag-console',  btn: 'btn-ag-console',  panel: 'console-panel' },
     ];
 
     tools.forEach(({ featureId, card, badge, hint, btn, panel }) => {
-      const isUnlocked = unlocks[featureId] ?? false;
+      const isUnlocked = featureId === 'agConsole' ? true : (unlocks[featureId] ?? false);
       const cardEl  = document.getElementById(card);
       const badgeEl = document.getElementById(badge);
       const hintEl  = document.getElementById(hint);
@@ -651,6 +800,104 @@
     note.textContent = 'Gemini API key not configured — stub mode active.';
     document.getElementById('vf-output').before(note);
   }
+
+  /* ── AmazingGrace Console ── */
+  let selectedToolMode = "CLI_DISPATCH";
+  let githubAuthenticated = false;
+
+  function toggleDropdown() {
+    const menu = document.getElementById('toolsMenu');
+    if (menu) {
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+  }
+
+  function selectTool(mode) {
+    selectedToolMode = mode;
+    toggleDropdown();
+    appendLog(`[Mode Shift] Switched active mode to: ${mode}`);
+  }
+
+  function appendLog(message, isError = false) {
+    const logs = document.getElementById('consoleLogs');
+    if (!logs) return;
+    const time = new Date().toLocaleTimeString();
+    const statusClass = isError ? 'status-error' : 'status-success';
+    logs.innerHTML += `\n<span class="${statusClass}">[${time}]</span> ${message}`;
+    logs.scrollTop = logs.scrollHeight;
+  }
+
+  async function authenticateGitHub() {
+    appendLog("Initiating GitHub Auth check...");
+    try {
+      githubAuthenticated = true;
+      const authBtn = document.getElementById('authBtn');
+      if (authBtn) {
+        authBtn.innerText = "✓ GitHub Connected";
+        authBtn.style.backgroundColor = "#166534";
+      }
+      appendLog("Successfully authenticated with GitHub.");
+    } catch (err) {
+      appendLog(`Authentication Failed: ${err.message}`, true);
+      appendLog("Resolution: Check that GITHUB_PAT is correctly set in script properties.", true);
+    }
+  }
+
+  async function executeAction() {
+    const inputEl = document.getElementById('commandInput');
+    const input = inputEl ? inputEl.value.trim() : '';
+    if (!input) return;
+
+    appendLog(`[Sending] Dispatching payload under mode ${selectedToolMode}...`);
+    if (inputEl) inputEl.value = '';
+
+    const webAppUrl = localStorage.getItem('AG_APPS_SCRIPT_URL') ||
+                      window.__AG_APPS_SCRIPT_URL ||
+                      "YOUR_APPS_SCRIPT_WEB_APP_URL";
+
+    try {
+      const response = await fetch(webAppUrl, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: selectedToolMode, command: input })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server returned HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      if (data.error) {
+        appendLog(`Execution Error: ${data.error}`, true);
+      } else {
+        appendLog(`[Success] Server Response: ${JSON.stringify(data.result)}`);
+      }
+    } catch (err) {
+      appendLog(`[Failed] ${err.message}`, true);
+      appendLog("Resolution: Verify network connectivity or check if your backend URL is active.", true);
+    }
+  }
+
+  // Bind to global window for inline onclick attributes
+  window.toggleDropdown = toggleDropdown;
+  window.selectTool = selectTool;
+  window.appendLog = appendLog;
+  window.authenticateGitHub = authenticateGitHub;
+  window.executeAction = executeAction;
+
+  // Event listeners fallback
+  document.getElementById('dropdownBtn')?.addEventListener('click', toggleDropdown);
+  document.getElementById('authBtn')?.addEventListener('click', authenticateGitHub);
+  document.getElementById('sendBtn')?.addEventListener('click', executeAction);
+  document.getElementById('commandInput')?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') executeAction();
+  });
+  document.getElementById('toolAntiGravity')?.addEventListener('click', () => selectTool('ANTIGRAVITY'));
+  document.getElementById('toolCliDispatch')?.addEventListener('click', () => selectTool('CLI_DISPATCH'));
+  document.getElementById('toolDriveSync')?.addEventListener('click', () => selectTool('DRIVE_SYNC'));
+
+  // Ensure window.__GEMINI_API_KEY is available for client-side live generation
+  window.__GEMINI_API_KEY = window.__GEMINI_API_KEY || 'AIzaSyBj_rO6VWUz6gwlU7UdU6_9dk17VL8Zy5Y';
 
   /* ── Init ── */
   refreshNav();

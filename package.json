@@ -9,6 +9,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "typecheck": "tsc --noEmit",
+    "sync-key": "node scripts/vault-tool.js",
     "ella-merge": "node scripts/ella-merge.js",
     "preview": "vite preview",
     "test": "vitest run"

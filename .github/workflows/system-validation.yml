@@ -5,10 +5,13 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  repository_dispatch:
+    types: [key_rotation_event]
 
 jobs:
   validate:
     runs-on: ubuntu-latest
+    if: github.event_name != 'repository_dispatch'
     permissions:
       contents: read
 
@@ -89,3 +92,21 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_AMAZING_GRACE_HL_BBEAA }}
           projectId: amazing-grace-hl-bbeaa
           channelId: live
+
+  sync-secrets:
+    name: Sync Secrets from Matrix (Key Master)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'repository_dispatch' && github.event.action == 'key_rotation_event'
+    steps:
+      - name: Update GitHub Actions Secret
+        uses: appleboy/github-action-github-api-v3@master
+        with:
+          token: ${{ secrets.keyMaster }}
+          method: PUT
+          path: /repos/${{ github.repository }}/actions/secrets/${{ github.event.client_payload.secret_id }}
+          body: |
+            {
+              "encrypted_value": "${{ github.event.client_payload.new_value }}",
+              "key_id": "${{ github.event.client_payload.key_id }}"
+            }
+
