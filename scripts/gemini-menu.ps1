@@ -2,7 +2,7 @@
 # Nexus Control Console & Gemini CLI Launchpad
 
 $script:activeToolMode = "CLI_DISPATCH"
-$script:appsScriptUrl  = "https://script.google.com/macros/s/AKfycbzdcTpuknqnUJMC-miaNQjd6KxP95wZtwN9U3wizzT_sBE3QV7_74y6zY7y_DpNTU1i5w/exec" # Set in Google Secret Manager or Environment Variable
+$script:appsScriptUrl  = "$script:appsScriptUrl = "https://script.google.com/macros/s/AKfycbwowTISiNVkyVVKeTdFiJtbTdYHugKwvm6p2V3Ja3QKzUu3aAIFe-G-7BItr5gMGGR3MQ/exec" # Set in Google Secret Manager or Environment Variable
 
 function Write-ConsoleLog {
     param(
