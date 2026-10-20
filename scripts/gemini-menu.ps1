@@ -1,5 +1,5 @@
-# gemini-menu.ps1
-# Nexus Control Console & Gemini CLI Launchpad
+# Gemini Menu
+# Nexus Control Console & Gemini CLI Launchpad for Antigravity, Powershell, Drive and Sheets
 
 $script:activeToolMode = "CLI_DISPATCH"
 $script:appsScriptUrl  = "$script:appsScriptUrl = "https://script.google.com/macros/s/AKfycbwowTISiNVkyVVKeTdFiJtbTdYHugKwvm6p2V3Ja3QKzUu3aAIFe-G-7BItr5gMGGR3MQ/exec" # Set in Google Secret Manager or Environment Variable
