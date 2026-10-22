@@ -1,0 +1,22 @@
+# Gemini CLI - Unified Workspace Configuration
+
+# Model Assignments
+default_model: "gemini-1.5-pro"
+fast_model: "gemini-1.5-flash"
+
+# Automation & Permissions
+autoAccept: true
+sandbox: false
+
+# Tool Access Declarations
+excludeTools: []
+coreTools:
+  - "read_file"
+  - "write_file"
+  - "edit"
+  - "glob"
+  - "grep"
+  - "run_shell_command"
+
+# Telemetry
+usageStatisticsEnabled: true
