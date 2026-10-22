@@ -1,1 +1,22 @@
-{"general":{"defaultApprovalMode":"auto_edit"},"model":{"name":"gemini-2.5-pro"},"privacy":{"usageStatisticsEnabled":true},"tools":{"core":["read_file","write_file","replace","glob","grep_search","run_shell_command"],"exclude":[]}}
+{
+  "general": {
+    "defaultApprovalMode": "auto_edit"
+  },
+  "model": {
+    "name": "gemini-1.5-pro"
+  },
+  "privacy": {
+    "usageStatisticsEnabled": true
+  },
+  "tools": {
+    "core": [
+      "read_file",
+      "write_file",
+      "replace",
+      "glob",
+      "grep_search",
+      "run_shell_command"
+    ],
+    "exclude": []
+  }
+}
