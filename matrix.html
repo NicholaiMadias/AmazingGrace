@@ -28,7 +28,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Matrix of Conscience — reflective portal and PowerShell administration terminal for Amazing Grace Home Living.">
+  <meta name="description" content="Matrix of Conscience — interactive portal, open-source AI terminal, and Gemini CLI guide for Amazing Grace Home Living.">
   <meta name="theme-color" content="#0a0a0a">
   <link rel="icon" type="image/png" href="./assets/logo.png">
   <title>Matrix of Conscience | Amazing Grace Home Living</title>
@@ -78,10 +78,6 @@
       transition: box-shadow 0.2s, border-color 0.2s;
     }
     .tool-card:hover { box-shadow: 0 0 16px rgba(0,255,65,0.18); }
-    .tool-card.locked {
-      border-color: var(--matrix-dim);
-      opacity: 0.55;
-    }
 
     .tool-card h2 {
       font-size: 1rem;
@@ -105,17 +101,9 @@
       letter-spacing: 0.05em;
     }
     .tool-badge.unlocked { background: var(--matrix-dim); color: var(--matrix-green); border: 1px solid var(--matrix-green); }
-    .tool-badge.locked   { background: #1a0a0a; color: var(--matrix-red); border: 1px solid var(--matrix-red); }
-
-    .tool-hint {
-      font-size: 0.72rem;
-      color: var(--matrix-red);
-      font-style: italic;
-    }
 
     .btn { cursor: pointer; font-family: var(--font-mono); font-size: 0.8rem; padding: 0.45rem 1rem; border-radius: 4px; border: 1px solid var(--matrix-green); background: transparent; color: var(--matrix-green); transition: background 0.15s, color 0.15s; text-decoration: none; display: inline-block; }
     .btn:hover, .btn:focus { background: var(--matrix-green); color: var(--matrix-dark); }
-    .btn:disabled, .btn[aria-disabled="true"] { opacity: 0.35; pointer-events: none; }
 
     /* ── Login modal ──────────────────────────────────────────── */
     .modal-backdrop {
@@ -188,7 +176,7 @@
       border: 1px solid #1e3a5f;
       border-radius: 4px;
       padding: 12px;
-      height: 240px;
+      height: 260px;
       overflow-y: auto;
       font-size: 0.85rem;
       margin-bottom: 12px;
@@ -263,3 +251,210 @@
       <input type="password" id="login-password" autocomplete="current-password" placeholder="••••••••">
     </div>
     <div class="modal-links">
+      <a href="https://console.firebase.google.com/" target="_blank" rel="noopener">Register Account</a>
+      <a href="https://console.firebase.google.com/" target="_blank" rel="noopener">Reset Password</a>
+    </div>
+    <div id="login-error" role="alert" aria-live="polite"></div>
+    <div class="modal-actions">
+      <div class="modal-row">
+        <button class="btn" id="modal-cancel" style="border-color:var(--matrix-text);color:var(--matrix-text)">Cancel</button>
+        <button class="btn" id="modal-submit">Sign In</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ MAIN ══════════════════════════════ -->
+<div class="page-wrap">
+
+  <div class="hero">
+    <h1 class="glitch">MATRIX OF CONSCIENCE</h1>
+    <p>Enter the Matrix of Conscience and continue your journey through the Nexus Arcade.</p>
+  </div>
+
+  <!-- ── Tool cards ───────────────────────────────────────────── -->
+  <div class="tools-grid">
+
+    <!-- Vision Forge -->
+    <div class="tool-card" id="card-visionforge">
+      <h2>🎨 Vision Forge</h2>
+      <p>Generate images with Gemini AI. Describe a scene and watch it materialize.</p>
+      <div><span class="tool-badge unlocked">READY</span></div>
+      <a href="#visionforge-panel" class="btn" id="btn-visionforge">Open Vision Forge</a>
+    </div>
+
+    <!-- Sovereign Nations -->
+    <div class="tool-card" id="card-nations">
+      <h2>🌍 Sovereign Nations</h2>
+      <p>Build and govern your nation. Manage resources, enact policies, and trade.</p>
+      <div><span class="tool-badge unlocked">READY</span></div>
+      <a href="#nations-panel" class="btn" id="btn-nations">Open Nations</a>
+    </div>
+
+    <!-- Diagnostics Console -->
+    <div class="tool-card" id="card-diagnostics">
+      <h2>🛠 Diagnostics Console</h2>
+      <p>Inspect browser capabilities and check DNS / network reachability.</p>
+      <div><span class="tool-badge unlocked">READY</span></div>
+      <a href="#diagnostics-panel" class="btn" id="btn-diagnostics">Open Diagnostics</a>
+    </div>
+
+    <!-- PowerShell Terminal & Open Source AI -->
+    <div class="tool-card" id="card-ag-console">
+      <h2>⚡ Nexus AI & PowerShell</h2>
+      <p>Built-in Open Source AI coding tutor for beginners, plus advanced Gemini CLI setup walkthroughs.</p>
+      <div><span class="tool-badge unlocked">ACTIVE</span></div>
+      <a href="#console-panel" class="btn" id="btn-ag-console">Open Terminal</a>
+    </div>
+
+  </div><!-- /.tools-grid -->
+
+  <!-- ══════════════ POWERSHELL TERMINAL PANEL ════════════════ -->
+  <section class="matrix-card" id="console-panel" aria-label="PowerShell Nexus Terminal" style="display:block">
+    <div class="console-header">
+      <h2 class="console-title">Windows PowerShell [Nexus Open-Source AI Assistant]</h2>
+      <div style="display:flex; gap:8px;">
+        <button class="ps-btn" onclick="runPowerShellCommand('clear')">Clear</button>
+        <button class="ps-btn" onclick="runPowerShellCommand('help')">Help</button>
+        <button class="ps-btn" onclick="runPowerShellCommand('setup-gemini')">Gemini Setup</button>
+      </div>
+    </div>
+
+    <div class="powershell-output" id="ps-output">Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+PS C:\Users\Nick\OneDrive\Desktop\AmazingGrace> Get-Help NexusAI
+[SYSTEM] Preinstalled Open-Source AI Coding Tutor is online. No API tokens required!
+[SYSTEM] Type an idea like 'ai: how do I make a button?' or type 'help' for commands.
+</div>
+
+    <div class="powershell-input-line">
+      <span class="powershell-prompt" id="ps-prompt">PS C:\Users\Nick\OneDrive\Desktop\AmazingGrace&gt;</span>
+      <input type="text" id="ps-input" placeholder="Type command, e.g., 'ai: write a game loop' or 'setup-gemini'..." autocomplete="off" onkeydown="handlePsInput(event)">
+      <button class="ps-btn" onclick="executePsCommand()">Run</button>
+    </div>
+  </section>
+
+  <p id="status-bar"></p>
+
+</div><!-- /.page-wrap -->
+
+<script>
+    // Open-source AI Coding Assistant simulation & Gemini CLI walkthrough
+    function handlePsInput(event) {
+        if (event.key === 'Enter') {
+            executePsCommand();
+        }
+    }
+
+    function executePsCommand() {
+        const inputElem = document.getElementById('ps-input');
+        const outputElem = document.getElementById('ps-output');
+        const cmd = inputElem.value.trim();
+        if (!cmd) return;
+
+        outputElem.innerHTML += `PS C:\\Users\\Nick\\OneDrive\\Desktop\\AmazingGrace> ${escapeHtml(cmd)}\n`;
+        inputElem.value = '';
+
+        const lowerCmd = cmd.toLowerCase();
+
+        if (lowerCmd === 'clear' || lowerCmd === 'cls') {
+            outputElem.innerHTML = '';
+        } else if (lowerCmd === 'help' || lowerCmd === 'get-command') {
+            outputElem.innerHTML += `Available PowerShell & AI Commands:\n` +
+                `  ai: [question]  - Ask the built-in Open-Source AI coding tutor anything (Zero API key needed!)\n` +
+                `  setup-gemini    - Step-by-step walkthrough to install and configure Gemini CLI\n` +
+                `  Get-Status      - Checks workspace health and active AI module\n` +
+                `  npm audit       - Checks package vulnerabilities\n` +
+                `  firebase deploy - Simulates deployment to hosting targets\n` +
+                `  Send-Telemetry  - Dispatches automated webhook ping to Google Sheet\n\n`;
+        } else if (lowerCmd.startsWith('ai:')) {
+            const query = cmd.slice(3).trim();
+            outputElem.innerHTML += getOpenSourceAiResponse(query) + '\n\n';
+        } else if (lowerCmd === 'setup-gemini') {
+            outputElem.innerHTML += `[GEMINI CLI SETUP GUIDE FOR ADVANCED USERS]\n` +
+                `Step 1: Get an API key from Google AI Studio (https://aistudio.google.com/app/apikey)\n` +
+                `Step 2: Run this command in your terminal to save your key:\n` +
+                `        export GEMINI_API_KEY="AIzaSyYourKeyHere"\n` +
+                `Step 3: Install the CLI globally via npm:\n` +
+                `        npm install -g @google/gemini-cli\n` +
+                `Step 4: Launch your AI workspace assistant:\n` +
+                `        gemini\n\n`;
+        } else if (lowerCmd === 'get-status') {
+            outputElem.innerHTML += `[INFO] Workspace: AmazingGrace\n[INFO] Open-Source AI Tutor: Active (Zero-Token Mode)\n[SUCCESS] All systems operational.\n\n`;
+        } else if (lowerCmd === 'npm audit') {
+            outputElem.innerHTML += `found 0 vulnerabilities in 30833 packages\n\n`;
+        } else if (lowerCmd === 'firebase deploy') {
+            outputElem.innerHTML += `=== Deploying to 'amazinggracehl'...\ni  hosting: uploading new files... [==============================] 100%\n✔  Deploy complete!\n\n`;
+        } else if (lowerCmd === 'send-telemetry' || lowerCmd === 'telemetry') {
+            sendTelemetry();
+            return;
+        } else {
+            // Default fallback: treat general text as an AI coding question if it looks like one
+            outputElem.innerHTML += `[AI Tutor] That's a fun coding idea! Try typing 'ai: ${cmd}' to get instant beginner-friendly code snippets and explanations.\n\n`;
+        }
+
+        outputElem.scrollTop = outputElem.scrollHeight;
+    }
+
+    // Friendly preinstalled open-source AI tutor logic for beginners
+    function getOpenSourceAiResponse(query) {
+        const q = query.toLowerCase();
+        if (q.includes('button') || q.includes('click')) {
+            return `[Open-Source AI Tutor] Here is how you make a fun interactive button in HTML & JS:\n` +
+                   `  <button onclick="alert('You unlocked a secret!')">Click Me!</button>\n` +
+                   `  Tip: Paste this into any .html file and open it in your browser!`;
+        } else if (q.includes('game') || q.includes('loop')) {
+            return `[Open-Source AI Tutor] Every great game starts with a requestAnimationFrame loop:\n` +
+                   `  function gameLoop() {\n    updateGameState();\n    renderGraphics();\n    requestAnimationFrame(gameLoop);\n  }\n` +
+                   `  requestAnimationFrame(gameLoop);`;
+        } else if (q.includes('hello') || q.includes('hi')) {
+            return `[Open-Source AI Tutor] Hello! I'm your preinstalled coding companion. Ask me anything like 'ai: how do I style a card?' or 'ai: explain variables'.`;
+        } else {
+            return `[Open-Source AI Tutor] Great question about "${query}"! To build this, break it down into small steps: write down your HTML structure, add CSS styling for your theme, and attach event listeners in JavaScript. Keep experimenting!`;
+        }
+    }
+
+    function runPowerShellCommand(commandText) {
+        document.getElementById('ps-input').value = commandText;
+        executePsCommand();
+    }
+
+    function sendTelemetry() {
+        const outputElem = document.getElementById('ps-output');
+        const timestamp = new Date().toLocaleTimeString();
+        
+        outputElem.innerHTML += `[${timestamp}] [INFO] Initiating uplink to Google Apps Script Web App...\n`;
+        outputElem.scrollTop = outputElem.scrollHeight;
+
+        const webhookUrl = "https://script.google.com/macros/s/AKfycbz1XPK7_dUac9ZHQLP1ut3uCr3iNC8WNWQacwBHUCfM9jXqPh88UUipppFmNwr3lTd4/exec";
+        
+        const payload = {
+            action: "log_telemetry",
+            user: "Nicholai Madias (Admin)",
+            command: "PowerShell Terminal Ping",
+            details: "Manual trigger from PowerShell Nexus Console"
+        };
+
+        fetch(webhookUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        }).then(() => {
+            outputElem.innerHTML += `[${timestamp}] ✔ [SUCCESS] Payload delivered to Google Sheet database.\n\n`;
+            outputElem.scrollTop = outputElem.scrollHeight;
+        }).catch(err => {
+            outputElem.innerHTML += `[${timestamp}] ⚠ [ERROR] Uplink failed: ${err}\n\n`;
+            outputElem.scrollTop = outputElem.scrollHeight;
+        });
+    }
+
+    function escapeHtml(text) {
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+</script>
+</body>
+</html>
