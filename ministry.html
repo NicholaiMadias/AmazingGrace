@@ -3,16 +3,378 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="0; url=/ministry/">
-    <title>Ministry — Amazing Grace Home Living</title>
-    <link rel="icon" type="image/png" href="./assets/logo.png">
+    <title>Ministry | Amazing Grace Home Living</title>
     <style>
-        body { font-family: sans-serif; background: #0a0a14; color: #e8e0f0; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-        a { color: #1e90ff; }
+        :root {
+            --bg-base: #0a0f18;
+            --bg-surface: #131b2f;
+            --bg-surface-hover: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.2);
+            --border-color: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg-base);
+        }
+
+        .brand {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a.active, .nav-links a:hover {
+            color: var(--accent-blue);
+        }
+
+        /* Hero / Fundraiser Section */
+        .hero {
+            padding: 4rem 5%;
+            text-align: center;
+            background: radial-gradient(circle at center top, var(--bg-surface), var(--bg-base));
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .hero p.subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+        }
+
+        .fundraiser-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .fundraiser-card h2 {
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .fundraiser-card p {
+            margin-bottom: 1rem;
+        }
+
+        .fundraiser-card .sponsorship {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            background: rgba(56, 189, 248, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #dc2626;
+        }
+
+        .btn-secondary {
+            background-color: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent-blue);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--accent-blue);
+            color: #000;
+        }
+
+        /* Main Content Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 5%;
+        }
+
+        section {
+            margin-bottom: 4rem;
+        }
+
+        .section-header {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Clean List Layout (Audio) */
+        .list-group {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .list-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+
+        .list-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-blue);
+        }
+
+        .list-item h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .list-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        
+        .list-item a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* MIDI Grid */
+        .midi-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .midi-link {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            font-family: monospace;
+        }
+
+        .midi-link:hover {
+            color: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 5%;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 4rem;
+        }
     </style>
 </head>
 <body>
-    <p>Redirecting to <a href="./ministry/">Ministry</a>…</p>
-    <script>window.location.replace("/ministry/");</script>
-</body>
-</html>
+
+    <nav>
+        <a href="/" class="brand">Amazing Grace</a>
+        <ul class="nav-links">
+            <li><a href="/listings/">Listings</a></li>
+            <li><a href="/library/">Library</a></li>
+            <li><a href="/arcade/">Arcade</a></li>
+            <li><a href="/ministry/" class="active">Ministry</a></li>
+            <li><a href="/contact/">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <h1>🕊️ Voice of Jesus Ministry</h1>
+        <p class="subtitle">Faith, hope, and community &mdash; bringing the love of Jesus Christ to those who need it most.</p>
+        
+        <div class="fundraiser-card">
+            <h2>Keeping Hope Afloat: Lifeline Boat & Village Camp</h2>
+            <p>We're raising funds to support a remote coastal ministry village with three urgent needs: a reliable lifeline boat engine, solar power for summer camp, and a clean water supply.</p>
+            <div class="sponsorship">
+                <strong>Sponsorship examples:</strong> $5/month (Bible Study Partner), $20/month (Student Sponsor), $40 one-time (Chromebook Sponsor).
+            </div>
+            <div class="btn-group">
+                <a href="#" class="btn btn-primary">❤️ Donate on GoFundMe</a>
+                <a href="#" class="btn btn-secondary">🤝 More ways to support</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- Directory Viewer Section -->
+        <section id="gallery">
+            <h2 class="section-header">Ministry Gallery</h2>
+            
+            <div class="directory-container" style="background-color: #0a0a0a; color: #f3f4f6; font-family: monospace, sans-serif; padding: 2rem; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: inset 0 0 20px rgba(0,0,0,0.5);">
+  
+              <!-- File Directory Navigation -->
+              <ul style="list-style-type: none; padding-left: 0; font-size: 1.1rem; margin-bottom: 2rem;">
+                
+                <li style="margin-bottom: 12px;">
+                  📂 <a href="/gallery/teachings/" style="color: #3b82f6; text-decoration: none;">/teachings/</a>
+                </li>
+                
+                <li style="margin-bottom: 12px;">
+                  <!-- Active Directory Highlighted in Lime -->
+                  <span style="color: #a3e635; font-weight: bold;">📂 /shorts/</span> 
+                  
+                  <!-- Nested Files (The Shorts) -->
+                  <ul style="list-style-type: none; padding-left: 24px; margin-top: 12px; border-left: 1px solid #333;">
+                    <li style="margin-bottom: 12px;">
+                      📄 <a href="https://www.youtube.com/shorts/m9r_nSi6Ms8" style="color: #3b82f6; text-decoration: underline;" target="_blank">Why Paul Forgave His Betrayers.mp4</a>
+                    </li>
+                  </ul>
+                </li>
+            
+                <li style="margin-bottom: 12px; margin-top: 12px;">
+                  📂 <a href="/gallery/worship-and-music/" style="color: #3b82f6; text-decoration: none;">/worship-and-music/</a>
+                </li>
+            
+              </ul>
+            
+              <!-- Borderless Inline Video Embed -->
+              <div class="media-viewer" style="display: flex; justify-content: center; padding: 1rem 0;">
+                <iframe 
+                  width="315" 
+                  height="560" 
+                  src="https://www.youtube.com/embed/m9r_nSi6Ms8" 
+                  title="Why Paul Forgave His Betrayers" 
+                  style="border: none; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.8);"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowfullscreen>
+                </iframe>
+              </div>
+            
+            </div>
+        </section>
+
+        <!-- Audio Archive Section -->
+        <section id="audio">
+            <h2 class="section-header">Music & Audio Archive</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Shared ministry audio and music now live under the main assets folders so they stay discoverable, reusable, and protected.</p>
+            
+            <ul class="list-group">
+                <li class="list-item">
+                    <h3>Storm</h3>
+                    <p>Atmospheric arcade score for dramatic ministry and game moments.</p>
+                    <a href="/assets/audio/storm.mp3" download>Download MP3 &darr;</a>
+                </li>
+                <li class="list-item">
+                    <h3>Victory</h3>
+                    <p>Celebration cue used for success and completion moments.</p>
+                    <a href="/assets/audio/victory.mp3" download>Download MP3 &darr;</a>
+                </li>
+                <li class="list-item">
+                    <h3>Ending</h3>
+                    <p>Long-form ambient track preserved for story and ministry playback.</p>
+                    <a href="/assets/audio/ending.mp3" download>Download MP3 &darr;</a>
+                </li>
+                <li class="list-item">
+                    <h3>Badge</h3>
+                    <p>Short reward stinger used across the arcade experience.</p>
+                    <a href="/assets/audio/badge.mp3" download>Download MP3 &darr;</a>
+                </li>
+                <li class="list-item">
+                    <h3>Course Clear Fanfare</h3>
+                    <p>Arcade completion fanfare preserved under the shared audio library.</p>
+                    <a href="/assets/audio/course-clear.mp3" download>Download MP3 &darr;</a>
+                </li>
+                <li class="list-item">
+                    <h3>Player Down</h3>
+                    <p>Game-over and warning cue retained as part of the ministry audio archive.</p>
+                    <a href="/assets/audio/player-down.mp3" download>Download MP3 &darr;</a>
+                </li>
+            </ul>
+        </section>
+
+        <!-- MIDI Section -->
+        <section id="midi">
+            <h2 class="section-header">Downloadable MIDI Music</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Legacy Super Mario 64 MIDI tracks organized under assets/music/.</p>
+            
+            <div class="midi-grid">
+                <a href="#" class="midi-link">m64bomb.mid</a>
+                <a href="#" class="midi-link">m64bowsr.mid</a>
+                <a href="#" class="midi-link">m64crs1.mid</a>
+                <a href="#" class="midi-link">m64crse1.mid</a>
+                <a href="#" class="midi-link">m64docks.mid</a>
+                <a href="#" class="midi-link">m64endin.mid</a>
+                <a href="#" class="midi-link">m64file.mid</a>
+                <a href="#" class="midi-link">m64metal.mid</a>
+                <a href="#" class="midi-link">m64metlm.mid</a>
+                <a href="#" class="midi-link">m64slide.mid</a>
+                <a href="#" class="midi-link">m64snow.mid</a>
+                <a href="#" class="midi-link">m64vansh.mid</a>
